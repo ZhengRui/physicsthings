@@ -1,0 +1,555 @@
+\chapter{经典蒙特卡洛方法}
+\label{chap2}
+
+\iffalse
+\section{蒙特卡洛方法介绍}
+蒙特卡洛方法,也称统计模拟方法，是二十世纪四十年代中期由于科学技术的发展和电子计算机的发明，而被提出的一种以概率统计理论为指导
+的一类非常重要的数值计算方法，是指使用随机数(或更常见的伪随机数)来解决很多计算问题的方法。
+
+20世纪40年代，在John von Neumann，Stanislaw Ulam和Nicholas Metropolis在洛斯阿拉莫斯国家实验室处理中子实验后的数据时，发明了蒙特卡洛方法。
+因为Ulam的叔叔经常在摩洛哥的蒙特卡洛赌场输钱，故起名蒙特卡洛方法，而蒙特卡洛方法正是以概率为基础的方法。
+尽管当时受到计算机资源的严重限制，蒙特卡洛方法在曼哈顿工程的计算机模拟工作中起到了核心作用，并在50年代应用于与氢弹相关的
+早期工作中，后来在物理\cite{1mcbook,1mcbook2,1mcbook3,1mcbook4}、化学、工程\cite{1mcpp}以及金融中\cite{1mcbook5}都得到了广泛的应用。蒙特卡洛方法要求产生大量的随机数，而这也促进了伪随机数生成器的发展。
+
+蒙特卡洛方法有很多种，但大致框架如下：\\
+1，定义一个问题所要求的输入的范围(如态空间)。\\
+2，在此范围内根据某个概率分布(如玻尔兹曼分布)随机产生输入。\\
+3，对输入进行某种运算(如计算物理量)。\\
+4，统计结果(如得到物理量平均值以及误差)。
+
+下面是一个常用的介绍蒙特卡洛方法的求$\pi$值的例子，如图\ref{pisample}：\\
+1，在一个正方形内画出一个$1/4$圆形区域。\\
+2，往正方形内随机均匀地撒点。\\
+3，统计撒点的总数$n$以及落在圆形区域内的点的总数$n_0$。\\
+4，计算$4n_0/n$的值我们就可以近似得到$\pi$值。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{pisample}
+\caption{蒙特卡洛方法求$\pi$值}
+\label{pisample}
+\end{figure}
+\fi
+
+\section{理论背景}
+蒙特卡洛方法的本质是通过随机抽样的方式来求积分，如求下式定积分
+\begin{equation}
+y=\frac{1}{b-a}\int_{a}^{b}f(x)dx
+\label{eq1.1}
+\end{equation}
+有两种方式来求这个积分，一种称为简单性抽样(simple sampling)，一种称为重要性抽样(importance sampling)。简单性抽样就是在$x$的参数空间$[a,b]$内按均匀分布对$x$进行抽样，然后对相应的$f(x)$进行统计平均，如
+\begin{equation}
+y_{est}=\frac{1}{N}\sum_{i}f(x_{i})
+\end{equation}
+$y_{est}$是对$y$的估计值，$N$是抽样的总次数，随着$N\rightarrow\infty$，$y_{est}$最终会收敛于$y$的正确值。但是当函数$f(x)$在参数范围内变化很大时，
+这种简单性抽样方式的收敛速度是很慢的，因为很大的工作量放在了去统计一些对积分没太大贡献的参数点上，为了克服这种困难，我们在产生抽样点$x_i$的时候
+可以做一些优化。重要性抽样就是按照某种特定概率密度$f'(x)$而不是不均匀分布来对$x$进行抽样的一种优化方式，这里的$f'(x)$并不一定要求是归一化后的概率
+密度，假设归一化之后的概率密度函数为$p(x)=\frac{f'(x)}{\int_{a}^{b}f'(x)dx}$, 这时
+\begin{equation}
+y=\frac{\int_{a}^{b}f'(x)dx}{b-a}\frac{\int_{a}^{b}\frac{f(x)}{f'(x)}f'(x)dx}{\int_{a}^{b}f'(x)dx}=\frac{1}{b-a}\int_{a}^{b}\frac{f(x)}{p(x)}p(x)
+\end{equation}
+与重要性抽样相对应的统计平均方法为
+\begin{equation}
+y_{est}=\frac{\int_{a}^{b}f'(x)dx}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{f'(x_{i})}
+\end{equation}
+或者
+\begin{equation}
+y_{est}=\frac{1}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{p(x_{i})}\equiv\frac{\int_{a}^{b}f'(x)dx}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{f'(x_{i})}
+\end{equation}
+可以看到，当$f'(x)=1$, $p(x)=\frac{1}{b-a}$时，就转化成了简单性抽样。当方程\ref{eq1.1}中的积分很难求，而积分$\int_{a}^{b}f'(x)dx$比较容易解析或数值
+求解，并且$f'(x)$在大范围内都可以近似$f(x)$的时候，重要性抽样就体现出了优越性。并且大多数问题并不是求解如方程\ref{eq1.1}中那样直接的积分问题，而是求
+解如下的一个平均值问题
+\begin{equation}
+\langle O(x)\rangle=\frac{\int_{x\in X}O(x)f'(x)dx}{\int_{x\in X}f'(x)dx}=\int_{x\in X}O(x)p(x)dx
+\label{eq1.6}
+\end{equation}
+这时可以很自然地按$p(x)$对参数空间进行重要性抽样，得到平均值
+\begin{equation}
+\bar{O}=\frac{1}{N}\sum_{i}O(x_{i})
+\end{equation}
+
+蒙特卡罗方法的统计误差与维度无关，而只与抽样次数N有关系，$\sigma_{mc}\propto N^{-\frac{1}{2}}$，而通常的网格化数值积分方法在$d$维情况下的误差是
+$\sigma_{net}\propto N^{-\frac{2}{d}}$，所以在高于$4$维的情况下蒙特卡洛方法更好。
+
+统计物理的一个主要任务就是在给定哈密顿量$H$的情况下计算各物理量的平均值，如平均能量$E$和平均磁化强度$\overrightarrow{M}$,
+\begin{equation}
+E_{av}=\langle H\rangle/N
+\label{eq1.8}
+\end{equation}
+\begin{equation}
+\overrightarrow{M}=\langle\sum_{i}\overrightarrow{S_{i}}\rangle/N
+\label{eq1.9}
+\end{equation}
+这里$N$是总自旋数，$x$表征系统态空间的一组完备坐标，e.g.，对于Ising模型，$x=(S_1,S_2,...,S_N)$，对于Heisenberg模型，
+$x=(\overrightarrow{S_1},\overrightarrow{S_2},...,\overrightarrow{S_N})$，正则系综下物理量$O$的平均值
+\begin{equation}
+\langle O(x)\rangle_{T}=\frac{1}{Z}\int O(x)\mathrm{exp}[-H(x)/k_{B}T]dx
+\label{eq1.10}
+\end{equation}
+\begin{equation}
+Z=\int \mathrm{exp}(-H(x)/k_{B}T)dx
+\end{equation}
+\ref{eq1.10}正是\ref{eq1.6}的形式，$p(x)$为归一化的Boltzmann因子，
+\begin{equation}
+p(x)=\frac{1}{Z}\mathrm{exp}[-H(x)/k_{B}T]
+\end{equation}
+
+如何来实现按照$p(x)$对态空间进行抽样，一种方式是求函数$Y(x)=\int_{0}^{x}p(x')dx$的逆函数$Y^{-1}(x)$，对$Y$随即均匀抽样
+通过逆函数求出来的$x$就是满足$p(x)$分布的，但是很多情况求逆函数是十分困难的。Metropolis等人\cite{1metropolis}提出在抽样得到一系列样本${x_i}$的过程中不要独立地进行，而是构造
+一个Markov链，链中下一个节点$x_j$是依赖于上一个节点${x_i}$并按照一定的跃迁概率$W(x_{i}\rightarrow x_{j})$产生的，要
+使最终形成的Markov链上的节点满足$p(x)$分布，这个跃迁概率需满足细致平衡方程(Detailed balance eqution)
+\begin{equation}
+p(x_{i})W(x_{i}\rightarrow x_{j})=p(x_{j})W(x_{j}\rightarrow x_{i})
+\label{eq1.13}
+\end{equation}
+这个方程对跃迁概率提出了要求，
+\begin{equation}
+\frac{W(x_{i}\rightarrow x_{j})}{W(x_{j}\rightarrow x_{i})}=\frac{p(x_{j})}{p(x_{i})}=\mathrm{exp}(-\frac{\delta H}{k_{B}T})
+\label{eq1.14}
+\end{equation}
+这里$\delta H=H(x_j)-H(x_i)$, 但跃迁概率的解不是唯一的，最常见的解有两种\cite{1dbsol1,1dbsol2}，一种是Metropolis解
+\begin{equation}
+W(x_{i}\rightarrow x_{j})= \begin{cases} \frac{1}{\tau_{0}}\mathrm{exp}(-\frac{\delta H}{k_{B}T}) \qquad \delta H > 0\\
+\frac{1}{\tau_{0}} \hspace{28mm} otherwise \end{cases}
+\label{eq1.15}
+\end{equation}
+还有一种解是
+\begin{equation}
+W(x_{i}\rightarrow x_{j})=\frac{1}{2\tau_{0}}[1-tanh(\frac{\delta H}{2k_{B}T})]
+\end{equation}
+$\tau_{0}$是一个任意的因子，一般取为$1$。
+这种构造Markov链的抽样方式虽然实现方式非常普遍，但在前后两个节点之间产生了关联\cite{1dbsol1}，会使收敛速度变慢，蒙特卡洛方法很大工作在于构造高效的抽样方式以减少
+节点之间的关联，如后面将要讲到的团簇翻转方法，还有量子蒙卡中常见的环算法等。
+
+\section{模拟经典自旋模型}
+本节以Ising模型以及Heisenberg模型为例子介绍一下如何用蒙特卡洛方法来研究经典自旋模型及其相变问题。这两个模型的哈密顿量如下
+\begin{equation}
+H_{Ising}=-J\sum_{\langle i,j\rangle}\sigma_{i}\sigma_{j} \qquad \sigma_{i}=\pm1
+\label{eq1.17}
+\end{equation}
+\begin{equation}
+H_{Heisenberg}=-J\sum_{\langle i,j\rangle}\overrightarrow{S_{i}}\cdot\overrightarrow{S_{j}} \qquad |\overrightarrow{S_{i}}|=1
+\end{equation}
+当$J>0$时为铁磁模型，$J<0$时为反铁磁模型。在低温时，他们都处于铁磁相(或Neel相)，温度升高时会发生铁磁顺磁相变(或Neel顺磁相变)，如二维铁磁Ising模型\cite{1onsager}的相变温
+度$\frac{J}{k_{B}T_{c}}=\frac{\mathrm{log}(1+\sqrt{2})}{2}$，而Mermin-Wagner定理\cite{1mwh,1mwh2}指出，在一维或二维的情况下，由短程相互作用构成的系统不会发生连续对称性的自发破缺，所以
+$2$维Heisenberg模型相变温度为$0$，三维铁磁Heisenberg模型\cite{13dhei}的相变温度虽然无法解析求解，但是数值模拟仍然可以给出十分精确的值$\frac{J}{k_{B}T_{c}}\simeq0.6930$。
+Ising模型的相空间是离散的，包含$2^N$种态，$N$为格点数，Heisenberg模型的相空间是连续的，蒙特卡洛模拟的任务就是要在抽样次数远小于相空间体积(如$2^N$)的情况下
+精确得到物理量的平均值，虽然相空间的很多态或者区域在实际模拟中可能根本不会遍历到，但算法设计上还是要求对整个相空间都能够遍历到，即使某些区域访问的可能性很小，
+否则这种算法就是有偏见的(biased)，会带来系统误差。
+
+利用Metropolis重要性抽样来模拟这些经典自旋模型及其相变问题的基本框架如下:\\
+(1)\qquad 在给定温度(或其他与相变相关的参数)下，为系统选择一个初始态，即为Markov链选择一个初始节点。\\
+(2)\qquad 选择一个格点 $i$。\\
+(3)\qquad 计算能量差$\Delta E$，对于Ising模型，$\Delta E$是将格点$i$的自旋翻转后($\sigma_{i}\rightarrow-\sigma_{i}$)所产生的系统的能量差，对于Heisenberg模型，$\Delta E$是将格点$i$的自旋翻转到一个新的$3$维单位矢量($\overrightarrow{S_{i}}\rightarrow\overrightarrow{S_{i}^{'}}$)所产生的系统的能量差。\\
+(4)\qquad 如果$\Delta E\leq0$，将$\sigma_i$或$\overrightarrow{S_i}$翻转到新的位置，否则在[0,1)之间产生一个均匀分布的随机数$r$，如果$r<\mathrm{exp}(-\Delta E/k_{B}T)$，也将其翻转到新的位置，否则保持当前位置不变。\\
+(5)\qquad 按要求统计物理量，选择下一个格点并跳到第(3)步。\\
+(6)\qquad (3)至(5)循环一定步数后就可以得到当前温度(或其他参数条件)下各物理量的平均值，这时可以改变温度值(或其他参数值)并跳到第(2)步。
+
+这里有一些概念和细节需要说明，首先是蒙特卡洛步(MCS)\cite{1mcbook}的概念，一个蒙特卡洛步通常是指把系统所有格点都遍历一遍的这样一个循环过程，假设系统有$N$个自旋，
+则一个蒙特卡洛步就对应着Markov链上$N$个节点的长度，为了减少统计时的关联性，一般是隔几个蒙特卡洛步抽一次样(即对物理量进行一次统计)，比如隔$5$个蒙特卡洛步抽一次样，
+即代表着在Markov链上每隔$5N$个节点统计一次物理量。还要注意的是，即使自旋的翻转没有被接受，Markov链上下一个节点仍然产生了，只不过和上一个节点一样。由于初始态
+达到热平衡需要一定的时间，所以一般认为前面一定数目的蒙特卡洛步是用来达到热平衡的(包括改变温度(或其他参数)后也需要一段热平衡时间)，这些步数是不用于统计物理量的，
+达到热平衡之后才开始统计物理量。
+
+对于Ising模型，在考虑当前格点$i$自旋翻转所带来的能量差时，
+\begin{equation}
+\Delta E=2J\sigma_{i}\sum_{j\in\{nb\}}\sigma_{j}
+\end{equation}
+其中$j$为$i$的最近邻格点，可以看到，因为$\sigma_{i}=\pm1$，根据最近邻状态的不同，$\Delta E$只可能取$\{2d,2d-2,2d-4,...,-2d\}$中的值，所以我们可以先将这些不同的$\Delta E$值对应的跃迁概率求出来并保存在表格中，在模拟过程中只需要查表就行了，而不需要每次重复计算$\Delta E$所对应的跃迁概率。
+
+对于Heisenberg模型，在单位球面上要生成均匀分布的矢量，可以有两种方式，\\
+1，极坐标系$(\theta,\phi)$下，一个常犯的错误是在$[0,2\pi]$内均匀抽样$\phi$，在$[0,\pi]$内均匀抽样$\theta$，这样抽样会导致两极的点密度大一些，如图\ref{sphere}，
+因为$d\Omega=\mathrm{sin}\theta d\theta d\phi=-d(\mathrm{cos}\theta)d\phi$，所以我们应该这样抽样，生成两个$[0,1]$内均匀分布的随机数$u$，$v$，则$\phi=2\pi u$，$\theta=\mathrm{cos}^{-1}(2v-1)$。\\
+\begin{figure}[h]
+\centering
+\subfigure[incorrectly distributed points]{
+\includegraphics[scale=0.3]{sp1}
+\includegraphics[scale=0.3]{sp2}}
+\subfigure[correctly distributed points]{
+\includegraphics[scale=0.3]{sp3}
+\includegraphics[scale=0.3]{sp4}}
+\caption{Uniform distribution on sphere surface(side view and vertical view)}
+\label{sphere}
+\end{figure}
+2，Marsaglia\cite{1marsaglia}于1972年提出另外一种有趣的在直角坐标系下的实现方式，先生成$[0,1]$内均匀分布的两个随机数$r_1$，$r_2$，令$\zeta_{1}=1-2r_{1},\zeta_{2}=1-2r_{2}$，
+$\zeta_1$和$\zeta_2$构成一矢量$\zeta$，$\zeta^{2}=\zeta_{1}^{2}+\zeta_{2}^{2}$，如果$\zeta^{2}<1$，我们就得到了球面上均分分布的一个点的直角坐标
+\begin{equation}
+S_{x}=2\zeta_{1}(1-\zeta^{2})^{1/2},\qquad S_{y}=2\zeta_{2}(1-\zeta^{2})^{1/2},\qquad S_{z}=1-2\zeta^{2}.
+\end{equation}
+
+除了平均能量$E_{av}$(方程\ref{eq1.8})和磁化强度$M$(方程\ref{eq1.9})之外，还有一些常用的物理量如比热$C$，磁化率$\chi$，磁四极矩$U_4$(又称Binder Cumulant)，
+\begin{eqnarray}
+C & = & \frac{1}{N}\frac{\partial\langle H\rangle}{\partial T}\nonumber \\
+  & = & \frac{1}{N}\frac{\partial}{\partial T}\frac{\sum_{x}H(x)\mathrm{exp}(-H(x)/k_{B}T)}{\sum_{x}\mathrm{exp}(-H(x)/k_{B}T)}\nonumber \\
+  & = & \frac{1}{Nk_{B}T^{2}}(\frac{\sum_{x}H^{2}(x)\mathrm{exp}(-H(x)/k_{B}T)}{\sum_{x}\mathrm{exp}(-H(x)/k_{B}T)}-(\frac{\sum_{x}H(x)\mathrm{exp}(-H(x)/k_{B}T)}{\sum_{x}\mathrm{exp}(-H(x)/k_{B}T)})^{2})\nonumber \\
+  & = & \frac{1}{Nk_{B}T^{2}}(\langle H^{2}\rangle-\langle H\rangle^{2})
+\end{eqnarray}
+磁化率$\chi$是考虑的系统对一个极小外场的响应，其定义如下，
+\begin{eqnarray}
+\chi & = & \frac{1}{N}\lim_{H\rightarrow0}\frac{\partial\langle m\rangle}{\partial H}\hspace{24mm} (m\hspace{1mm} is\hspace{1mm} the\hspace{1mm} total\hspace{1mm} magnetization,H\hspace{1mm} is\hspace{1mm} the\hspace{1mm} external\hspace{1mm} field) \nonumber\\
+ & = & \frac{1}{N}\lim_{H\rightarrow0}\frac{\partial}{\partial H}\frac{\sum_{x}m(x)\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})}\nonumber\\
+ & = & \frac{1}{Nk_{B}T}\lim_{H\rightarrow0}(\frac{\sum_{x}m^{2}(x)\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})}-(\frac{\sum_{x}m(x)\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}\mathrm{exp}(-\frac{H(x)-m(x)H}{k_{B}T})})^{2})\nonumber\\
+ & = & \frac{1}{Nk_{B}T}(\frac{\sum_{x}m^{2}(x)\mathrm{exp}(-H(x)/k_{B}T)}{\sum_{x}\mathrm{exp}(-H(x)/k_{B}T)}-(\frac{\sum_{x}m(x)\mathrm{exp}(-H(x)/k_{B}T)}{\sum_{x}\mathrm{exp}(-H(x)/k_{B}T)})^{2})\nonumber\\
+ & = & \frac{1}{Nk_{B}T}(\langle m^{2}\rangle-\langle m\rangle^{2})\nonumber\\
+ & = & \frac{N}{k_{B}T}(\langle M^{2}\rangle-\langle M\rangle^{2})
+\end{eqnarray}
+从以上两式可以看到比热$C$衡量了能量的涨落，而磁化率$\chi$衡量了磁化强度的涨落，在相变点，因为关联长度$\xi$发散，涨落无穷大，所以$C$和$\chi$在
+相变点也会发散，利用这一点我们可以估计出相变点的位置。在相变点附近这些物理量的临界关系\cite{1cp,1cp2}如下，
+\begin{eqnarray}
+M & \propto & t^{\beta} \\
+\chi & \propto & t^{-\gamma} \\
+C & \propto & t^{-\alpha} \\
+\xi & \propto & t^{-\nu}
+\end{eqnarray}
+其中$t=|1-T/T_{c}|$，$\alpha,\beta,\gamma,\nu$为临界指数，根据相变所属普适类的不同，临界指数也会不同。还有一点需要指出的是，比如对于Ising模型，
+低温下的自发磁化可以向上，也可以向下，对于理想无限体系，一旦选择了某个朝向后要越过无限高的势垒才有可能翻转到体系完全相反的状态，这个翻转时间是
+无穷长的，但对于有限体系，势垒高度有限，系统会在模拟的过程中一段时间处于某种朝向，一段时间又处于完全相反的状态，如图~\ref{mswitch}，所以在统计磁化强度$M$时，
+我们实际上统计的是$|M|$，这样才能合理地反映无限体系在低温时的自发磁化。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{mswitch}
+\caption{Switch of magnetization in the process of simulation}
+\label{mswitch}
+\end{figure}
+
+磁四极矩\cite{1bc}的定义如下，
+\begin{equation}
+U_{4}=1-\frac{\langle M^{4}\rangle}{3\langle M^{2}\rangle^{2}}
+\end{equation}
+虽然通过比热或磁化率的峰值可以估计出相变点的位置，但随着体系尺寸的不断增大会发现相变点位置的漂移，如图\ref{heatus}，这是因为我们模拟的始终是有限体系，
+存在有限尺度效应(finit size effect)，要想得到理想无限大体系的精确的相变点位置，就需要做有限尺度标度分析(finit size scaling)\cite{1fs,1fs2}，重整化群理论结果表明，在临界点附近，各物理量存在如下标度关系，
+\begin{eqnarray}
+M_{L}(t) & = & L^{-\beta/\nu}G_{M}(tL^{1/\nu}) \label{eq1.28}\\
+\chi_{L}(t) & = & L^{\gamma/\nu}G_{\chi}(tL^{1/\nu}) \label{eq1.29}\\
+C_{L}(t) & = & L^{\alpha/\nu}G_{C}(tL^{1/\nu}) \label{eq1.30}\\
+\xi_{L}(t) & = & LG_{\xi}(tL^{1/\nu})\\
+U_{4_{L}}(t) & = & G_{U_{4}}(tL^{1/\nu}) \label{eq1.32}
+\end{eqnarray}
+其中$L$衡量体系大小，$G_{O}$是关于物理$O$的一个普适函数，可以看到在临界点时，$t=0$，对于不同$L$的体系，
+$U_{4}$都等于$G_{U_4}(0)$，这意味着我们可以通过寻找不同$L$体系$U_4$曲线的交点精确地得到相变点的位置，如图\ref{u4}。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.32]{sheatsusc}
+\caption{Specific heat $c_v$ and susceptibility $\chi$ for 2D Ising model with $L$ varies from $30$ to $100$}
+\label{heatus}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{u4}
+\caption{Binder cumulant $U_4$ for 2D Ising model with $L$ varies from $70$ to $140$}
+\label{u4}
+\end{figure}
+
+在上节末尾我们提到过Markov链上节点之间的动态关联问题\cite{1vH}， 这里我们详细地讨论一下。对于前后无关联的统计方式，即简单性抽样方式，对物理量$O$的统计误差为
+\begin{equation}
+\langle(\delta O)^{2}\rangle=\frac{1}{N}[\langle O^{2}\rangle-\langle O\rangle^{2}]
+\end{equation}
+其中$N$为统计的次数。而对于前述所讲的局域自旋反转形成Markov链的重要性抽样方式，假设我们抽样的时间间隔是$\delta t$，在统计了$N$次之后得到的统计误差为
+\begin{equation}
+\langle(\delta O)^{2}\rangle=\frac{1}{N}[\langle O^{2}\rangle-\langle O\rangle^{2}](1+2\frac{\tau_{O}}{\delta t})
+\end{equation}
+其中$\tau_O$为物理量$O$的内在自关联时间，可以看到，在$\delta t\gg\tau_{O}$时，即我们统计时时间间隔取大一些，这个误差就变成了无关联简单性抽样的统计误差，是一个好的近似。当$\delta t\ll\tau_{O}$时，令$\tau_{obs}=N\delta t$为总的模拟时间，则有
+\begin{equation}
+\langle(\delta O)^{2}\rangle=2\frac{\tau_{O}}{\tau_{obs}}[\langle O^{2}\rangle-\langle O\rangle^{2}]
+\end{equation}
+这表明此时统计误差与我们选的抽样时间间隔长度无关，而与总模拟时间有关，$\tau_{obs}$一定的情况下，$\delta t$越小，虽然抽样次数$N$很多，但样本之间关联太强，导致结果并不会比$\delta t$大$N$小的情况好。在相变点附近，自关联时间
+\begin{equation}
+\tau\propto\xi^{z}\propto|1-T/T_{c}|^{-\nu z}
+\end{equation}
+$z$是动力学临界指数\cite{1z}，对于有限体系，$\xi$最大为表征系统大小的线性维度$L$，
+\begin{equation}
+\tau_{max}\propto L^{z}\qquad(T=T_{c})
+\end{equation}
+以磁化强度$M$为例，这时它所对应的统计误差为
+\begin{eqnarray}
+\langle(\delta M)^{2}\rangle_{T_{c}} & = & \frac{2\tau_{max}}{t_{obs}}(\langle M^{2}\rangle_{T_{c}}-\langle|M|\rangle_{T_{c}}^{2})\nonumber \\
+ & = & \frac{2\tau_{max}\chi_L(T_{c})k_{B}T}{t_{obs}L^{d}}\propto\frac{L^{z+\gamma/\nu-d}}{t_{obs}}
+\end{eqnarray}
+其中$L^d$为自旋总数，$d$为维度。可以看到在临界点由于自关联时间$\tau$的发散导致的误差是很大的，这就是所谓的临界减速(Critical Slowing Down)问题\cite{1cs}，对应于Ising模型，即是在相变点由于关联长度的发散，则大量由关联自旋形成的大团簇要想通过单自旋翻转的方式溶解掉是需要很长时间的。
+为了缓解相变点上的临界减速问题，需要设计算法尽量减少抽样过程中的关联性，降低动力学临界指数$z$的值。上世纪八十年代末，Swendsen、Wang、Wolff等人提出了团簇算法(Cluster Algorithm)，由于算法设计的精巧，使得我们可以在与自旋表象对偶的团簇表象里通过翻转团簇来得到Markov链，并且团簇的翻转之间不存在关联性，从而使得
+临界减速问题得到极大的缓解甚至完全解决，物理量的统计也可以完全在团簇表象里进行，利用对团簇特征如团簇大小等的统计来得到常用的物理量，精确度更高，
+这是一种优化统计方式(Improved Estimator)，下面我们详细介绍团簇算法的原理及其实现过程。
+
+团簇算法的提出来源于Fortuin和Kasteleyn两人所做的工作\cite{1fk}，他们发现了铁磁Potts模型是可以对应到一种键渗流模型(percolation model)，Potts模型用标准的蒙特卡罗方法模拟会存在临界减速的问题，而渗流模型中键的投掷是一个随机无关联的过程，所以渗流模型不存在临界减速问题，Fortuin-Kasteleyn变换
+允许我们把一个存在临界减速现象的问题转化为一个临界减速现象可以得到极大缓解甚至完全消失的问题。
+
+$87$年Swendsen和Wang基于此提出了Swendsen-Wang团簇算法\cite{1sw}，以铁磁Ising模型为例，其基本框架与单自旋翻转方式类似，只是Markov链上新节点的产生是通过下面三个步骤来实现，\\
+1，长团簇。如对于一个$4\times4$的系统，考虑自由边界条件，假如当前态如图\ref{cluster:spin0}所示，蓝键表示相同自旋间的相互作用，红键表示相反自旋间的相互作用。依次考虑所有最近邻之间的相互作用，对于自旋相同的最近邻(蓝键)，以概率$p=1-\mathrm{exp}(-2\beta J)$将两自旋连接起来(称为成键)，而对于自选相反的最近邻(红键)则不将它们连接起来，所有最近邻相互作用都考虑完后，连接起来的自旋就形成了团簇，如图\ref{cluster:cluster0}
+所示有$7$个团簇($C_1$至$C_7$)，每个团簇都由指向相同的自旋构成，单自旋也可以构成团簇，如$C_2$，$C_6$。\\
+2，翻转团簇。对每个团簇以$\frac{1}{2}$概率将其所包含的所有自旋翻转，得到如图\ref{cluster:cluster1}所示结果($C_2$，$C_4$，$C_7$进行了翻转)。\\
+3，撤销团簇得到新态。如图\ref{cluster:spin1}所示，再以此态为当前态继续循环操作从而形成Markov链。\\
+\begin{figure}[h]
+\centering
+\subfigure[当前态$|S\rangle$]{
+\includegraphics[scale=0.263]{spin0}
+\label{cluster:spin0}}
+\subfigure[长完团簇$|(S,C)\rangle$]{
+\includegraphics[scale=0.263]{cluster0}
+\label{cluster:cluster0}}
+\subfigure[翻转团簇$|(S^{'},C)\rangle$]{
+\includegraphics[scale=0.263]{cluster1}
+\label{cluster:cluster1}}
+\subfigure[新态$|S^{'}\rangle$]{
+\includegraphics[scale=0.263]{spin1}
+\label{cluster:spin1}}
+\caption{Swendsen-Wang Cluster Algorithm}
+\label{cluster}
+\end{figure}
+
+本例中只有$C_2$，$C_4$，$C_7$翻转了，我们将这三个团簇所包含的所有自旋归为\textit{interior}部分，其他团簇所包含的所有剩余自旋归为\textit{exterior}部分，
+$|S\rangle$与$|S^{'}\rangle$的区别在于\textit{interior}部分的自旋得到了翻转，由于团簇在翻转前后内部能量不变，只有与其他团簇作用的边界作用能量会发生变化，$C_2$，
+$C_4$，$C_7$这三个团簇的边界作用一共有$12$个， 在$|(S,C)\rangle$中这三个团簇的边界作用中相同自旋的相互作用总数(蓝键)$n_{same}=2$，不同自旋的相互作用总数(红键)$n_{diff}=10$，在$|(S^{'},C)\rangle$中$n_{same}^{'}=10$，
+$n_{diff}^{'}=2$，$|(S,C)\rangle$与$|(S^{'},C)\rangle$中还有一些翻转前后没发生变化的$C_1$，$C_3$，$C_5$，$C_6$之间的边界作用，设为\textit{left}部分，有
+\begin{eqnarray}
+E_{|S\rangle} & = & E_{interior}+E_{exterior}+E_{left}-Jn_{same}+Jn_{diff}\\
+E_{|S^{'}\rangle} & = & E_{interior}+E_{exterior}+E_{left}-Jn_{same}^{'}+Jn_{diff}^{'}\\
+W(|S\rangle\rightarrow|(S,C)\rangle) & = & (1-p)^{n_{same}}\\
+W(|S^{'}\rangle\rightarrow|S^{'},C\rangle) & = & (1-p)^{n_{same}^{'}}\\
+p(|S,C\rangle) & = & p(|S\rangle)W(|S\rangle\rightarrow|(S,C)\rangle)\\
+p(|S^{'},C\rangle) & = & p(|S^{'}\rangle)W(|S^{'}\rangle\rightarrow|(S^{'},C)\rangle)
+\end{eqnarray}
+要满足细致平衡方程
+\begin{equation}
+p(|S,C\rangle)W(|S,C\rangle\rightarrow|S^{'},C\rangle)=p(|S^{'},C\rangle)W(|S^{'},C\rangle\rightarrow|S,C\rangle)
+\end{equation}
+与方程\ref{eq1.13}-\ref{eq1.15}类似，我们可以选择从$|(S,C)\rangle$到$|(S^{'},C)\rangle$的跃迁概率为
+\begin{eqnarray}
+W(|S,C\rangle\rightarrow|S^{'},C\rangle) & = & \mathrm{min}\{1,\frac{p(|S^{'},C\rangle)}{p(|S,C\rangle)}\}\nonumber\\
+ & = & \mathrm{min}\{1,\frac{\mathrm{exp}(-\beta(-Jn_{same}^{'}+Jn_{diff}^{'}))(1-p)^{n_{same}^{'}}}{\mathrm{exp}(-\beta(-Jn_{same}+Jn_{diff}))(1-p)^{n_{same}}}\}\nonumber\\
+ & = & \mathrm{min}\{1,(\frac{\mathrm{exp}(-2\beta J)}{1-p})^{n_{same}}(\frac{1-p}{\mathrm{exp}(-2\beta J)})^{n_{diff}}\}
+\end{eqnarray}
+可以看到当$p=1-\mathrm{exp}(-2\beta J)$时，$W(|S,C\rangle\rightarrow|S^{'},C\rangle)=1$，同理我们可以证明不只是翻转$C_2$，$C_4$，$C_7$得到的$|(S^{'},C)\rangle$，而是任意翻转某些团簇
+得到的所有可能的$|(S^{'},C)\rangle$(包括$|S\rangle$，如果团簇都不翻转)的概率$p(|S^{'},C\rangle)$都是相等的，那么我们可以以$\frac{1}{2}$的概率对每
+个团簇尝试翻转得到新态，以上我们简单证明了Swendsen-Wang算法是如何满足细致平衡的。
+
+在高温时，成键概率小，团簇都很小，低温时，相反，团簇都很大，所以系统容易在两个态之间来回翻转，在临界点附近，各种大小的团簇都普遍存在，团簇翻转的结果就会
+形成完全不同的新态，这样临界减速的问题就会得到极大的缓解。不同算法的动力学指数$z$的数值结果如表\ref{tbdy}所示\cite{1mcbook3}，Wolff算法下面将会讲到。
+
+\begin{table}[htbp]
+\centering
+\caption{Comparision of the value of $z$ for Ising model using different updating algorithms}
+\label{tbdy}
+\begin{tabular}{c|c|c|c}
+\hline
+\hline
+dimension d & Metropolis & Wolff & Swendsen Wang\tabularnewline
+\hline
+2 & 2.167$\pm$0.001 & 0.25$\pm$0.01 & 0.25$\pm$0.01\tabularnewline
+3 & 2.02$\pm$0.02 & 0.33$\pm$0.01 & 0.54$\pm$0.02\tabularnewline
+4 & - & 0.25$\pm$0.01 & 0.86$\pm$0.02\tabularnewline
+\hline
+\hline
+\end{tabular}
+\end{table}
+
+这里还需要提及一下一个模拟细节的问题，即如何标记每个自旋所属的团簇序号的问题，如图\ref{hkalg}所示，实际上一共只有$4$个团簇，
+而我们从自旋$(1,1)$开始标记，到自旋$(4,1)$我们并不知道它实际上和$(1,1)$是属于同一个团簇的，只好暂时标记为$3$，这样到$(4,4)$的时候就会发现与它已经成键
+的两个最近邻$(3,4)$与$(4,3)$标号不一样，这时才知道团簇$1$和$3$原来是同一个团簇，通常情况下我们只好返回去重新把标号为$3$的自旋改为标号$1$，这样就造成
+了算法的低效。Hoshen和Kopelman提出一种有效的算法可以只需遍历一次系统就可以正确标记每个自旋所属团簇序号\cite{1hk}，他们主要是用到了"标号的标号(labels of the labels)"这样一个概念，每个团簇还有一个属性如用$N$来标识，它表示了当前团簇的大小，比如在遍历到$(4,4)$的时候，$N_1=6$，$N_2=2$，$N_3=3$，$N_4=2$，$N_5=2$，考虑
+$(4,4)$时，我们将其标记为$1$，并令$N_1=N_1+N_3+1=10$，$N_3=-1$，所以整个系统遍历完之后，我们可以通过属性$N$的正负以及它的取值知道当前自旋最终应该属于哪个团簇
+并且知道这个团簇的大小。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{hkalg}
+\caption{Steps of labeling clusters}
+\label{hkalg}
+\end{figure}
+
+前面介绍过，单自旋翻转方式的低效是因为大团簇很难通过这种方式溶解掉，从而造成临界减速。Swendsen-Wang算法的一个缺点是相当的工作量花在了形成和翻转对
+临界减速没有贡献的小团簇上，基于此89年Wolff提出了单团簇算法，下面以Heisenberg模型为例介绍Wolff算法\cite{1wolff}。
+
+因为Heisenberg模型是$O(3)$自旋模型，自旋不再只取$\pm1$两种可能取值，而是取$\mathbb{R}^{3}$上的一个单位矢量，所以我们要定义一种广义的翻转操作，
+如图\ref{grf}所示，$\overrightarrow r$是$\mathbb{R}^{3}$上的一个任意单位矢量，$\mathcal{P}_{r_{\perp}}$是与$\overrightarrow r$垂直的平面，
+自旋$S_i$的翻转操作相当于$S_i$做了一个关于$\mathcal{P}_{r_{\perp}}$的镜像操作，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{grf}
+\caption{Generalized spin-flip operation}
+\label{grf}
+\end{figure}
+\begin{equation}
+S_{i}^{old}\rightarrow S_{i}^{new}=R(\overrightarrow{r})S_{i}^{old}=S_{i}^{old}-2(S_{i}^{old}\cdot\overrightarrow{r})\overrightarrow{r}
+\end{equation}
+关于此操作还有如下关系式
+\begin{eqnarray}
+R(\overrightarrow{r})^{2} & = & 1\\{}
+[R(\overrightarrow{r})S_{i}]\cdot[R(\overrightarrow{r})S_{j}] & = & S_{i}\cdot S_{j} \label{eq1.49}\\
+S_{i}\cdot[1-R(\overrightarrow{r})]S_{j} & = & 2(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})
+\end{eqnarray}
+
+Wolff算法的具体步骤如下：\\
+1，选择一个随机矢量$\overrightarrow r$和随机格点$S_i$作为团簇的初始生长格点。\\
+2，将$S_i$翻转到$S_{i}^{new}=R(\overrightarrow r)S_i$。\\
+3，考虑$i$格点的所有最近邻，以概率
+\begin{eqnarray}
+p(S_{i}^{new},S_{j}) & = & 1-\mathrm{exp}\{\mathrm{min}[0,\beta J S_{i}^{new}\cdot[1-R(\overrightarrow{r})]S_{j}]\}\\
+ & = & 1-\mathrm{exp}\{\mathrm{min}[0,2\beta J(\overrightarrow{r}\cdot S_{i}^{new})(\overrightarrow{r}\cdot S_{j})]\}
+\end{eqnarray}
+决定$i$与某个最近邻$j$是否成键，如果成键，就将$S_j$翻转到$S_{j}^{new}=R(\overrightarrow r)S_j$，$i$的最近邻都考虑完后会形成一个小团簇，与Swendsen-Wang算法不同的是，这里团簇是边生长边翻转的。\\
+4，再循环考虑团簇边界点的最近邻，对每个可能的自旋对以概率$p$决定最近邻点是否融入团簇(即是否成键)，
+直至团簇停止生长(可以是由于体系限制无法再长大，也可以是某一次循环时团簇边界点的最近邻都没有融入团簇)。生成的团簇如图\ref{wolff}所示，
+粉色球表示团簇的边界点，蓝色球表示边界点的最近邻，红线表示团簇的边界。
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{wolff}
+\caption{Wolff Cluster Algorithm}
+\label{wolff}
+\end{figure}
+
+对于Ising模型，$\overrightarrow r$只能在$z$轴上，翻转操作就变成了常见的Ising自旋翻转过程，并且成键概率也变成了对应于Ising模型的$1-\mathrm{exp}\{-2\beta J\}$。假设某个初始系统态$|S\rangle$经过Wolff团簇生长和翻转过程后达到系统态${|S^{'}\rangle}$，假设跨越团簇边界(上图中的红线)的自旋对集合为$\partial c$，格点$i$在团簇内部(粉球)，格点$j$在团簇外部(蓝球)，有$S_{i}^{'}=R(\overrightarrow r)S_i$，$S_{j}^{'}=S_j$，这个过程的跃迁概率为
+\begin{eqnarray}
+\frac{W(|S\rangle\rightarrow|S^{'}\rangle)}{W(|S^{'}\rangle\rightarrow|S\rangle)} & = & \frac{(V_{c}/N)P_{int}}{(V_{c}/N)P_{int}^{'}}\prod_{\langle i,j\rangle\in\partial c}\frac{1-P(R(\overrightarrow{r})S_{i},S_{j})}{1-P(R(\overrightarrow{r})S_{i}^{'},S_{j})}\nonumber\\
+ & = & \mathrm{exp}\{\sum_{\langle i,j\rangle\in\partial c}(\mathrm{min}\{0,-2\beta J(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\}-\mathrm{min}\{0,2\beta J(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\})\}\nonumber\\
+ & = & \mathrm{exp}\{\sum_{\langle i,j\rangle\in\partial c}-2\beta J(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\}\nonumber\\
+ & = & \mathrm{exp}\{\beta J \sum_{\langle i,j\rangle\in\partial c}S_{i}\cdot[R(\overrightarrow{r})-1]S_{j}\}\nonumber\\
+ & = & \mathrm{exp}\{\beta J \sum_{\langle i,j\rangle}(S_{i}^{'}\cdot S_{j}-S_{i}\cdot S_{j})\}
+\end{eqnarray}
+上式中$V_c/N$为团簇初始生长点选在团簇内部的概率，$V_c$为团簇$c$的体积(既包含的自旋数目)，$P_{int}$表示使团簇内部全部成键的概率，因为\ref{eq1.49}，所以有$P_{int}=P_{int}^{'}$。
+可以看到，Wolff算法也是满足细致平衡条件的。
+
+关于Improved estimator，这里简单说一下，如对于Ising模型，有
+\begin{equation}
+\langle\sigma_{i}\sigma_{j}\rangle= \begin{cases} 1\hspace{28mm} \mathrm{if} \hspace{1mm} i,j \hspace{1mm} \mathrm{in} \hspace{1mm} \mathrm{the} \hspace{1mm} \mathrm{same}  \hspace{1mm} \mathrm{cluster}\\
+0 \hspace{28mm} \mathrm{otherwise} \end{cases}
+\label{eq1.15}
+\end{equation}
+如果是多团簇Swendsen-Wang算法，磁化强度平方的平均值
+\begin{equation}
+\langle M^{2}\rangle=\frac{1}{N^{2}}\sum_{i,j}\langle\sigma_{i}\sigma_{j}\rangle=\frac{1}{N^{2}}\sum_{c}\langle V_{c}^{2}\rangle
+\end{equation}
+对于单团簇Wolff算法，团簇大小的平均值为
+\begin{equation}
+\langle V_{c}\rangle=\langle\frac{V_{c}}{N}V_{c}\rangle=\frac{1}{N}\langle V_{c}^{2}\rangle
+\end{equation}
+所以磁化强度平方的平均值在单团簇算法下为$\langle V_{c}\rangle/N$，由此我们可以很方便地得到磁化率，更多的在团簇表象下的Improved estimator可参考文献\cite{1ie}。
+
+得到模拟数据后，通过前面已经介绍过的不同$L$系统$U_4$的交点我们可以精确地得到相变点位置，由方程\ref{eq1.32}可得
+\begin{equation}
+\left. \frac{dU_{4_{L}}(t)}{dt}\right|_{t\rightarrow0}=L^{1/\nu}G_{U_{4}}(0)
+\end{equation}
+我们可以画出上式左边关于$L$的对数-对数图就可以得到临界指数$\nu$了，如图\ref{fit1}，同理，利用方程\ref{eq1.28}，\ref{eq1.29}，\ref{eq1.30}画出相应
+的对数-对数图我们就可以确定出临界指数$\alpha,\beta,\gamma$，如图\ref{fit2}，对于二维Ising模型，$\nu$=$1$，$\beta/\nu$=$1/8$，$\gamma/\nu$=$7/4$，
+而$\alpha$=$0$，在临界点附近比热虽然也是发散的，但是对数发散的，$C\propto \mathrm{ln}(|T-T_{c}|)$，更精确地得到临界指数的方法参考第$5$章。得到这些临界指数之后我们
+就可以通过做数据坍缩(data collapsing)图来看得到的相变点以及临界指数是否准确，如果结果比较好的话，不同尺寸的数据点就会重叠到
+一条曲线上，如图\ref{dataclp}，曲线就代表着该物理量对应的普适函数关系$G_{O}(x)$。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{fit1}
+\caption{Extract values of critical exponent $\nu$ for 2D Ising model}
+\label{fit1}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.26]{fit2}
+\caption{Extract values of $\beta/\nu$ and $\gamma/\nu$ for 2D Ising model}
+\label{fit2}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.27]{dataclp}
+\caption{Data collapsing of magnetization and susceptibility}
+\label{dataclp}
+\end{figure}
+
+
+
+
+
+\begin{thebibliography}{999}
+\iffalse
+\bibitem{1mcbook}
+K. Binder and D.W. Heermann, \textbf{Monte Carlo Simulation in Statistical Physics: An Introduction (5th ed.)} (Springer, 2010).
+
+\bibitem{1mcbook2}
+D.P. Landau and K. Binder, \textbf{A Guide to Monte Carlo Simulations in Statistical Physics (2nd ed.)} (Cambridge University Press, 2005).
+
+\bibitem{1mcbook3}
+M.E.J. Newman and G.T. Barkema, \textbf{Monte Carlo Methods in Statistical Physics} (Oxford University Press, 1999).
+
+\bibitem{1mcbook4}
+J.M. Hammersley and D.C. Handscomb, \textbf{Monte Carlo Methods}  (Halsted Press, New York, 1975).
+
+\bibitem{1mcpp}
+J.G. Amar, {\it The Monte Carlo Method in Science and Engineering}, Computing in Science \& Engineering, Vol.8, No.2.(March 2006), pp.9-19.
+
+\bibitem{1mcbook5}
+P. Glasserman, \textbf{Monte Carlo Methods in Financial Engineering} (Springer, 2003).
+\fi
+
+\bibitem{1metropolis}
+N. Metropolis, A.W. Rosenbluth, M.N. Rosenbluth, A.H. Teller, and E. Teller, {\it Equations of State Calculations by Fast Computing Machines}, J. Chem. Phys. \textbf{21},1087 (1953).
+
+\bibitem{1dbsol1}
+H. M-Krumbhaar and K. Binder, {\it Dynamical Properties of the Monte Carlo Method in Statistical Mechanics}, J. Stat. Phys. \textbf{8}, 1 (1973).
+
+\bibitem{1dbsol2}
+S. Duane, A.D. Kennedy, B.J. Pendleton, and D.Roweth, {\it Hybrid Monte Carlo}, Phys. Lett. B \textbf{195}, 216(1987);\\ D.W. Heermann, P.Nielaba, and M.Rovere, {\it Hybrid Molecular Dynamics}, Comput. Phys. Commun. \textbf{60}, 311 (1990);\\ B. Mehlig, D.W. Heermann, and B.M. Forrest, {\it Hybrid Monte Carlo method for condensed-matter systems}, Phys. Rev. B \textbf{45}, 679 (1992).
+
+\bibitem{1onsager}
+L. Onsager, {\it Crystal statistics. I. A two-dimensional model with an order-disorder transition}, Phys. Rev. \textbf{65}, 117 (1944).
+
+\bibitem{1mwh}
+N.D. Mermin and H. Wagner, {\it Absence of Ferromagnetism or Antiferromagnetism in One- or Two-Dimensional Isotropic Heisenberg Models}, Phys. Rev. Lett. \textbf{17}, 1133 (1966).
+
+\bibitem{1mwh2}
+P.C. Hohenberg, {\it Existence of Long-Range Order in One and Two Dimensions}, Phys. Rev. \textbf{158}, 383 (1967).
+
+\bibitem{13dhei}
+K. Chen, A.M. Ferrenberg, and D.P. Landau, {\it Static critical behavior of three-dimensional classical Heisenberg models: A high-resolution Monte Carlo study}, Phys. Rev. B \textbf{48}, 3249 (1993).
+
+\bibitem{1mcbook}
+K. Binder and D.W. Heermann, \textbf{Monte Carlo Simulation in Statistical Physics: An Introduction (5th ed.)} (Springer, 2010).
+
+\bibitem{1marsaglia}
+G. Marsaglia, {\it Choosing a Point from the Surface of a Sphere}, Ann. Math. Stat. \textbf{43}, 645-646 (1972).
+
+\bibitem{1cp}
+H.E. Stanley, \textbf{An Introduction to Phase Transitions and Critical Phenomena} (Oxford University Press, 1987).
+
+\bibitem{1cp2}
+M.E. Fisher, {\it The renormalization group in the theory of critical behavior}, Rev. Mod. Phys. \textbf{46}, 597 (1974).
+
+\bibitem{1bc}
+K. Binder, {\it Finite size scaling analysis of ising model block distribution functions}, Z. Phys. B \textbf{43}, 119 (1981);\\
+K. Binder, {\it Critical Properties from Monte Carlo Coarse Graining and Renormalization}, Phys. Rev. Lett. \textbf{47}, 693 (1981).
+
+\bibitem{1fs}
+V. Privman, \textbf{Finite Size Scaling and Numerical Simulation of Statistical Systems} (World Scientific, 1990).
+
+\bibitem{1fs2}
+K. Binder, \textbf{Computational Methods in Field Theory} edited by C.B.Lang and H.Gausterer (Springer, Berlin, 1992).
+
+\bibitem{1vH}
+L. van Hove, {\it Time-Dependent Correlations between Spins and Neutron Scattering in Ferromagnetic Crystals}, Phys. Rev. \textbf{95}, 1374 (1954)
+
+\bibitem{1z}
+S. Wansleben and D.P. Landau, {\it Dynamical critical exponent of the 3D Ising model}, J. Appl. Phys. \textbf{61}, 3968 (1987);\\
+D.P. Landau, S.Y. Tang, and S. Wansleben, J. Phys. (Paris) \textbf{49}, Colloq. \textbf{8}, 1525 (1989).
+
+\bibitem{1cs}
+P.C. Hohenberg and B.I. Halperin, {\it Theory of dynamic critical phenomena}, Rev. Mod. Phys. \textbf{49}, 435 (1977).
+
+\bibitem{1fk}
+P.W. Kasteleyn and C.M. Fortuin, J. Phys. Soc. Jpn. Suppl. \textbf{26}(Suppl.), 11 (1969);\\
+C.M. Fortuin and P.W. Kasteleyn, {\it On the random-cluster model: I. Introduction and relation to other models}, Physica (Utrecht) \textbf{57}, 536 (1972).
+
+\bibitem{1sw}
+R.H. Swendsen and J.-S. Wang, {\it Nonuniversal critical dynamics in Monte Carlo simulations}, Phys. Rev. Lett. \textbf{58}, 86 (1987).
+
+\bibitem{1mcbook3}
+M.E.J. Newman and G.T. Barkema, \textbf{Monte Carlo Methods in Statistical Physics} (Oxford University Press, 1999).
+
+\bibitem{1hk}
+J. Hoshen and R. Kopelman, {\it Percolation and cluster distribution. I. Cluster multiple labeling technique and critical concentration algorithm}, Phys. Rev. B \textbf{14}, 3438 (1976).
+
+\bibitem{1wolff}
+U. Wolff, {\it Collective Monte Carlo Updating for Spin Systems}, Phys. Rev. Lett. \textbf{62}, 361 (1989).
+
+\bibitem{1ie}
+U. Wolff, {\it Lattice field theory as a percolation process}, Phys. Rev. Lett. \textbf{60}, 1461 (1988);\\
+U. Wolff, {\it Monte Carlo simulation of a lattice field theory as correlation percolation}, Nucl. Phys. B \textbf{300}, 501 (1988).
+
+\end{thebibliography}

@@ -1,0 +1,111 @@
+%=========================================================================%
+%   LaTeX File for PhD thesis of USTC
+%-------------------------------------------------------------------------%
+%   Copyright 2003  by Cheng Huadong
+%-------------------------------------------------------------------------%
+%   Latex 博士论文模板.
+%   基本环境：选择 ctex2.2.4(miktex2.2)完全安装;
+%   并且已经在ctex2.3(miktex2.3)完全安装下通过测试.
+%   本模板使用ctex.org的cjk版本 和aloft 修改后的gb_aloft.cap,
+%=========================================================================%
+
+%draft 选项可以使插入的图形只显示外框，以加快预览速度。
+%fleqn 让公式左对齐。
+\documentclass[12pt,openright,a4paper,twoside]{book}
+%\documentclass[12pt,a4paper,openany,twoside]{book}
+%\documentclass[11pt,a4paper,fleqn,openany,draft]{book}
+%\documentclass[11pt,a4paper,fleqn,openany,draft]{book}
+%============================ 引用的宏包 ==================================%
+\input{Setup/Package.tex}
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\graphicspath{{Figures/}}   %定义所有的eps文件在 image 子目录下
+
+%=========================== 文本格式定义 =================================%
+\input{Setup/format.tex}
+
+%============================== 封面 ======================================%
+%\baselineskip 的倍数，两者相乘为行间距。
+\fontsize{14.5pt}{12pt}\selectfont     %\fontsize{size}{skip}skip相当于\baselineskip
+%\input{cover/cover}
+       \input{cover}
+
+%============================= 导言部分 ===================================%
+\frontmatter      %导言部分页码自动为罗马数字
+
+\sloppy            %放松拆行的限制解决中英文混排的断行问题，会加入间距，但
+                   %不会影响断行
+
+%中文摘要
+    \renewcommand{\baselinestretch}{1.5}
+    \fontsize{12.5pt}{15pt}\selectfont
+
+    \input{Preface/c_abstract}
+
+%英文摘要
+   \include{Preface/e_abstract}
+
+%目录
+   \input{contents/contents}
+
+%=============================== 正文部分 ================================%
+\mainmatter %进入正文页码自动变为阿拉伯数字章节计数器启动
+\renewcommand{\baselinestretch}{1.5}
+\fontsize{12.5pt}{15pt}\selectfont \setcounter{page}{1}
+
+%正文章节 input不重新起一页,include重起一页
+
+\input{Body/chap0}
+\input{Body/chap1}
+\input{Body/chap2}
+\input{Body/chap3}
+\input{Body/chap4}
+
+%\input{Body/liebiao}
+%\input{Body/figure}
+%\input{Body/table}
+%\include{Body/equation}
+%\include{Body/definition}
+%\include{Body/fonts}
+%\include{Body/refes}
+%\include{Body/code} %源代码宏包使用示例%本章使用的是 \texttt{listings} 宏包。
+                    %版本为1.0（2002年10月）。%如果您的不是，可能无法编译;
+                    %可以下载最新红包或不要编译本章内容。
+
+%\include{Body/index}%建立索引的例子，需要在运行LaTeX（PDFLaTeX）后，运行 MakeIndex
+% 附录
+%\begin{appendix}
+ %   \renewcommand{\chaptername}{附录 \Alph{chapter}}
+  %  \renewcommand{\thesection}{\Alph{chapter}.\arabic{section}}
+   % \renewcommand{\thesubsection}{\Alph{chapter}.\arabic{section}.\arabic{subsection}}
+    %\renewcommand{\thesubsubsection}{\arabic{subsubsection}.}
+    %\renewcommand\CJKprechaptername{附录}
+    %\renewcommand\CJKchaptername{}
+   % \renewcommand\CJKthechapter{\relax\Alph{chapter}}
+%\end{appendix}
+
+\backmatter %结束章节自动编号
+%其中chinesebst是我自己生成的参考文献风格,比较符合中国人的习惯
+%参考文献
+% plain,unsrt,alpha,abbrev,chinesebst
+%\bibliographystyle{chinesebst}
+%\phantomsection
+
+%\addcontentsline{toc}{chapter}{参考文献}
+\addtolength{\itemsep}{-0.8 em} % 缩小参考文献间的垂直间距
+%\bibliography{reference/reference,reference/chinese,reference/english}
+
+%索引
+%\newpage
+%\printindex %该命令可以放到想要出现索引列表的地方
+%\addcontentsline{toc}{chapter}{索\ 引}
+
+%攻读博士学位期间的研究成果
+\include{Appendix/publications}
+
+% 致谢
+\include{Appendix/Acknowledgements}
+\clearpage
+\end{CJK*}
+\end{document}
+%%%%%%%%%%%%%%%%%% End of the file  %%%%%%%%%%%%%%%%%%%%%%%%

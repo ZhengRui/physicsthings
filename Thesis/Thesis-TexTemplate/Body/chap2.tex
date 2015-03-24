@@ -1,0 +1,1144 @@
+\chapter{量子蒙特卡洛方法}
+\label{chap3}
+
+\section{发展历史及理论基础}
+在处理经典自旋问题时，在以经典$O(n)$单位矢量表示自旋的表象里，配分函数是求和形式
+\begin{equation}
+Z=\sum_{x}e^{-\beta E(x)}
+\end{equation}
+这等于说任意的经典自旋态都是系统的本征态，在经典表象里不存在非对角元$\langle x|H|x^{'}\rangle$，配分函数就是对所有对角元$e^{-\beta E(x)}$的求和，我们只需要以Boltzmann分布来对$x$进行重要性抽样就行了。对量子问题，配分函数写成
+\begin{equation}
+Z=Tr\{e^{-\beta H}\}=\sum_{\alpha}\langle \alpha|e^{-\beta H}|\alpha \rangle
+\end{equation}
+我们可以很直观地在$S^z$表象下构造一组基矢，但是这组基矢一般不是系统的本征矢，哈密顿量在这组基矢下的矩阵不再是像经典情况下的对角矩阵， 这就涉及到矩阵对角化的问题，当体系增大后，态空间以及计算量将呈指数级增长，大矩阵对角化可以说是各种数值计算方法要处理的核心问题。
+
+由于哈密顿量通常可以写成一些互相不对易的算符$H_i$的和
+\begin{equation}
+H=\sum_{i=1}^{M}H_{i}
+\end{equation}
+60年代Handscomb提出将配分函数写成Taylor展开的形式\cite{2handscomb}，
+\begin{equation}
+Z=\sum_{n=0}^{\infty}\sum_{\{S_{n}\}}\frac{(-\beta)^{n}}{n!}Tr\{\prod_{j=1}^{n}H_{l_{j}}\}
+\end{equation}
+其中$l_{j}$取$1$至$M$的某个值，所有$n$个算符$H_{l_{j}}$的乘积序列构成了$S_n$，对每个$n$我们都要对所有可能的乘积序列$S_n$求和，如果算符
+$A$满足
+\begin{equation}
+Tr\{A\prod_{j=1}^{n}H_{l_{j}}\}=0,\hspace{4mm} if \hspace{2mm} Tr\{\prod_{j=1}^{n}H_{l_{j}}\}=0
+\end{equation}
+那么$A$的热力学平均值可以写为
+\begin{equation}
+\langle A\rangle=Tr\{Ae^{-\beta H}\}=\sum_{n=0}^{\infty}\sum_{\{S_{n}\}}A(S_{n})W(S_{n})
+\label{eq2.6}
+\end{equation}
+其中
+\begin{equation}
+W(S_{n})=\frac{1}{Z}\frac{(-\beta)^{n}}{n!}Tr\{\prod_{j=1}^{n}H_{l_{j}}\}
+\label{eq2.7}
+\end{equation}
+\begin{equation}
+A(S_{n})=\begin{cases}Tr\{A\prod_{j=1}^{n}H_{l_{j}}\}/Tr\{\prod_{j=1}^{n}H_{l_{j}}\} \hspace{12mm} if \hspace{2mm} W(S_{n})\neq0\\
+0 \hspace{67mm} if \hspace{2mm} W(S_n)=0\end{cases}
+\label{eq2.8}
+\end{equation}
+方程\ref{eq2.6}正是重要性抽样的形式，以方程\ref{eq2.7}所示概率来对算符序列$S_n$进行抽样，在某个给定的算符序列下$A$对应的观测值通过方程\ref{eq2.8}得到。
+而Handscomb方法的局限性是算符序列的手动求迹往往是很难求的。
+
+70年代Suzuki意识到一个$d$维量子自旋$1/2$系统的配分函数可以对应到一个$d+1$维经典Ising模型的
+配分函数\cite{2suzuki}，从而使应用蒙特卡洛方法研究量子系统得到极大地推广，其基本思想是利用Trotter分解
+\begin{equation}
+e^{-\beta H}=\lim_{L\rightarrow\infty}[\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}]^{L}=\lim_{L\rightarrow\infty}\prod_{k=1}^{L}\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}
+\end{equation}
+并插入基矢将配分函数写成路径积分的形式，
+\begin{eqnarray}
+Z & = & \lim_{L\rightarrow\infty}Tr\{\prod_{k=1}^{L}\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}\}\nonumber \\
+ & = & \lim_{L\rightarrow\infty}\sum_{\{\psi_{i}(k)\}}\prod_{k=1}^{L}\prod_{i=1}^{M}\langle\psi_{i+1}(k)|e^{-\Delta\tau H_{i}}|\psi_{i}(k)\rangle
+\label{eq2.10}
+\end{eqnarray}
+其中$\psi_{M+1}(k)=\psi_{1}(k+1)$，我们可以用图形来表示这个路径积分的形式，比如对于$1$维周期边界条件下的$4$格子Heisenberg链，如图\ref{wl}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.65]{worldline}
+\caption{World-lines Configuration}
+\label{wl}
+\end{figure}
+纵轴称为虚时方向，求迹意味着在这个方向上有周期边界条件$\psi_{1}(1)=\psi_{M+1}(L)=\psi_{1}(L+1)$，每个矩阵元$\langle\psi_{i+1}(k)|e^{-\Delta\tau H_{i}}|\psi_{i}(k)\rangle$可以理解为某种特定小方块出现的概率，更准确地说应该是权重(Weight)，因为还没有归一化。红线表示朝上自旋
+的运动轨迹，绿线是向下自旋的轨迹，这些运动轨迹被称为世界线(World-lines)，世界线来源于相对论中粒子在时空中的运动轨迹，整个图形就被称为一种世界线组态(World-lines Configuration)，量子问题就转化成了对所有可能的世界线组态进行重要性抽样的经典问题。对于$XXZ$模型，两自旋间相互作用形式为
+\begin{eqnarray}
+H_{two\hspace{1em}sites} & = & J_{x}(S_{1}^{x}S_{2}^{x}+S_{1}^{y}S_{2}^{y})+J_{z}S_{1}^{z}S_{2}^{z}\nonumber \\
+ & = & \frac{J_{x}}{2}(S_{1}^{+}S_{2}^{-}+S_{1}^{-}S_{2}^{+})+J_{z}S_{1}^{z}S_{2}^{z}
+\end{eqnarray}
+$H_{two\hspace{1mm}sites}$的本征态即为自旋单重态和三重态，通过简单计算可以得到在这种相互作用形式下只可能有$6$种小方块，对应的权重如图\ref{plq}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{plq}
+\caption{Plaquette weights for XXZ model}
+\label{plq}
+\end{figure}
+注意到矩阵元$\langle\uparrow_{1}\downarrow_{2}|H_{two\hspace{1mm}sites}|\downarrow_{1}\uparrow_{2}\rangle$和$\langle\downarrow_{1}\uparrow_{2}|H_{two\hspace{1mm}sites}|\uparrow_{1}\downarrow_{2}\rangle$
+为负值，可是因为虚时方向上的周期边界条件限制，这些权重为负的矩阵元总是出现偶数次，所以把它们当作正的权重来进行重要性抽样是没有问题的。在有些格子，比如三角格子，
+Kagome格子情况下，或者相互作用比较特殊比如包含次近邻相互作用，虚时方向的周期边界条件并不保证负矩阵元一定会出现偶数次，这时就会产生所谓的“符号问题”\cite{2sign,2sign2,2sign3}，我们仍然
+可以先把这些负矩阵元当正值来进行抽样，物理量$A$的平均值为
+\begin{equation}
+\langle A\rangle=\frac{\langle sign[W(\{\psi_{i}(k)\})]A(\{\psi_{i}(k)\})\rangle_{|W|}}{\langle sign[W(\{\psi_{i}(k)\})]\rangle_{|W|}}
+\end{equation}
+$W(\{\psi_{i}(k)\})$即为某个确定的世界线组态$\{\psi_{i}(k)\}$的权重，$A(\{\psi_{i}(k)\})$即为物理量在这个世界线组态中的平均值，如果负号问题严重，意味着$\langle sign[W(\{\psi_{i}(k)\})]\rangle_{|W|}$很小，物理量就会具有很大的统计涨落，要达到确定精度所需要的计算量就会大大增加。
+
+最简单的对世界线组态的重要性抽样方法也是一种局域的类似经典问题中单自旋翻转方式的方法，如图\ref{wllu}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{wllu}
+\caption{Local update algorithm for world-lines configuration}
+\label{wllu}
+\end{figure}
+但是这种抽样方式存在诸多问题\cite{2luprob}：$1$，临界减速问题；$2$，遍历性问题，局域翻转方式不会改变一个世界线组态在空间和时间上的绕数(Winding number)\cite{2windnum}，沿某个方向的绕数即世界线投影在这个方向后沿此方向穿越整个体系的次数，如图\ref{wdn}，从左至右在$\overrightarrow{r}$方向的绕数为$0$，$1$，$2$，$2$，它被用于统计自旋刚度(spin stiffness)\cite{2windnuminwl,2windnuminsse}；
+$3$，离散时间带来的系统误差，Trotter展开的误差为$O(\Delta\tau^{2})$，为消除离散时间带来的误差，一般需要对$\Delta\tau$
+分别取不同值模拟一次，然后再插值到$\Delta\tau\rightarrow0$的极限；$4$，非对角算符的测量问题。从90年代初，量子蒙特卡洛方法取得了一系列进展，极大地克服
+了局域Metropolis框架所面临的困难，下面列出这些进展：
+\begin{itemize}
+    \item 1993：Evertz，Lana和Marcu提出环算法\cite{2wlloop}，他们在研究vertex model\cite{2vtxmodel}的时候，对每个vertex以一定的概率分解(breakup)为某一种图形，相当于经典情况下以一定概率让最近邻成键，分解之后的小图形就会形成环结构，相当于经典情况下
+        的由成键的自旋构成的团簇，然后对环进行反转，这种非局域环翻转方式能有效缓解临界减速问题。
+    \item 1996：Beard和Wiese提出了连续时间极限下的环算法\cite{2wlct}，连续时间极限即$L\rightarrow0$，对世界线组态进行粗粒化操作后，在每个稳定间隔(uniform interval)内按特定正态分布在对世界线组态进行分解就可以形成环；Prokof'ev，Svistunov，Tupitsyn于同年也提出了局域Metropolis框架下的连续时间算法\cite{2wlct2}。连续时间算法彻底消除了
+        Trotter展开带来的系统误差。
+    \item 从1998：Prokof'ev，Svistunov，Tupitsyn提出蠕虫算法(Worm algorithm)\cite{2worm}，Sandvik继91年\cite{2sse}提出了基于Handscomb展开的随机级数展开算法(SSE)后，又于99年\cite{2sse2}和02年\cite{2sse3}分别提出了基于SSE下的算符环算法以及方向性环算法。
+        对于没有自旋翻转对称性(如加了外磁场)的系统，通常环算法在构造环时没有考虑外磁场的因素，外磁场的作用体现在环翻转的接受概率上，在低温时这个概率可能非常低，
+        蠕虫算法以及方向性环算法就可以克服模拟这类系统时的低效问题。
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{wdn}
+\caption{World-lines configurations with different winding number}
+\label{wdn}
+\end{figure}
+以上这些量子蒙特卡洛方法都是有限温度下的玻色型量子蒙特卡洛方法，并且只能处理没有符号问题的体系，对于有阻错(frustration)的自旋和玻色子系统，
+以及多数费米子系统\cite{2sign4}都无法直接应用，还有其他的一些蒙特卡洛方法如基于Hubbard-Stratonovich变换的辅助场蒙特卡洛方法(AFQMC)\cite{2afqmc}，以及
+由此衍生的行列式蒙特卡洛方法(DQMC)\cite{2dqmc}，还有结合了格林函数蒙特卡洛方法(GFQMC)\cite{2gfqmc}与辅助场蒙特卡洛方法的约束路径蒙特卡洛方法(CPQMC)\cite{2zsw}，以及路径积分蒙特卡洛方法(PIQMC)\cite{2piqmc}
+和扩散蒙特卡洛方法(DQMC)\cite{2dqmc2}等，每种方法都有自己的优势，
+在研究某些特定问题时个别方法会体现出优越性，如对有些问题通常的环算法
+或随机级数展开的方法会有符号问题，而用辅助场方法就不会有问题。这些方法在处理费米子问题时通常会用到一些近似，如扩散蒙特卡洛方法中的
+固定节点近似(fixed-node approximation)，约束路径蒙特卡洛中的约束路径近似(constrained path approximation)，以缓解符号问题。零温下以研究基态和量子相变为目的的蒙特卡洛方法主要有变分和投影两种形式。
+本章将介绍三种玻色型的处理格子模型的算法，有限温度下的连续时间极限下的环算法，随机级数展开框架下的方向性环算法以及零温的在价键基矢表象下的投影算法。
+
+\section{连续时间极限环算法}
+经典情况下的Swendsen-Wang算法\cite{2sw}以及量子情况下的环算法\cite{2luprob,2looprev}都是对偶蒙特卡洛方法(Dual Monte Carlo Algorithm)\cite{2dualmc}的特例，对偶蒙特卡洛方法需要在两种对偶的表象中分别
+生成一条Markov链，如图\ref{dual1}，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{dual1}
+\caption{Dual monte carlo}
+\label{dual1}
+\end{figure}
+比如对于方程\ref{eq1.17}所定义的Ising模型，自旋表象下某个组态$S$的Boltzmann权重为
+\begin{equation}
+W(S)=\mathrm{exp}(K\sum_{\langle i,j\rangle}\sigma_{i}\sigma_{j})=\prod_{u}w(S_{u})
+\label{eq2.13}
+\end{equation}
+其中$K=\beta J$，$u$表示一对最近邻，$S_u$表示这对最近邻的自旋态$(\sigma_i,\sigma_j)$，$w(S_{u})\equiv \mathrm{exp}(K\sigma_{i}\sigma_{j})$表示这对最近邻的权重，Fortuin和Kasteleyn\cite{2fk}建议把这个权重在对偶表象中进行一下分配
+\begin{equation}
+w(S_{u})=\sum_{G_{u}}w(S_{u},G_{u})
+\label{eq2.14}
+\end{equation}
+可以为$w(S_{u},G_{u})$找到如下的一种解
+\begin{equation}
+w(S_{u},G_{u})=
+\begin{cases}
+e^{-K}\hspace{30mm}(G_{u}=0)\\
+e^{K}-e^{-K}\hspace{20mm}(\sigma_{i}=\sigma_{j}\hspace{2mm}and\hspace{2mm}G_{u}=1)\\
+0\hspace{36mm}(\sigma_{i}\neq\sigma_{j}\hspace{2mm}and\hspace{2mm}G_{u}=1)
+\label{eq2.15}
+\end{cases}
+\end{equation}
+可以验证，对所有$S_u$的可能状态，这组解是可以保证方程\ref{eq2.14}成立的。这时方程\ref{eq2.13}可以改写为
+\begin{equation}
+W(S)=\sum_{G}W(S,G)
+\end{equation}
+其中求和表示对$G$表象下的由各个$G_u$构成的所有可能的整体样式$\{G_u\}$(pattern)进行求和
+\begin{equation}
+W(S,G)=\prod_{u}w(S_{u},G_{u})
+\end{equation}
+同理，对一个确定的$G$样式的权重也可以写为
+\begin{equation}
+W(G)=\sum_{S}W(S,G)
+\end{equation}
+那么$S$和$G$这两个对偶表象之间互相变换(或称为跃迁)的概率可以定义为
+\begin{eqnarray}
+T(S\rightarrow(S,G))=\frac{W(S,G)}{W(S)}\label{eq2.19}\\
+T(G\rightarrow(S,G))=\frac{W(S,G)}{W(G)}
+\end{eqnarray}
+可以简单验证根据方程\ref{eq2.15}和\ref{eq2.19}得到的指向相同的自旋对成键概率就是$1-\mathrm{exp}(-2K)$。对于一个$G$样式，所有$G_u=1$的键构成了一个个团簇，而方程\ref{eq2.15}表明团簇内的自旋指向必须相同，不同团簇之间由$G_u=0$的键连接起来，所以不同团簇
+之间的自旋指向可以相同也可以不同，故能与$G$样式匹配的$S$样式共有$2^N_c(G)$个，$N_c(G)$为$G$样式中团簇数目，并且每个匹配的$(S,G)$样式的权重都是相等的，
+$W(S,G)=W(S^{'},G)$，所以在匹配的$(S,G)$与$(S^{'},G)$之间的跃迁概率可以用热泳概率(heat bath probability)
+\begin{equation}
+T((S,G)\rightarrow(S^{'},G))=\frac{1}{2^{N_{c}(G)}}
+\end{equation}
+即每个团簇以$1/2$概率翻转，细致平衡可以证明如下
+\begin{eqnarray}
+W(S)T(S & \rightarrow & S^{'})=W(S)\sum_{G}T(S\rightarrow(S,G))T((S,G)\rightarrow(S^{'},G))\nonumber \\
+ & = & \sum_{G}W(S)\frac{W(S,G)}{W(S)}T((S,G)\rightarrow(S^{'},G))\nonumber \\
+ & = & \sum_{G}W(S^{'})\frac{W(S^{'},G)}{W(S^{'})}T((S^{'},G)\rightarrow(S,G))\nonumber \\
+ & = & W(S^{'})T(S^{'}\rightarrow S)
+\end{eqnarray}
+整个模拟过程就如图\ref{dual2}所示。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{dual2}
+\caption{Steps of dual monte carlo}
+\label{dual2}
+\end{figure}
+
+量子情况下的配分函数如方程\ref{eq2.10}所示，当我们把$(i,k)$视为$u$，$\psi_{i}(k)$视为$\psi_u$，$\psi_{i+1}(k)$视为$\psi_u^{'}$，
+整个世界线组态视为$S$，我们可以将配分函数改写成如下形式
+\begin{eqnarray}
+Z & = & \lim_{L\rightarrow\infty}\sum_{S}W_{L}(S)\\
+W_{L}(S) & = & \prod_{u}w(S_{u})\\
+w(S_{u}) & = & \langle\psi_{u}^{'}|e^{-\Delta\tau H_{u}}|\psi_{u}\rangle\nonumber \\
+ & = & \langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle\nonumber \\
+ & = & \sum_{G_{u}=0,1}\langle\psi_{u}^{'}|(-\Delta\tau H_{u})^{G_{u}}|\psi_{u}\rangle
+ \label{eq2.25}
+\end{eqnarray}
+可以看到方程\ref{eq2.25}与方程\ref{eq2.14}具有相同的形式，依此我们也可以为世界线组态表象来设计一种非局域的翻转算法，一些对应的公式为
+\begin{eqnarray}
+w(S_{u},G_{u}) & = & \langle\psi_{u}^{'}|(-\Delta\tau H_{u})^{G_{u}}|\psi_{u}\rangle\label{eq2.26}\\
+W_{L}(S) & = & \prod_{u}\sum_{G_{u}=0,1}w(S_{u},G_{u})\nonumber \\
+ & = & \sum_{G}W(S,G)\\
+W(S,G) & = & \prod_{u}w(S_{u},G_{u})
+\end{eqnarray}
+我们知道，对于Swendsen-Wang算法，$G_u=0$表示最近邻没有成键，$G_u=1$表示最近邻成键了，当一个$G$样式选出来后，我们可以进行翻转操作，可现在对于
+方程\ref{eq2.25}，我们并不知道$G_u=0$和$G_u=1$在图形上意味着什么，或者说方程\ref{eq2.26}的含义还非常抽象，为此我们先以矩阵的形式来理解
+方程\ref{eq2.14}和\ref{eq2.15}，
+\begin{eqnarray}
+\langle\Omega_{1}|w(S_{u})|\Omega_{2}\rangle & = & \left(\begin{array}{cc}
+e^{K} & e^{-K}\\
+e^{-K} & e^{K}
+\end{array}\right)\nonumber \\
+ & = & e^{-K}\left(\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}\right)+(e^{K}-e^{-K})\left(\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right)\nonumber \\
+ & = & w(S_{u},G_{u}=0)\left(\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}\right)+w(S_{u},G_{u}=1)\left(\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right)\nonumber \\
+ & = & w(S_{u},G_{u}=0)\hat{G_{0}}+w(S_{u},G_{u}=1)\hat{G_{1}}
+ \label{eq2.29}
+\end{eqnarray}
+其中$\hat{G_0}$矩阵四个矩阵元都为$1$，意思是这部分权重是所有四种情况$\{\uparrow_{1}\uparrow_{2},\uparrow_{1}\downarrow_{2},\downarrow_{1}\uparrow_{2},\downarrow_{1}\downarrow_{2}\}$
+所对应的$w(S_u)$都会有的那部分权重，并且都是相等的，所以一旦选择了这部分权重(即$G_u=1$，或称选择了算符$\hat{G_0}$)，
+自旋态可以任意翻转到四种态中的一种，即四种情况的这部分权重通过$\hat{G_0}$算符可以自由流动达到平衡；同理，$\hat{G_1}$即表示
+只有$\{\uparrow_{1}\uparrow_{2},\downarrow_{1}\downarrow_{2}\}$这两种情况都会有的那部分权重，一旦选择了这部分权重，自旋态也只能翻转到这两种情况中的一种，正是
+在这种意义下才称算符$\hat{G_1}$表示一种绑定的作用，即成键，而$\hat{G_0}$相当于不做任何限制，所以$\{\uparrow_{1}\uparrow_{2}\}$和$\{\downarrow_{1}\downarrow_{2}\}$之间的权重流动既可以通过$\hat{G_0}$，
+也可以通过$\hat{G_1}$，而流向$\{\uparrow_{1}\downarrow_{2}\}$和$\{\downarrow_{1}\uparrow_{2}\}$以及从他们流出的路径就只能通过$\hat{G_0}$。
+
+与方程\ref{eq2.29}类似，我们需要把$w(S_u)$写成矩阵形式进行分解，并对分解后的矩阵赋予图形上的意义，如对如下形式的Heisenberg模型，
+\begin{equation}
+H_{i,j}=-J(S_{i}^{x}S_{j}^{x}+S_{i}^{y}S_{j}^{y}+(\frac{1}{4}-S_{i}^{z}S_{j}^{z}))
+\end{equation}
+$w(S_u)$可以分解为
+\begin{eqnarray}
+w(S_{u}) & = & \left(\begin{array}{cccc}
+1 & 0 & 0 & 0\\
+0 & 1+\frac{J\Delta\tau}{2} & \frac{J\Delta\tau}{2} & 0\\
+0 & \frac{J\Delta\tau}{2} & 1+\frac{J\Delta\tau}{2} & 0\\
+0 & 0 & 0 & 1
+\end{array}\right)\nonumber \\
+ & = & \left(\begin{array}{cccc}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{array}\right)+\frac{J\Delta\tau}{2}\left(\begin{array}{cccc}
+0 & 0 & 0 & 0\\
+0 & 1 & 1 & 0\\
+0 & 1 & 1 & 0\\
+0 & 0 & 0 & 0
+\end{array}\right)\nonumber \\
+ & = & \hat{g}_{V}+\frac{J\Delta\tau}{2}\hat{g}_{H}
+\end{eqnarray}
+而由$\psi_u$以及$\psi_u^{'}$构成的小方块理论上一共可能有$16$种情况(不管哈密顿量$H$的形式)，如图\ref{pqs}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.39]{pqs}
+\caption{Graphs of possible plaquette}
+\label{pqs}
+\end{figure}
+共分为$5$类，对于上式形式的哈密顿量，则只有
+$I$，$II$，$III$这三类方块，其中$I$的全部权重和$II$类的部分权重通过$\hat{g}_{V}$算符来互相流动，$II$类的剩余权重与$III$类的全部权重通过$\hat{g}_{H}$算符
+来互相流动，当$J_x$或$J_y$为负值时，$1-\Delta \tau H_{i,j}$可能会出现负的非对角元，但是由于虚时方向上的周期边界条件，可以保证那些权重为负的方块出现次数为偶数次，
+所以它们的权重仍然可以视为正值，知道了$\hat{g}_{V}$和$\hat{g}_{H}$的作用之后我们就为它们赋予一种图形来表示它们的作用，常见的算符矩阵以及它们对应的图形表示如图\ref{breakup}所示\cite{2luprob}，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{breakup}
+\caption{Graphs of possible break up}
+\label{breakup}
+\end{figure}
+每个图形中的实线表示被它连接的两自旋指向必须是一样的，虚线表示被它连接的两自旋指向必须相反，被线连在一起的自旋必须一起翻转，可以验证这些图形的确是表示了它
+所代表的矩阵的作用，其中$\hat{g}_{V}$称为垂直分裂方式(vertical break up)，即表示单位矩阵元$1$，图形为两条竖直实线，$\hat{g}_{H}$称为水平分裂方式(horizental break up)，$\hat{g}_{C}$称为交叉分裂方式(cross break up)，$\hat{g}_{B}$称为绑定分裂方式(bind break up)，
+那么给定了一个世界线组态之后，我们就需要对每个小方块进行分裂得到$G$样式，比如当我们考虑第$I$类方块时，它一定是垂直分列方式，考虑$III$类方块时，它一定
+是水平分列方式，这类方块被称为kink(第$IV$类方块也称为kink)，意味朝上的自旋从一个格点跳到了它的最近邻，而考虑第$II$类方块时，即可能水平分裂也可能垂直分裂，
+水平分裂的概率为$J\Delta\tau/2/(1+J\Delta\tau/2)=J\Delta\tau/2$，
+分裂完后的算符图形就会形成一个一个的环，每个环都可以独立翻转，翻转完后我们就得到了新的世界线组态，从而实现了非局域的翻转，这个过程就称为环算法(loop algorithm)，与图\ref{wllu}所示局域翻转方式不同的环翻转方式如图\ref{wloop}所示。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{wloop}
+\caption{Loop algorithm for world-lines configuration}
+\label{wloop}
+\end{figure}
+
+一般情况下最近邻相互作用可以写成
+\begin{eqnarray}
+H_{ij} & = & \sum_{\hat{g}}H_{ij}(\hat{g})=\sum_{\hat{g}}-a(\hat{g})\hat{g}\\
+1-\Delta\tau H_{ij} & = & \hat{g}_{V}+\sum_{\hat{g}}a(\hat{g})\Delta\tau\hat{g}
+\end{eqnarray}
+其中$\hat{g}$是图\ref{breakup}中的某种分裂图形或是自己为某问题自定义的图形，注意它的矩阵表示中矩阵元只能是0或1，只有这样才能保证在分裂时可以独立翻转每个环。
+假如某种方块的权重为$W=A(\hat{g}_{1})+A(\hat{g}_{2})+A(\hat{g}_{3})+\ldots$，$A(\hat{g}_{i})$等于$1$或者$a(\hat{g}_{i})\Delta \tau$，权重$W$中的$A(\hat{g}_{i})$分给了算符$\hat{g}_{i}$，则在对这种方块进行分裂时
+选择第$i$种分裂方式的概率为$A(\hat{g}_{i})/W$，对于第$I$类和第$II$类方块，由于$\hat{g}_{V}$总为它们贡献了一部分权重(这部分取值$1$)，又由于
+$\Delta \tau$是小量，其它算符贡献的权重与$1$比起来很小，所以对这两类方块选择第$i$种分裂方式的概率可以视为就是$A(\hat{g}_{i})=a(\hat{g}_{i}\Delta \tau)$，由于$H_{ij}$中一般不含单粒子升降算符的项，所以第$V$类方块通常是不会出现的。
+
+在上面设计算法的过程中，首先用到了Trotter展开(误差$O(\Delta \tau^2)$)，然后又用$1-\Delta \tau H$代替了$e^{-\Delta \tau H}$(误差$O(\Delta \tau^2)$)，并且在求第$I$，$II$类算符的分裂概率时，用$\Delta \tau a(\hat{g}_{i})$来近似第$i$种分裂方式的概率(误差$O(\Delta \tau^2)$)。为了消除这些误差，
+可以在连续时间极限下来思考世界线组态的形式并设计相应的环算法。首先需要介绍稳定间隔(uniform interval)的概念，考虑一对最近邻的世界线，在某段虚时间内，他们的世界线是一段连续的由第$I$或$II$类中的某种方块重复连接而成的虚时间段，期间 它们的自旋都不会发生变化，直到第$III$或$IV$类中的某种kink类方块改变了它们的状态，如果这个kink是这对最近邻构成，那么它们的状态都将改变，
+如果kink是其中一个与其它最近邻构成的，那么只有一个自旋的状态会发生改变，整个世界线组态就可以看成由很多稳定间隔加上kink方块构成。当我们对
+整个世界线组态进行粗粒化观察时，可以认为每个稳定间隔就是连续的竖线，被一些kink直线给间隔着，如图\ref{ui}所示，将$i$，$j$这对最近邻的$0$至$\beta$的虚时间
+划分成了很多个稳定间隔。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{ui}
+\caption{Uniform intervals(UI) in continuous time limit}
+\label{ui}
+\end{figure}
+考虑一段虚时长度为I的稳定间隔，其中有$\mathrm{I}/\Delta\tau$个重复的第$I$或$II$类中的某种方块，每个这种方块选择分裂方式$g$的概率为$(\Delta\tau)a(g)$，
+那么所有$\mathrm{I}/\Delta\tau$个方块分裂后有$n$个$g$图样的概率为
+\begin{equation}
+C_{\mathrm{I}/\Delta\tau}^{n}((\Delta\tau)a(g))^{n}(1-(\Delta\tau)a(g))^{\mathrm{I}/(\Delta\tau)-n}\nonumber
+\end{equation}
+在连续性极限时，$\Delta \tau \rightarrow 0$，上式变成
+\begin{equation}
+\frac{1}{n!}(\mathrm{I}a(g))^{n}e^{-\mathrm{I}a(g)}\nonumber
+\end{equation}
+这正是一个平均值为$\mathrm{I}a(g)$的泊松分布，所以连续时间极限即要求我们在每个稳定间隔里对每种可能的分裂方式生成一个与之对应的泊松分布就行了，它表示在
+时间间隔$\mathrm{I}$内时间发生$n$次的概率。假设$P(t)$表示两个相邻事件发生的时间间隔为$t$的概率密度函数，$\int_{0}^{\infty}P(t)dt=1$，$P(t)dt$表示两相邻事件
+的时间间隔在$t\sim t+dt$内的概率，即在$0\sim t$时间内没有事件发生的概率$e^{-ta(g)}$乘以在$t\sim t+dt$内有事件发生的概率$a(g)dt$，这样我们就得到了关于$P(t)$的指数分布函数
+\begin{equation}
+P(t)=a(g)e^{-a(g)t}
+\label{eq2.36}
+\end{equation}
+要模拟一个密度为$a(g)$的泊松过程，我们只需要生成一系列满足上式分布的时间间隔就行了，因为
+\begin{equation}
+\int_{0}^{t}P(t)dt=1-e^{-a(g)t}
+\end{equation}
+所以我们在$[0,1)$内产生一个均匀分布随机数$r$，则$-\mathrm{ln}(r)/a(g)$即为满足分布\ref{eq2.36}的时间间隔，连续时间极限下对每个稳定间隔$t_{0}\sim t_{1}$的处理过程如下：\\
+1，设$t$为这段稳定间隔的起始时间$t_0$；\\
+2，按上述方式得到一个时间间隔$\Delta t$；\\
+3，令$t$跳到$t_{new} = t+\Delta t$；\\
+4，如果$t_{new}\leq t_{1}$，就说明在$t_{new}$位置发生了分裂为图形$g$的过程，放一个$g$图形在这个时间点，并回到第2步继续生成下一个分裂的可能位置；
+如果$t_{new}>t_{1}$，就直接回到第1步开始考虑下一个稳定间隔的分裂情况。\\
+上面的过程只是对一种分裂方式而言的，对每个稳定间隔还需要重复上述过程以考虑其它分裂方式， 连续时间极限下对kink类方块的分裂操作与前面一样。连续时间极限不仅消除了$O(\Delta \tau ^2)$误差，在模拟过程中也节省计算机内存，因为不需要存储所有时间片
+的状态，只需要存储kink类方块的时间点位置及其类型就行了，一个完整的连续时间极限下的世界线组态翻转过程如图\ref{ctloop}所示。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.48]{ctloop}
+\caption{Loop algorithm in continuous time limit}
+\label{ctloop}
+\end{figure}
+先根据世界线组态对每个稳定间隔考虑可能的分裂位置及类型，分裂的$G$图像形成环，对环进行随机翻转之后就得到了新的世界线组态，图\ref{ctloop}是$J_{z}>J_{x}>J_{y}>0$
+时Heisenberg模型对应的世界线组态，其中出现了第$IV$类方块，并且第$I$类方块在分裂时有可能选择绑定分裂的方式，由于这种绑定分裂方式的存在，在给环进行编号
+的时候也会碰到Swendsen-Wang算法中标记团簇时的效率问题，同样我们也可以用“标号的标号”这种途径解决这个问题\cite{2hk}。注意在有磁场时，不再是以$1/2$概率翻转每个环，
+而是以$p(L_{i})=\mathrm{exp}(-Bm_{L_{i}})/\mathrm{exp}(Bm_{L_{i}})+\mathrm{exp}(-Bm_{L_{i}})$来进行翻转，其中
+\begin{equation}
+m_{L_{i}}=\int_{L_{i}}S^{z}(X)dX
+\label{eq2.38}
+\end{equation}
+为第$i$个环的磁化强度。
+
+关于世界线环算法框架下物理量的统计方法，物理量$O$的热力学平均值为
+\begin{eqnarray}
+\langle O\rangle & = & Tr(e^{-\beta H}O)/Z\nonumber \\
+ & = & \sum_{S}\frac{\prod_{\tilde{u}\neq u}w(S_{\tilde{u}})\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{Z}\nonumber \\
+ & = & \sum_{S}\frac{W(S)}{Z}\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}
+\end{eqnarray}
+由于求迹中$O$算符可以出现在任意时间片位置，所以对某个世界线组态$S$来说，物理量$O$在这个确定的世界线组态内具有平均值
+\begin{eqnarray}
+O(S) & = & \frac{1}{\beta/\Delta\tau}\sum_{u}\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}\nonumber \\
+ & = & \frac{1}{\beta}\sum_{u}O(S_{u})
+\end{eqnarray}
+其中
+\begin{eqnarray}
+O(S_{u})&=&\frac{\langle\psi_{u}^{'}|\Delta\tau O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}\nonumber\\
+&=&
+\begin{cases}
+\Delta\tau \langle\psi_{u}|O|\psi_{u} \rangle \hspace{10mm} (\psi_{u}=\psi_{u}^{'})\\
+\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|-H_{u}|\psi_{u}\rangle} \hspace{14mm} (\psi_{u}\neq\psi_{u}^{'})
+\end{cases}
+\label{eq2.41}
+\end{eqnarray}
+所以在连续时间极限下，对于对角算符$O$，
+\begin{equation}
+O(S)=\frac{1}{\beta}\int_{0}^{\beta}d\tau O(\tau)
+\end{equation}
+其中$O(\tau)=\langle\psi(\tau)|O|\psi(\tau)\rangle$，当$O$在虚时方向是个守恒量时，如$XXZ$模型的磁化强度$\sum_{i}S_{i}^{z}$，这时$O(S)$用$O(\tau =0)$代替即可。对于对角算符$A$，$B$构成的含时关联函数$\Gamma_{AB}(\tau,\tau^{'})=A(\tau)B(\tau^{'})$，它的一个比较平庸的估值方式是统计$A(\psi(\tau))B(\psi(\tau^{'}))$，
+如果只与时间差$\tau ^{'}-\tau$有关系,也可以用它在$S$组态中的平均值作为一个更好的估计方式，
+\begin{equation}
+\Gamma_{AB}^{\tau\tau^{'}}(S)=\frac{1}{\beta}\int_{0}^{\beta}dtA(\psi(t))B(\psi(t+\tau^{'}-\tau))
+\end{equation}
+由这两个对角算符构成的广义磁化率
+\begin{equation}
+\chi_{AB}=\int_{0}^{\beta}d\tau\Gamma_{AB}(0,\tau)
+\end{equation}
+所对应的
+\begin{equation}
+\chi_{AB}(S)=\frac{1}{\beta}\int_{0}^{\beta}d\tau A(\psi(\tau))\int_{0}^{\beta}d\tau B(\psi(\tau))
+\end{equation}
+对于非对角算符$O$，当$\langle\psi_{u}^{'}|-H_{u}|\psi_{u}\rangle$不为$0$时，根据方程\ref{eq2.41}来进行统计，比如对于哈密顿量中的非对角部分，非对角部分就意味着
+世界线组态中的kink，对一幅确定的$S$组态，非对角部分的平均值即
+\begin{eqnarray}
+H^{off}(S) & = & \frac{1}{\beta}\sum_{u_{kink}}\frac{\langle\psi_{u_{kink}}^{'}|O|\psi_{u_{kink}}\rangle}{\langle\psi_{u_{kink}}^{'}|-O|\psi_{u_{kink}}\rangle}\nonumber \\
+ & = & -\frac{n_{kink}(S)}{\beta}
+\end{eqnarray}
+整个能量的平均值则为
+\begin{equation}
+H(S)=H^{diag}(S)-\frac{1}{\beta}n_{kink}(S)
+\end{equation}
+比热的统计方式为
+\begin{equation}
+C=\beta^{2}[\langle H_{diag}^{2}(S)\rangle-\langle H_{diag}(S)\rangle^{2}]+\langle n_{kink}^{2}\rangle-\langle n_{kink}\rangle^{2}-\langle n_{kink}\rangle
+\end{equation}
+对某些算符，会有$\langle\psi_{u}^{'}|-H_{u}|\psi_{u}\rangle$为$0$的情况，方程\ref{eq2.41}的定义是无意义的，这时需要具体问题具体分析。
+
+前面所讲的都是在世界线组态中的估值方式，与第$1$章介绍过的优化估值方式一样，环算法下也有定义在$G$表象下的优化估值方式\cite{2wlie}，物理量$O$在一个给定的$G$图样下的平均值为
+\begin{equation}
+O(G)=\sum_{S}W(S,G)O(S)/W(G)
+\label{eq2.49}
+\end{equation}
+对于$z$方向上的磁化率
+\begin{eqnarray}
+\chi_{zz}(S) & = & N^{-1}\int_{0}^{\beta}d\tau\langle M_{z}(\tau)M_{z}(0)\rangle\nonumber \\
+ & = & (N\beta)^{-1}(\int dXS^{z}(X))^{2}
+\end{eqnarray}
+上式中$X\equiv(i,\tau)$，$\int dX$表示对所有世界线进行积分$\sum_{i}\int d\tau$，根据方程\ref{eq2.49}，在没有磁场破坏自旋反转对称性时，$W(G)$的权重是均等分配到$2^{N_{c}(G)}$个相互兼容的$(S,G)$态中的，可以很容易证明
+\begin{equation}
+\chi_{zz}(G)=(N\beta)^{-1}\sum_{l}(m_{l})^{2}
+\end{equation}
+其中$m_{l}$是方程\ref{eq2.38}所定义的环磁化强度。
+对于非对角磁化率$\chi_{xx}$，通过在包含两个奇异点的$S^{'}$与$G^{'}$之间的表象变换，参考文献\cite{2luprob}，可以求得
+\begin{equation}
+\chi_{xx}(G)=\frac{1}{4N\beta}\sum_{l}(V_{l})^{2}
+\end{equation}
+其中$V_{l}$为环长度，当模型为铁磁各向同性海森堡模型时，每个环都是由自旋相同的世界线构成，这时环长度就是环磁化强度
+的$4$倍，$\chi_{xx}$与$\chi_{zz}$相等。
+
+\section{随机级数展开算法}
+基于Handscomb展开\cite{2handscomb}，$91$年Sandvik提出了随机级数展开的算法\cite{2sse}，先来看看随机级数展开的思想怎样应用在经典问题中，考虑经典配分函数
+\begin{equation}
+Z=\sum_{\{\sigma\}}\sum_{n=0}^{\infty}\frac{(-\beta E(\sigma))^{n}}{n!}
+\end{equation}
+物理量的平均值为
+\begin{equation}
+\langle f\rangle=\frac{1}{Z}\sum_{\{\sigma\}}\sum_{n=0}^{\infty}f(\sigma)\frac{(-\beta E(\sigma))^{n}}{n!}
+\end{equation}
+为了确保展开的正定性，以将展开的每一项解释为所对应的权重，可以对能量做一个偏移操作，令$E(\sigma)\rightarrow E(\sigma)-\epsilon$，$\epsilon$为一个足够大的数，大于系统能量的上限。当物理量是关于能量的函数时，它的平均值可以写成$n$的函数，定义$H(\sigma)=\epsilon-E(\sigma)$，
+考虑能量平均值
+\begin{equation}
+\langle H\rangle=\frac{1}{Z}\sum_{\sigma,n}H(\sigma)W(\sigma,n),\hspace{5mm}Z=\sum_{\sigma,n}W(\sigma,n),\hspace{5mm}W(\sigma,n)=\frac{\beta^{n}H(\sigma)^{n}}{n!}
+\end{equation}
+令$m=n+1$，可以看到
+\begin{equation}
+\sum_{\sigma,n}H(\sigma)W(\sigma,n)=\sum_{\sigma,m}\frac{m}{\beta}W(\sigma,m)
+\label{eq2.56}
+\end{equation}
+所以能量的平均值，
+\begin{equation}
+\langle H\rangle=\frac{1}{\beta}\langle n\rangle_{W}\Rightarrow E=\epsilon-\frac{1}{\beta}\langle n\rangle_{W}
+\label{eq2.57}
+\end{equation}
+同理可以证明
+\begin{equation}
+\langle H^{2}\rangle=\frac{1}{\beta^{2}}\langle n(n-1)\rangle_{W}
+\label{eq2.58}
+\end{equation}
+由比热$C=\beta^{-1}(\langle E^{2}\rangle-\langle E\rangle^{2})$可得
+\begin{equation}
+C=\frac{1}{\beta}(\langle n^{2}\rangle-\langle n\rangle^{2}-\langle n\rangle)
+\label{eq2.59}
+\end{equation}
+
+下面以外场下的$XXZ$自旋$1/2$海森堡模型为例，介绍一下处理量子问题的方向性环算法。$XXZ$模型的哈密顿量为
+\begin{equation}
+H=J\sum_{\langle i,j\rangle}[S_{i}^{x}S_{j}^{x}+S_{i}^{y}S_{j}^{y}+S_{i}^{z}S_{j}^{z}]-h\sum_{i}S_{i}^{z}
+\label{eq2.60}
+\end{equation}
+将哈密顿量写成键相互作用求和的形式
+\begin{eqnarray}
+H & = & -J\sum_{b=1}^{N_{b}}H_{b}
+\end{eqnarray}
+其中$N_{b}=dN$为间的总数目，$d$为维度，对每个$H_b$我们又可以分为对角部分和非对角部分，$H_{b}=H_{1,b}-H_{2,b}$，其中
+\begin{eqnarray}
+H_{1,b} & = & C-\Delta S_{i(b)}^{z}S_{j(b)}^{z}+h_{b}(S_{i(b)}^{z}+S_{j(b)}^{z})\\
+H_{2,b} & = & \frac{1}{2}[S_{i(b)}^{+}S_{j(b)}^{-}+S_{i(b)}^{-}S_{j(b)}^{+}]
+\end{eqnarray}
+上式中$h_{b}=h/(2dJ)$为每个键感受到的磁场，$C$这个常数的引入是为了保证$H_{1,b}$的所有矩阵元都为正，从而可以解释为权重，所以在统计总能量的时候要注意加上$JN_bC$，
+$C$具有如下形式
+\begin{equation}
+C=C_{0}+\epsilon,\hspace{10mm}C_{0}=\Delta/4+h_{b}
+\end{equation}
+其中$\epsilon\ge0$。要求方程\ref{eq2.7}中的迹，与上节中Trotter展开后在算符之间插入基矢从而得到世界线组态的处理方法类似，
+这里也可以选一组$S^z$表象下的基矢$|\alpha\rangle=|S_{1}^{z},S_{2}^{z},...,S_{N}^{z}\rangle$，则方程\ref{eq2.6}中的算符序列$S_n$可以表示为
+$S_{n}=[a_{1},b_{1}],[a_{2},b_{2}],\ldots,[a_{n},b_{n}]$，其中$a_{i}\in\{1,2\}$表示算符的类型，$1$为对角，$2$为非对角，$b_{i}\in\{1,\ldots,N_{b}\}$表示
+算符所对应的键序号，配分函数可以写成
+\begin{equation}
+Z=\sum_{\alpha}\sum_{n=0}^{\infty}\sum_{S_{n}}(-1)^{n_{2}}\frac{\beta^{n}}{n!}\langle\alpha|\prod_{i=1}^{n}H_{a_{i},b_{i}}|\alpha\rangle
+\label{eq2.65}
+\end{equation}
+$n_2$是$S_n$序列中非对角算符的个数，在bipartite格子中，$n_2$始终为偶数，所以这个展开是正定的，在对展开的项进行抽样时没有符号问题。
+定义$|\alpha(p)\rangle$为算符序列从右往左共$p$个算符作用在$|\alpha\rangle$后得到的态。
+\begin{equation}
+|\alpha(p)\rangle\sim\prod_{i=1}^{p}H_{a_{i},b_{i}}|\alpha\rangle
+\end{equation}
+可以证明，与经典情况类似(方程\ref{eq2.56}-\ref{eq2.59})，量子情况下关于能量的函数的平均值也是$n$的函数，算符数目$n$的平均值具有如下关系
+\begin{equation}
+\langle n\rangle=\beta N_{b}|E_{b}|
+\end{equation}
+其中$E_b$为每个键的平均能量(包含了常数$C$)，对于有限体系，$\langle n\rangle\propto\beta N$，并且低温下比热趋近与$0$，所以$n$的分布宽度
+$\sqrt{\langle n^{2}\rangle-\langle n\rangle^{2}}\approx\sqrt{\langle n\rangle}\propto(\beta N)^{1/2}$。这样就可以对$n$做一个截断，设为$M$，只要
+$M$足够大以至$n$超过$M$的机会非常小，这样截断带来的误差基本是可以忽略的。做了截断即表示只考虑长度在$M$以内的算符序列的贡献，当算符序列长度$n<M$时，可以
+通过往其中插入单位算符($H_{0,0}\equiv1$)使整个算符序列的长度始终是$M$(包括插入的单位算符之后)，考虑到$M$个位置中选$n$个位置来构成本来的$S_n$序列的简并性后，配分函数可以改写为
+\begin{equation}
+Z=\sum_{\alpha}\sum_{S_{M}}\frac{\beta^{n}(M-n)!}{M!}\langle\alpha|\prod_{i=1}^{M}H_{a_{i},b_{i}}|\alpha\rangle
+\label{eq2.68}
+\end{equation}
+现在$a_{i}\in\{0,1,2\}$，$b_{i}\in\{0,\ldots,N_{b}\}$，$n$是非单位算符的个数，$|\alpha\rangle$经过$M$个算符作用后回到$|\alpha\rangle$的过程可以用图\ref{ssewl}表示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{ssewl}
+\caption{Graphic representation for SSE algorithm}
+\label{ssewl}
+\end{figure}
+图中红色实心圆表示自旋朝上，蓝色圆环表示自旋朝下，空心方框表示对角算符，实心方框表示非对角算符，可以看到这个图和Trotter展开得到的世界线图非常类似。在模拟的过程中，通常先有一个热平衡过程，在这个过程我们可以
+不断调整$M$值，比如令$M=an_{max}$，$n_{max}$是热平衡过程中到目前为止$n$所达到的最大值，$a$通常取值$1.2$至$1.5$之间。
+
+对单位算符，对角算符，非对角算符之间进行重要性抽样的步骤如下：\\
+1，单位算符与对角算符之间的变换，它们之间的跃迁概率要满足细致平衡方程
+\begin{equation}
+W([0,0]_{p})P([0,0]_{p}\rightarrow[1,b]_{p})\frac{1}{N_{b}}=W([1,b]_{p})P([1,b]_{p}\rightarrow[0,0]_{p})
+\end{equation}
+上式左边乘以$1/N_b$是因为从单位算符变换为某个对角算符时，要选中与某个特定键对应的对角算符$[1,b]_p$的几率为$1/N_b$，而反方向变换时只有一种可能，
+并且考虑到互相变换时非单位算符数目$n$会有$\pm1$的变化关系，可以很容易得到一组解
+\begin{eqnarray}
+P([0,0]_{p}\rightarrow[1,b]_{p}) & = & \mathrm{min}\{1,\frac{N_{b}\beta\langle\alpha(p)|H_{1,b}|\alpha(p)\rangle}{M-n}\}\\
+P([1,b]_{p}\rightarrow[0,0]_{p}) & = & \mathrm{min}\{1,\frac{M-n+1}{N_{b}\beta\langle\alpha(p)|H_{1,b}|\alpha(p)\rangle}\}
+\end{eqnarray}
+在实际模拟过程中，我们可以先保存$|\alpha\rangle$和算符序列$S_n$，在碰到单位算符以及对角算符，就依据上面的跃迁概率解考虑一下互换的操作，在碰到非对角算符时，
+就需要对$\alpha(p)$进行一下更新，以便在后面求解单位算符与非对角算符之间的跃迁概率时要用到。\\
+2，对角算符与非对角算符之间的变换，与更新世界线组态一样，也有局域的翻转方式以及非局域的环翻转方式，不过这里环的概念有所不同。
+因为这一步是在非单位算符之间的变换，$n$不会改变，所以我们可以在这一步忽略掉单位算符，而只考虑由对角算符和非对角算符构成的序列$S_n$，即利用方程\ref{eq2.65}而不是方程\ref{eq2.68}来
+展开配分函数，下面的指标$p$将表征在算符序列$S_n$中的位置。定义如下形式的两自旋态
+\begin{equation}
+|\alpha_{b_{p}}(p)\rangle=|S_{i(b_{p})}^{z}(p),S_{j(b_{p})}^{z}(p)\rangle
+\end{equation}
+其中$i(b_p)$与$j(b_p)$表征键算符$b_p$所连接的两自旋。对于一组确定的$(\alpha,S_n)$组态，它所对应的权重为
+\begin{equation}
+W(\alpha,S_{n})=\frac{\beta^{n}}{n!}\prod_{p=1}^{n}\langle\alpha_{b_{p}}(p)|H_{b_{p}}|\alpha_{b_{p}}(p-1)\rangle
+\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.31]{vtx}
+\caption{Graphs of possible vertices}
+\label{vtx}
+\end{figure}
+把由$\alpha_{b_{p}}(p)$，$H_{b_{p}}$，$\alpha_{b_{p}}(p-1)$所构成的矩阵元$\langle\alpha_{b_{p}}(p)|H_{b_{p}}|\alpha_{b_{p}}(p-1)\rangle$称为节点(vertex)，
+它包含的$4$个自旋称为它的四条腿(leg)，则一幅$(\alpha,S_n)$图样所对应的权重即为它所包含的所有节点权重的乘积，可以计算得到，对于方程\ref{eq2.60}形式的哈密顿量，可能的节点及其权重如图\ref{vtx}所示。
+
+可以看到当没有外场$h_b=0$，且各向同性时$\Delta=1$，我们可以令$\epsilon=0$，则只剩下$I,II$类节点，并且权重都为$1/2$，先以此特殊情况介绍局域翻转方式以及环算法。
+由于现在只在$S_n$中考虑问题，所以要完整描述一个$(\alpha,S_n)$图样，我们只需要一幅所有$n$个节点通过它们的腿连接在一起的图样就行了，即图\ref{ssewl}可以简化为图\ref{vconnect}，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{vconnect}
+\caption{Reduced $(\alpha,S_n)$ pattern}
+\label{vconnect}
+\end{figure}
+可以很容易想到的一种局域的翻转方式是
+$\{\ldots[1,b]_{p_{2}}\longleftrightarrow[1,b]_{p_{1}}\ldots\}\Leftrightarrow\{\ldots[2,b]_{p_{2}}\longleftrightarrow[2,b]_{p_{1}}\ldots\}$
+或者
+$\{\leftarrow[1,b]_{p_{2}}\ldots\ldots[1,b]_{p_{1}}\rightarrow\}\Leftrightarrow\{\leftarrow[2,b]_{p_{2}}\ldots\ldots[2,b]_{p_{1}}\rightarrow\}$
+，其中$\Leftrightarrow$以及$\leftarrow$和$\rightarrow$表示这段虚时间里没有其他的键算符作用在与$b$相连的两自旋$i(b)$和$j(b)$上，局域翻转方式如图\ref{sselu}所示。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{sselu}
+\caption{Local update for SSE algorithm}
+\label{sselu}
+\end{figure}
+这种局域的翻转方式有临界减速的问题，并且绕数以及磁化强度都不会发生变化，所以还存在遍历性问题，特别是在有磁场的情况下，第$III$类节点权重不为$0$，它与
+第$I$，$II$类节点之间的变换需要考虑很多种情况，并且节点的权重不是一样的，还要按概率看是否接受互换操作，所以局域型的翻转方式效率不高。为了构造一种非局域
+的翻转方式，需要找到一种对偶表象，使之起到不同节点之间互相变换的桥梁作用。$99$年Sandvik提出了一种类似于Wolff算法的环翻转方式\cite{2sse2}，基本步骤如下：\\
+1，随机选择某个节点的某一条腿$i$为环的初始构造点；\\
+2，根据热泳概率选择某条腿$j$为这个节点的出口；\\
+3，令与$j$连接在一起的腿$i^{'}$为下一个节点的入口；\\
+4，循环第$2$、$3$步直到某次回到了初始构造点$i$，则环闭合了，将环路经上的自旋翻转，并对算符做相应的变换。\\
+第$2$步中求热泳概率时，定义左下，右下，左上和右上分别为腿$1$，$2$，$3$，$4$，假设入口为某节点的左下腿$1$，出口有$4$种情况，则选择出口$2$的概率为
+\begin{equation}
+P_{2,1}=\frac{W(\begin{array}{cc}
++ & +\\
+- & -
+\end{array})}{W(\begin{array}{cc}
++ & +\\
++ & +
+\end{array})+W(\begin{array}{cc}
++ & +\\
+- & -
+\end{array})+W(\begin{array}{cc}
+- & +\\
+- & +
+\end{array})+W(\begin{array}{cc}
++ & -\\
+- & +
+\end{array})}
+\end{equation}
+其中
+\begin{equation}
+W(\begin{array}{cc}
+f_{3} & f_{4}\\
+f_{1} & f_{2}
+\end{array})(p)=\langle f_{3}S_{i}^{z}(p),f_{4}S_{j}^{z}(p)|H_{b}|f_{1}S_{i}^{z}(p),f_{2}^{z}(p)\rangle
+\end{equation}
+根据入口和出口的相对位置，可以分为$4$种过程，反弹(bounce)、折返(switch-and-reverse)、直进(continue-straight)和折进(switch-and-continue)，如图\ref{legs}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{legs}
+\caption{$4$ possible processes of constructing operator loop}
+\label{legs}
+\end{figure}
+对于如方程\ref{eq2.60}所示哈密顿量，由于$J_x=J_y$，所以不含有$S_{i}^{+}S_{j}^{+}$以及$S_{i}^{-}S_{j}^{-}$项，对于任意节点，折返与折进总有一种过程是不可能的。
+对于无外场且各向同性的特殊情况，则只有折返与反弹两种过程，因为反弹过程前后没有发生任何变化，是一种无效过程，要尽量避免这种过程，
+由于此时$I$，$II$类节点权重都等于$1/2$，所以可以只保留折返这一种过程，这样环的构造过程就是一个
+决定性(deterministic)过程，这时可以把所有的环都构造出来，并对每个环以$1/2$概率随机翻转，如图\ref{sseloop}所示。很显然根据热泳概率构造环的过程是满足细致平衡条件的。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{sseloop}
+\caption{Deterministic operator loops for isotropic Heisenberg model}
+\label{sseloop}
+\end{figure}
+
+对于大多数情况，节点之间的权重不相等，并且可能包括多种，这时环的构造过程就不是决定性的，反弹过程总是存在一定几率，为了把这种过程的几率降到最低，$02$年Syljuasen
+又提出了方向性环算法\cite{2sse3}，上面的热泳概率只是细致平衡方程的一种平庸解，方向性环算法的目的就是要找到一组最优解使反弹过程的几率减到最低甚至为$0$。
+首先介绍一下拓展态空间(extended configuration space)的概念，由$(\alpha,S_n)$构成的态空间称为物理态空间，它是由很多节点连在一起，节点之间的连接是没有奇异性的，如果在形成算符环的过程中，边构造环边翻转自旋及更新
+节点类型，则在还没有闭合时得到的图样也是节点之间连接在一起，但是在环路径的起点和终点有两个不符合物理的奇异点，这也使得这样一种图样对配分函数没有贡献，只有
+环闭合时才重新回到物理空间从而对配分函数起到贡献，把由节点连接在一起的所有可能图样构成的空间称为拓展态空间(可以包含任意多个奇异点)，并且认为拓展态空间中某个特定图样的
+权重为所有节点权重的乘积，物理态空间是这个拓展态空间的一个子集，如果在构造环的过程中使满足在拓展态空间中的细致平衡条件，那么环闭合时，物理态空间的细致平衡
+条件是自然得到满足的，现在考虑拓展态空间中的细致平衡过程，设
+$S$和$S^{'}$为如图\ref{ecdb}所示两种组态，$S$在$S^{'}$的基础上又更新了$1,2,3,4$四个节点，并且在节点$3$有一个反弹过程，则细致平衡方程为
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{ecdb}
+\caption{Detailed balance in extended configuration space}
+\label{ecdb}
+\end{figure}
+\begin{eqnarray}
+(W(1)W(2)W(3)W(4)W_{others})(P(1_{1,4})P(2_{1,3})P(3_{4,4})P(2_{3,2}^{temp})P(4_{3,2}))&=&\nonumber\\
+(W(4^{'})W(3^{'})W(2^{'})W(1^{'})W_{others})(P(4_{2,3}^{'})P(2_{2,3}^{'})P(3_{4,4}^{'})P(2_{3,1}^{temp})P(1_{4,1}^{'}))
+\end{eqnarray}
+其中$W(i)$为节点$i$的权重，$P(i_{e,x})$表示当节点$i$的入口为$e$时，选择出口为$x$的概率，$2^{temp}$表示节点$2$的$1$，$3$腿翻转之后的节点类型，
+在上式两边各乘上$W(2^{temp})$后，可以看到只要满足了下列关系
+\begin{eqnarray}
+W(1)P(1_{1,4}) & = & W(1^{'})P(1_{4,1}^{'})\nonumber \\
+W(2)P(2_{1,3}) & = & W(2^{temp})P(2_{3,1}^{temp})\nonumber\\
+W(2^{temp})P(2_{3,2}^{temp}) & = & W(2^{'})P(2_{2,3}^{'})\nonumber \\
+ & \vdots\nonumber
+\end{eqnarray}
+就可以满足细致平衡条件，上述关系的通式为$W(i)P(i,e,x)=W(i^{'})P(i^{'},x,e)$，如果令$W(i)P(i,e,x)=W(i,e,x)$，即要求
+\begin{equation}
+W(i,l_{1},l_{2})=W(i^{'},l_{2},l_{1})
+\label{eq2.77}
+\end{equation}
+对任意两种节点$i$，$i^{'}$，如果它们通过腿$l_1$，$l_2$实现互相转换，则上式都要得到满足。概率$P(i,l_1,l_2)$还要满足归一化条件
+\begin{equation}
+\sum_{l_{2}}P(i,l_{1},l_{2})=1
+\end{equation}
+即在给定节点$i$和入口$l_1$情况下，选择各种出口的概率和应该为$1$，上式等价于
+\begin{equation}
+\sum_{l_{2}}W(i,l_{1},l_{2})=W(i)
+\label{eq2.79}
+\end{equation}
+与世界线环算法中的分裂概念类似，方程\ref{eq2.79}的$W(i,l_1,l_2)$也可以视为对节点$i$的权重$W(i)$的一种分裂，而方程\ref{eq2.77}则对$W(i,l_1,l_2)$提出了
+要求，这个要求等价于要求世界线环算法中的分裂算符$\hat{g}$所对应矩阵的对称位置的矩阵元相等。
+
+以方程\ref{eq2.60}所对应的外场下的XXZ模型为例，共有$6$种节点(图\ref{vtx})，每个节点可以有$4$个入口，理论上的出口有$4$种，但对于现在讨论的XXZ模型，
+给定入口后出口只可能有$3$种，所以一共有$72$个$W(i,l_1,l_2)$需要我们求解，仔细研究节点之间的变换关系后发现可以分为$8$类，每类包含$9$种情况，
+其中$4$类如图\ref{dloop}所示
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{dloop}
+\caption{Possible $W(i,l_1,l_2)$ graphs(Fig.8 in \cite{2sse3})}
+\label{dloop}
+\end{figure}
+比如对于左上角那一类，可以列出方程组
+\begin{eqnarray}
+W_1 & = & b_{1}+a+b\nonumber \\
+\label{eq2.80}
+W_2 & = & a+b_{2}+c\\
+W_3 & = & b+c+b_{3}\nonumber
+\end{eqnarray}
+上式中，
+\begin{eqnarray}
+W_{1} & = & W(II_{1}),W_{2}=W(I_{1}),W_{3}=W(III_{1})\nonumber\\
+b_{1} & = & W(II_{1},1,1),b_{2}=W(I_{1},2,2),b_{3}=W(III_{1},4,4)\nonumber\\
+a & = & W(II_{1},1,2)=W(I_{1},2,1)\nonumber\\
+b &= & W(II_{1},1,4)=W(III_{1},4,1)\nonumber\\
+c &= & W(I_{1},2,4)=W(III_{1},4,2)\nonumber
+\end{eqnarray}
+这组方程有一平庸解对应前面讲到的热泳概率，
+\begin{eqnarray}
+a & = & W_{1}W_{2}/(W_{1}+W_{2}+W_{3})\nonumber \\
+b & = & W_{1}W_{3}/(W_{1}+W_{2}+W_{3})\nonumber \\
+c & = & W_{2}W_{3}/(W_{1}+W_{2}+W_{3})\\
+b_{i} & = & W_{i}^{2}/(W_{1}+W_{2}+W_{3})\nonumber
+\end{eqnarray}
+方程\ref{eq2.80}有$6$个未知数，只有$3$个方程，可以有多组解，视$b_1,b_2,b_3$最小的解为最优解，则要找到最优解的任务就是在保证$a,b,c,b_1,b_2,b_3$非负
+的情况下尽量使$b_1,b_2,b_3$取最小值。为了求得这样的一组最优解，先将$b_1,b_2,b_3$视为已知数，带入$W_i$的值，可以求得如下关于$a,b,c$的解
+\begin{eqnarray}
+a & = & \frac{1+\Delta}{4}+\frac{h_{b}}{2}+\frac{-b_{1}-b_{2}+b_{3}}{2}\nonumber \\
+b & = & \frac{1-\Delta}{4}-\frac{h_{b}}{2}+\frac{-b_{1}+b_{2}-b_{3}}{2}\\
+c & = & \frac{\Delta-1}{4}+\frac{h_{b}}{2}+\epsilon+\frac{b_{1}-b_{2}-b_{3}}{2}\nonumber
+\end{eqnarray}
+在横坐标$\Delta$，纵坐标$h_b$的坐标系下，即给定一个参数点$(h_b,\Delta)$，需要调节$\epsilon$以及$b_1,b_2,b_3$使该点在直线$(1-\Delta)/4-h_{b}/2+(-b_{1}+b_{2}+b_{3})/2=0$下方，
+在直线$(1+\Delta)/4+h_{b}/2+(-b_{1}-b_{2}+b_{3})/2=0$以及$(\Delta-1)/4+h_{b}/2+\epsilon+(b_{1}-b_{2}-b_{3})/2=0$上方。对图\ref{dloop}中其他类也可以列出类似
+的方程组并求解，由于节点权重的对称性，虽然有$8$类方程组，但实际上有$4$类列出来的方程组和方程\ref{eq2.80}一样，另外$4$类列出来的方程组也是一样的，对应的设为
+$a^{'},b^{'},c^{'},b_{1}^{'},b_{2}^{'},b_{3}^{'}$，解的相图可以用图\ref{dlpd}以及表\ref{dlso}所示，磁场取负值时根据对称性也可以很容易地得到对应的相图，
+需要说明的是并没有严格的程序决定$\epsilon$的取值，在$\epsilon_{min}=0$的情况，计算结果表明让它取略大于$0$的值程序效率更高\cite{2sse3}。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{dlpd}
+\caption{Phase diagram corresponding to Table \ref{dlso}(Fig.9 in \cite{2sse3})}
+\label{dlpd}
+\end{figure}
+\begin{table}[htbp]
+\centering
+\caption{Solution minimizing bounce weights(Table.I in \cite{2sse3})}
+\label{dlso}
+\begin{tabular}{c c c c}
+\hline
+\hline
+&Bounce weights & & $\epsilon_{min}$\tabularnewline
+\hline
+I &  &  & $(\Delta^{-}-h_{b})/2$\tabularnewline
+II & $b_{2}=h_{b}-\Delta^{-}$ & $b_{2}^{'}=-h_{b}-\Delta^{-}$ & 0\tabularnewline
+III & $b_{2}=h_{b}-\Delta^{-}$ &  & 0\tabularnewline
+IV & $b_{2}=h_{b}-\Delta^{-}$ & $b_{3}^{'}=h_{b}-\Delta^{+}$ & 0\tabularnewline
+V &  & $b_{3}^{'}=h_{b}-\Delta^{+}$ & $(\Delta^{-}-h_{b})/2$\tabularnewline
+VI & $b_{3}=-h_{b}-\Delta^{+}$ & $b_{3}^{'}=h_{b}-\Delta^{+}$ & $-h_b-\Delta/2$\tabularnewline
+\hline
+\hline
+\end{tabular}
+\end{table}
+表\ref{dlso}中的$\Delta^{\pm}=(1\pm\Delta)/2$，可以看到在各向同性无外场时，最优解即决定性的算符环算法，对于无外场XY模型($\Delta=0$)，令$\epsilon=1/4$或者$1/2$
+都可以得到没有反弹过程的解。
+算符环在构造过程中已经考虑到了磁场的影响，所以克服了世界线环算法在有外场情况下环翻转接受概率低的问题，方向性算符环又指明了一种更加有效地构造环的方式，
+更多关于方向性环算法的效率问题参考Sandvik的文章。\\
+3，整个$(\alpha,S_n)$更新过程的最后一步是对整个虚时过程$0-\beta$中都没有被算符作用过的独立自旋(如图\ref{sseloop}中的第一个自旋)以$1/2$概率独立翻转。
+
+在随机级数展开框架下的物理量的统计方法参考\cite{2sseobs,2windnuminsse}，方向性环算法的应用及其推广参考\cite{2sseapp,2jq,2gdl}。
+
+
+\section{价键基矢投影蒙特卡洛方法}
+前两节介绍的都是有限温度下的量子蒙特卡洛方法，出发点都是配分函数，为了得到基态的性质，都是把温度取得足够低以至于有限温度效应可以忽略，严格一点的做法是模拟
+几种不同温度然后插值到零温，这样就增大了计算量。对于有些量子相变问题，比如JQ模型\cite{2jq2}中可能存在的退禁闭量子临界现象(deconfined quantum criticality)\cite{2dqcp}，需要模拟更大尺寸的体系才能得到更可靠的结论，这时能有一种零温的蒙特卡洛方法将是一种更好的选择。本节介绍的价键基矢投影蒙特卡洛方法的思想
+起源于$80$年代末Liang为研究一些基于价键态理论的基态提出的一种变分和投影框架\cite{2liang}，而后这种在价键态表象下的变分及投影方法为Sandvik
+所发展\cite{2vbs}，下面将在价键基矢以及$S^z$的共同表象\cite{2vbs2}里介绍这种方法。
+
+价键即表示两自旋间形成了自旋单态，根据Lieb-Mattis理论\cite{2lieb}，对于一个没有阻搓的反铁磁系统，它的基态$|\psi_{0}\rangle$必须满足$S=0$，而许多价键耦合之后得到的态是在
+单态区域(singlet sector)的($S=0$)，因此不同的价键配对方式得到的态可以作为对反铁磁系统基态进行展开的一组基矢，如图\ref{vb}所示即为两种价键配对方式，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{vb}
+\caption{Valence bond basis pattern}
+\label{vb}
+\end{figure}
+红色和绿色表示两套子格子A和B，蓝键即表示它所连接的两自旋形成了自旋单态，左图的价键总是由不同子格子的自旋配对而成，右图则包含了有同一子格子内部自旋构成的价键。
+根据Marshall符号规则\cite{2marshall}，如果在$S^{z}$表象下对基态进行展开，
+\begin{equation}
+|\psi_{0}\rangle=\sum_{\alpha}(-1)^{\Gamma(\alpha)}f_{\alpha}|\sigma_{\alpha}\rangle
+\label{eq2.83}
+\end{equation}
+其中$|\sigma_{\alpha}\rangle$是$S^z$表象下的一个基矢，$\Gamma(\alpha)$是$|\sigma_{\alpha}\rangle$中A子格子中自旋朝下的数目，$f_{\alpha}$非负，如果对价键做一个定义上的规范，
+\begin{equation}
+(a,b)=(|\uparrow_{a}\downarrow_{b}\rangle-|\downarrow_{a}\uparrow_{b}\rangle)/\sqrt{2}
+\end{equation}
+其中a属于子格子A，b属于子格子B，则基态$\psi_{0}$可以在价键基矢下进行展开，
+\begin{equation}
+|\psi_{0}\rangle=\sum_{\alpha}f_{\alpha}|(a_{1}^{\alpha},b_{1}^{\alpha})\ldots(a_{N/2}^{\alpha},b_{N/2}^{\alpha})\rangle=\sum_{\alpha}f_{\alpha}|V_{\alpha}\rangle
+\label{eq2.85}
+\end{equation}
+其中$|V_{\alpha}\rangle$即为一种价键配对方式所代表的价键基矢
+\begin{equation}
+|V_{\alpha}\rangle=\frac{1}{2^{N/4}}\sum_{i=1}^{2^{N/2}}(-1)^{A_{\downarrow}(\alpha,i)}|S_{1}^{z}(\alpha,i),\ldots,S_{N}^{z}(\alpha,i)\rangle=\frac{1}{2^{N/4}}\sum_{i=1}^{2^{N/2}}(-1)^{A_{\downarrow}(\alpha,i)}|Z_{i}^{\alpha}\rangle
+\end{equation}
+其中$i$表示某种与$|V_{\alpha}\rangle$匹配的$S^{z}$表象的自旋表示，如图\ref{vbsz}，$A_{\downarrow}(\alpha,i)$为$(\alpha,i)$中A子格子自旋朝下的数目，即方程
+\label{eq2.83}中的$\Gamma(\alpha)$，所以按方程\label{eq2.85}方式在价键基矢下展开时可以保证展开系数$f_{\alpha}$的正定性，这就为蒙特卡洛模拟提供了一种可能性。
+还需要说明的是，像图\ref{vb}中右图所示的包含由同一子格子内部自旋形成的价键的基矢对$|\psi_{0}\rangle$是没有贡献的，可以证明
+\begin{equation}
+(a,c)(b,d)=(a,b)(c,d)-(a,d)(c,b)\hspace{10mm}(a,c\in A,\hspace{2mm}b,d\in B)
+\end{equation}
+因为上式包含$-(a,d)(c,b)$，所以要想满足Marshall符号规则，展开时所用的价键基矢只能(或者说只需要)由A，B之间的自旋形成的价键构成，如图\ref{vb}左图所示，
+在这个限制下我们可以得到对于由N个自旋构成的体系，其价键基矢的数目为$(N/2)!$，而体系的单态区域构成的希尔伯特子空间维度可以证明是$\frac{N!}{(N/2)!(N/2+1)!}$，
+价键基矢数目大于希尔伯特子空间维度，所以价键基矢是超完备的，与谐振子相干态一样，它们之间也不是正交的，可以证明
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{vbsz}
+\caption{Combined spin and valence bond basis pattern}
+\label{vbsz}
+\end{figure}
+\begin{equation}
+\langle V_{l}|V_{r}\rangle=\frac{1}{2^{N/2}}\sum_{i,j}\langle Z_{j}^{l}|Z_{i}^{r}\rangle(-1)^{A_{\downarrow}(r,i)+A_{\downarrow}(l,j)}=2^{N_{loop}-N/2}
+\end{equation}
+上式中$N_{loop}$表示由$\langle V_{l}|V_{r}\rangle$叠加在一起构成的图样(Transposition graph)中环的数目，如图\ref{vbloop}所示，由于超完备性，基态在价键基矢下的展开
+\begin{equation}
+|\psi_{0}\rangle=\sum_{r}w_{r}|V_{r}\rangle
+\end{equation}
+不是唯一的。还可以证明如下关系式，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.38]{vbloop}
+\caption{Transposition graph of $\langle V_{l}|V_{r}\rangle$}
+\label{vbloop}
+\end{figure}
+\begin{equation}
+\frac{\langle V_{l}|S_{i}\cdot S_{j}|V_{r}\rangle}{\langle V_{l}|V_{r}\rangle}=
+\begin{cases}
++3/4,\hspace{4mm}\mathrm{if}\hspace{1mm} i,j \hspace{1mm}\in\hspace{1mm} \mathrm{same}\hspace{1mm} \mathrm{loop},\hspace{1mm} \mathrm{same}\hspace{1mm} \mathrm{sublattice}.\\
+-3/4,\hspace{4mm}\mathrm{if}\hspace{1mm} i,j \hspace{1mm}\in\hspace{1mm} \mathrm{same}\hspace{1mm} \mathrm{loop},\hspace{1mm} \mathrm{different}\hspace{1mm} \mathrm{sublattices}.\\
+0,\hspace{11.5mm}\mathrm{if}\hspace{1mm} i,j\hspace{1mm} \in\hspace{1mm} \mathrm{different}\hspace{1mm} \mathrm{loops}.
+\end{cases}
+\label{eq2.90}
+\end{equation}
+与环相关的更加复杂的矩阵元可以参考文献\cite{2ksdbeach}。
+
+知道了价键基矢的基本概念和性质，就可以利用这些性质来设计算法求出基态，有两种方式，一种是变分的方式，还有一种是投影的方式。变分得到的基态也可以作为
+投影算法的初始态，以得到更精确的基态。$88$年Liang提出基态具有如下幅度乘积态(amplitude product state)的变分形式，
+\begin{equation}
+w_{r}=\prod_{b=1}^{N/2}h(x_{b}^{r},y_{b}^{r})
+\end{equation}
+即基态在某个价键基矢$|V_{r}\rangle$的展开系数等于构成这个基矢的所有价键的幅度乘积，通常更简单的认为$h$只与价键$b$的曼哈顿距离$l_{b}$(Manhattan length)有关系，如图\ref{aps}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{aps}
+\caption{Variational amplitude product state}
+\label{aps}
+\end{figure}
+不同键长所对应的幅度即为变分过程要优化的参数。由能量在价键基矢表象下的表达式
+\begin{equation}
+E=\frac{\langle\psi|H|\psi\rangle}{\langle\psi|\psi\rangle}=\frac{\sum_{lr}W_{lr}E_{lr}}{\sum_{lr}W_{lr}}
+\end{equation}
+可知变分过程就是要对$\langle V_{l}|V_{r}\rangle$构成的叠加样式按照概率
+\begin{equation}
+W_{lr}=w_{l}w_{r}\langle V_{l}|V_{r}\rangle
+\end{equation}
+进行重要性抽样，而一个确定的叠加样式所对应的能量为
+\begin{equation}
+E_{lr}=\frac{\langle V_{l}|H|V_{r}\rangle}{\langle V_{l}|V_{r}\rangle}
+\end{equation}
+这可以很容易由方程\ref{eq2.90}等求得。一般通过两个价键互相重新配对(two bond reconfiguration)来更新叠加样式，比如在$|V_{r}\rangle$(或$\langle V_{l}|$)中随机选择两个价键$(a,b)$和$(c,d)$，然后让它们成键方式更新为$(a,d)$和$(c,b)$，如图\ref{2br}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{2br}
+\caption{Two bond reconfiguration}
+\label{2br}
+\end{figure}
+这个过程的接受概率为
+\begin{equation}
+P_{accept}=\mathrm{min}[\frac{h(x_{1}^{r^{'}},y_{1}^{r^{'}})h(x_{2}^{r^{'}},y_{2}^{r^{'}})}{h(x_{1}^{r},y_{1}^{r})h(x_{2}^{r},y_{2}^{r})}2^{N_{loop}^{\langle l|r^{'}\rangle}-N_{loop}^{\langle l|r\rangle}}]
+\end{equation}
+其中$N_{loop}^{\langle l|r^{'}\rangle}-N_{loop}^{\langle l|r\rangle}=\pm1$，要判断这个过程中环数目的变化情况，就要弄清楚在$\langle V_{l}|V_{r}\rangle$叠加样式中$a,b,c,d$四个自旋是否在同一环内，这使得一个局域的翻转操作牵涉到一个非局域的遍历操作，Staggered磁化强度$M_{s}$与环长度
+$L_{\lambda}$具有如下关系
+\begin{equation}
+M_{s}^{2}=\frac{1}{N^{2}}\sum_{ij}\phi_{i}\phi_{j}S_{i}\cdot S_{j}=\frac{1}{N^{2}}\sum_{\lambda=1}^{N_{loop}}L_{\lambda}^{2}
+\end{equation}
+而选中环$L_i$的概率为$L_{i}/N$，所以环的平均长度为$\langle L_{i}\rangle=N\langle M_{s}^{2}\rangle$，当体系具有长程序时，环的平均长度将是$N$量级的，所以导致在价键基矢下这种翻转方式效率不高。Sandvik和Evertz提出在
+价键基矢以及$S^z$的共同表象下来进行这个翻转操作，从一个互相匹配的样式$(V_l,V_r,Z_i^{lr})$(如图\ref{vbsz})出发，同样执行一个两键重新配对的操作时的接受概率为
+\begin{equation}
+P_{accept}=\mathrm{min}[\frac{h(x_{1}^{r^{'}},y_{1}^{r^{'}})h(x_{2}^{r^{'}},y_{2}^{r^{'}})}{h(x_{1}^{r},y_{1}^{r})h(x_{2}^{r},y_{2}^{r})}\delta_{\langle l|r^{'}\rangle,Z}]
+\end{equation}
+这时不需要判断重新配对后叠加样式中环数目的变化情况，而只需要看是否与自旋匹配就行了，这是一个局域的判断操作，从而提高了效率。在这种联合表象下除了
+两键重新配对的翻转方式之外，还有一种更有效的环更新方式，如图\ref{bondloop}所示，先为所有可能的$h(l)$创建一个热泳概率表，在$|V_{r}\rangle$(或$\langle V_{l}|$)中随机选择一个格点$i_0$(与$j_0$成键)，然后按照建好的热泳概率表找出一个试探格点$i^{'}$(与$j^{'}$成键)，如果$i^{'}$与$i$自旋一样，则令$j_0$与
+$i^{'}$成键，如果自旋不一样则重复找试探格点直到找到自旋匹配的格点为止，重复上述操作为$j^{'}$寻找新的成键格点，这个过程中始终有两个
+缺陷(defect)$i_0$和$j^{'}$没有成键，直到某一次为$j^{'}$寻找成键格点时刚好选择了$i_0$，则两个缺陷刚好融合，整个过程就形成一个环，通过这种方式可以大范围的
+更新价键排布图样，然后对一个新的$(V_l,V_r,Z_i^{lr})$组态重复上述环翻转操作。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{bondloop}
+\caption{Bond-loop updates}
+\label{bondloop}
+\end{figure}
+
+一个蒙特卡洛步可以视为进行了$N$次两键重新配对翻转操作，或进行了总长度为$N$的价键环翻转操作，模拟一定步数的蒙特卡洛步之后，可以得到一些物理量如能量的平均值，
+然后更新$h(l)$再继续模拟一定步数，如此重复操作直到能量和$h(l)$收敛，$h(l)$的更新方式有很多种，有利用$\frac{\partial\langle E\rangle}{\partial h(l)}$的如文献\cite{2lou}，也有利用与幅度$h(l)$呈单调递增关系的$l$键出现概率$P(l)$的如文献\cite{2sovs}，数值结果表明$h(l)$和$P(l)$正比于$1/l^3$，变分得到的基态能量会稍微偏高，
+但是得到的基态可以作为下面投影蒙特卡洛过程的很好的初始态。
+
+投影蒙特卡洛方法的基本思想是从一个与基态有叠加的波函数$|\psi\rangle$出发，通过下面的投影操作
+\begin{equation}
+(C-H)^{m}|\psi\rangle=c_{0}(C-E_{0})^{m}[|0\rangle+\sum_{n}\frac{c_{n}}{c_{0}}(\frac{C-E_{n}}{C-E_{0}})^{m}|n\rangle]
+\end{equation}
+当$C$为一个大于系统能量上限的值，且$m$无穷大时，上式右边就只留下了基态$|0\rangle$，通常令$H_{ab}=1/4-S_{a}\cdot S_{b}$，则$C-H=\sum_{\langle a,b \rangle}H_{ab}$，投影算符可以用$H_{ab}$来展开，
+\begin{equation}
+(C-H)^{m}=\sum_{\alpha}\prod_{i=1}^{m}H_{a_{i}^{\alpha}b_{i}^{\alpha}}=\sum_{\alpha}P_{\alpha}
+\end{equation}
+又由如下关系式
+\begin{eqnarray}
+H_{ab}|\cdots(a,b)\cdots\rangle & = & |\cdots(a,b)\cdots\rangle\\
+H_{bc}|\cdots(a,b)\cdots(c,d)\cdots\rangle & = & \frac{1}{2}|\cdots(c,b)\cdots(a,d)\cdots\label{eq2.101}\rangle
+\end{eqnarray}
+可得
+\begin{equation}
+P_{\alpha}|V_{r}\rangle=(\frac{1}{2})^{o_{\alpha}^{r}}|V_{r}(\alpha)\rangle
+\end{equation}
+其中$o_{\alpha}^{r}$为算符序列$P_\alpha$作用过程中非对角操作(方程\ref{eq2.101})的数目，在这种价键基矢投影框架下物理量的平均值为
+\begin{equation}
+\langle O\rangle=\frac{\langle\psi|(C-H)^{m}O(C-H)^{m}|\psi\rangle}{\langle\psi|(-H)^{2m}|\psi\rangle}=\sum_{lr\alpha\beta}W_{lr}^{\alpha\beta}O_{lr}^{\alpha\beta}/\sum_{lr\alpha\beta}W_{lr}^{\alpha\beta}
+\label{eq2.103}
+\end{equation}
+其中
+\begin{eqnarray}
+W_{lr}^{\alpha\beta} & = & w_{l}w_{r}\langle V_{l}(\beta)|V_{r}(\alpha)\rangle2^{-(o_{r}^{\alpha}+o_{l}^{\beta})}\\
+O_{lr}^{\alpha\beta} & = & \langle V_{l}(\beta)|O|V_{r}(\alpha)\rangle/\langle V_{l}(\beta)|V_{r}(\alpha)\rangle\label{eq2.105}
+\end{eqnarray}
+由方程\ref{eq2.103}可知价键基矢投影蒙特卡洛方法的过程就是对$|V_r\rangle,|V_l\rangle,P_\alpha,P_\beta$进行重要性抽样的过程，如图\ref{vbpq}所示，
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{vbpq}
+\caption{Graph of projection in valence bond basis}
+\label{vbpq}
+\end{figure}
+根据变分求得的$h(l)$来更新$|V_r\rangle,|V_l\rangle$，对$P_\alpha,P_\beta$的更新方式是对这两个算符序列随机替换其中的一个或多个算符，然后按如下概率决定替换是否接受
+\begin{equation}
+P_{accept}=\mathrm{min}[1,\frac{\langle V_{l}(\beta^{'})|V_{r}(\alpha^{'})\rangle2^{-(o_{r}^{\alpha^{'}}+o_{l}^{\beta^{'}})}}{\langle V_{l}(\beta)|V_{r}(\alpha)\rangle2^{-(o_{r}^{\alpha}+o_{l}^{\beta})}}]
+\end{equation}
+可是对算符序列的一个局域替换操作需要重新计算整个新序列作用在$|V_r\rangle$或$|V_l\rangle$后得到的结果，这不是最有效的一种方式。同样在$(V_l,V_r,Z_i^{lr})$的联合表象下，可以通过算符环算法来提高效率，与随机级数展开方法类似，将
+$H_{ab}$分为对角和非对角部分，
+\begin{eqnarray}
+H_{ab}(1) & = & \frac{1}{4}-S_{a}^{z}S_{b}^{z}\\
+H_{ab}(2) & = & -\frac{1}{2}(S_{a}^{+}S_{b}^{-}+S_{a}^{-}S_{b}^{+})
+\end{eqnarray}
+则算符序列$P_{\alpha}\rightarrow P_{\alpha}^{e}$，联合表象下的基矢用$|Z_{i}^{r}\rangle$和$|Z_{j}^{l}\rangle$来表示，则一个$(|Z_{i}^{r}\rangle,|Z_{j}^{l}\rangle,P_{\alpha}^{e},P_{\beta}^{f})$所对应的投影样式如图\ref{vbpq2}所示，其权重为
+\begin{equation}
+W_{lr,ij}^{\alpha\beta,ef}=w_{l}w_{r}(\frac{1}{2})^{2m+N/2}\delta_{P_{\alpha}^{e}|Z_{i}^{r}\rangle,P_{\beta}^{f}|Z_{j}^{l}\rangle}
+\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{vbpq2}
+\caption{Graph of projection in combined basis(Adapted from Fig.4 in \cite{2vbs2})}
+\label{vbpq2}
+\end{figure}
+联合表象下的投影图样与随机级数展开下的世界线图十分相似，不过投影图样的两端(对应于世界线图的虚时$0$和$\beta$)不需要满足周期边界条件，也没有单位算符，
+整个图样的翻转操作有如下$3$步：\\
+1，对角翻转，遍历算符序列$(P_{\beta}^{f})^{T}P_{\alpha}^{e}$作用在$|Z_{i}^{r}\rangle$的过程中，碰到对角算符$H_{ab}(1)$，随机找一个连接两相反自旋
+的键所对应的对角算符来代替当前对角算符，与随机级数展开中的对角翻转一样，碰到非对角算符也需要更新$Z(p)$的状态以便在下次对角翻转时需要用到；\\
+2，环翻转，如图\ref{vbpq2}蓝线所示，通过两端价键的连接以及中间的算符对应的腿之间的连接会形成环，然后对环以$1/2$概率翻转其中包含的自旋并更新相关算符类型，
+这个过程与随机级数展开下的决定性环翻转方式几乎一样；\\
+3，两端的价键基矢的更新操作，可以用前面讲的键环翻转方式。
+
+物理量的统计可以在联合表象下的时间中线(图\ref{vbpq2}虚线)所对应的态$Z_{i}^{r}(\alpha,e)=Z_{j}^{l}(\beta,f)$下进行测量，也可以利用方程\ref{eq2.105}
+在中线左右两边的$\langle V_l(\beta)|$和$|V_r(\alpha)\rangle$构成的叠加图样上进行，而这个叠加图样可以通过穿过中线的算符环结构来得到，将$Z_{i}^{r}(\alpha,e)$和$Z_{j}^{l}(\beta,f)$
+的对应格点连接起来，每条线段都将穿过且垂直与时间中线，每条线段都有一个标识符表示它所属的算符环的编号，则在$\langle V_l(\beta)|V_r(\alpha)\rangle$叠加图样中由相同标识符的线段所连接的格点是属于同一个价键环的。基于价键基矢的蒙特卡洛方法描述VBS-Neel相变\cite{2vbsneel}具有直观方便
+的优点，同时还可以定义在价键基矢下的价键纠缠熵\cite{2vbee}，数值结果表明在一维情况价键纠缠熵具有与冯纽曼纠缠熵极其相似的性质，高维下的价键纠缠熵的数值结果对理解
+高维冯纽曼纠缠熵也具有指导意义。
+
+\section{ALPS软件包简介}
+ALPS(Algorithms and Libraries for Physics Simulaitons)\cite{2alps}是一个旨在模拟强关联量子系统的开源软件包，它包含有蒙特卡洛方法，精确对角化\cite{2ed}，密度矩阵重正化群\cite{2dmrg}，动力学平均场\cite{2dmft}和TEBD\cite{2tebd}这$5$个计算模块，
+当前ALPS具备了主流的数值计算能力，可以应对各种不同的数值计算要求，不过在处理较为复杂的系统仍然存在一定的困难，比如存在关联多个格点的相互作用
+的情况(JQ模型)。ALPS可以自定义格子类型，相互作用形式以及要测量的物理量，具体的安装(Setup and Installation)以及使用方法(Tutorials)可以参考其主页和\cite{2alps2}。现在的$2.0$版本已经支持Python\cite{2python}脚本方式来运行ALPS，这相比以前的命令行模式要方便很多，包括格子和模型的选择，
+模拟参数的给定，物理量的测量甚至最后的数据处理都可以写在一个Python脚本里，一个典型的进行蒙特卡洛模拟的脚本文件如图\ref{pyscript}所示，其中用到的模拟命令
+spinmc表示这是进行一个经典蒙特卡洛模拟，蒙特卡洛模块下的其他命令及其适用范围还有looper：世界线环算法，具有自旋翻转对称性的自旋模型或粒子空穴对称性的玻色子模型；
+dirloop\_sse：方向性环算法，破坏了自旋翻转对称性的模型如外场下的Heisenberg模型；worm：蠕虫算法，玻色哈伯德模型以及强场下的自旋模型；
+quantum Wang-Landau：量子王-朗道算法\cite{2qwl}，主要用于计算自由能和熵。
+无外场下的简单的Heisenberg模型可以用任意一种算法来模拟，环算法的适用范围比较窄，但是在其适用范围之内相比其他算法有最短的自关联时间，表现最好。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{pyscript}
+\caption{A sample python script for ALPS simulation}
+\label{pyscript}
+\end{figure}
+
+
+
+\begin{thebibliography}{999}
+
+\bibitem{2handscomb}
+D.C. Handscomb, {\it The Monte Carlo method in quantum statistical mechanics}, Proc. Cambridge Philos. Soc. \textbf{58}, 594 (1962);\\
+D.C. Handscomb, {\it A Monte Carlo method applied to the Heisenberg ferromagnet}, Proc. Cambridge Philos. Soc. \textbf{60}, 115 (1964).
+
+\bibitem{2suzuki}
+M. Suzuki, {\it Relationship between d-Dimensional Quantal Spin Systems and (d+1)-Dimensional Ising Systems}, Prog. Theor. Phys. \textbf{56}, 1454 (1976);\\
+M. Suzuki, S. Miyashita, and A. Kuroda, {\it Monte Carlo simulation of quantum spin systems. I.}, Prog. Theor. Phys. \textbf{58}, 1377 (1977).
+
+\bibitem{2sign}
+M. Takasu, S. Miyashita, and M. Suzuki, {\it Monte Carlo Simulation of Quantum Heisenberg Magnets on the Triangular Lattice}, Prog. Theor. Phys. \textbf{75}, 1254 (1986).
+
+\bibitem{2sign2}
+J.E. Hirsch, R.L. Sugar, D.J. Scalapino, and R. Blankenbecler, {\it Monte Carlo simulations of one-dimensional fermion systems}, Phys. Rev. B \textbf{26}, 5033 (1982).
+
+\bibitem{2sign3}
+P. Henelius and A.W. Sandvik, {\it Sign problem in Monte Carlo simulations of frustrated quantum spin systems}, Phys. Rev. B \textbf{62}, 1102 (2000).
+
+\bibitem{2luprob}
+N. Kawashima and K. Harada, {\it Recent Developments of World-Line Monte Carlo Methods}, J. Phys. Soc. Jpn. \textbf{73}, 1379 (2004).
+
+\bibitem{2windnum}
+P. Henelius, S.M. Girvin, and A.W. Sandvik, {\it Role of winding numbers in quantum Monte Carlo simulation}, Phys. Rev. B \textbf{57}, 13382 (1998).
+
+\bibitem{2windnuminwl}
+F.F. Assaad and H.G. Evertz, {\it World-line and Determinantal Quantum Monte Carlo Methods for Spins, Phonons and Electrons}, Lect. Notes Phys. \textbf{739}, 277 (2008).
+
+\bibitem{2windnuminsse}
+A.W. Sandvik, {\it Finite-size scaling of the ground-state parameters of the two-dimensional Heisenberg model}, Phys. Rev. B \textbf{56}, 11678 (1997).
+
+\bibitem{2wlloop}
+H.G. Evertz, G. Lana, and M. Marcu, {\it Cluster algorithm for vertex models}, Phys. Rev. Lett. \textbf{70}, 875 (1993).
+
+\bibitem{2vtxmodel}
+R.J. Baxter, \textbf{Exactly Solved Models in Statistical Mechanics} (Academic, New York, 1989);\\
+E.H. Lieb and F.Y. Wu, \textbf{Phase Transitions and Critical Phenomena}, (Academic, New York, 1972), Vol. 1, p. 331.
+
+\bibitem{2wlct}
+B.B. Beard and U.-J. Wiese, {\it Simulations of Discrete Quantum Systems in Continuous Euclidean Time}, Phys. Rev. Lett. \textbf{77}, 5130 (1996).
+
+\bibitem{2wlct2}
+N.V. Prokof'ev, B.V. Svistunov, and I.S. Tupitsyn, {\it Exact Quantum Monte Carlo Process for the Statistics of Discrete Systems}, arxiv:cond-mat/9612091.
+
+\bibitem{2worm}
+N.V. Prokof'ev, B.V. Svistunov, and I.S. Tupitsyn, {\it Exact, complete, and universal continuous-time worldline Monte Carlo approach to the statistics of discrete quantum systems}, JETP \textbf{87}, 310 (1998);\\
+N.V. Prokof'ev, B.V. Svistunov, and I.S. Tupitsyn, {\it "Worm" algorithm in quantum Monte Carlo simulations}, Phys. Lett. A \textbf{238}, 253 (1998).
+
+\bibitem{2sse}
+A.W. Sandvik and J. Kurkijarvi, {\it Quantum Monte Carlo simulation method for spin systems}, Phys. Rev. B \textbf{43}, 5950 (1991).
+
+\bibitem{2sse2}
+A.W. Sandvik, {\it Stochastic series expansion method with operator-loop update}, Phys. Rev. B \textbf{59}, R14157 (1999).
+
+\bibitem{2sse3}
+O.F. Syljuasen and A.W. Sandvik, {\it Quantum Monte Carlo with directed loops}, Phys. Rev. E \textbf{66}, 046701 (2002).
+
+\bibitem{2sign4}
+M. Troyer and U.-J. Wiese, {\it Computational Complexity and Fundamental Limitations to Fermionic Quantum Monte Carlo Simulations}, Phys. Rev. Lett. \textbf{94}, 170201 (2005).
+
+\bibitem{2afqmc}
+R. Blankenbecler, D.J. Scalapino, and R.L. Sugar, {\it Monte Carlo calculations of coupled boson-fermion systems. I}, Phys. Rev. D \textbf{24}, 2278 (1981);\\
+G. Sugiyama and S.E. Koonin, {\it Auxiliary field Monte-Carlo for quantum many-body ground states }, Ann. Phys. (N.Y.) \textbf{168}, 1 (1986).
+
+\bibitem{2dqmc}
+R.R. dos Santos, {\it Introduction to quantum Monte Carlo simulations for fermionic systems}, Braz. J. Phys. \textbf{33}, 36 (2003).
+
+\bibitem{2gfqmc}
+D.M. Ceperley and M.H. Kalos, in \textbf{Monte Carlo Methods in Statistical Physics}, edited by K. Binder (Springer-Verlag, Heidelberg, 1979)
+
+\bibitem{2zsw}
+Shiwei Zhang, J. Carlson, and J.E. Gubernatis, {\it Constrained Path Quantum Monte Carlo Method for Fermion Ground States}, Phys. Rev. Lett. \textbf{74}, 3652 (1995);\\
+Shiwei Zhang, J. Carlson, and J.E. Gubernatis, {\it Constrained path Monte Carlo method for fermion ground states}, Phys. Rev. B \textbf{55}, 7464 (1997).
+
+\bibitem{2piqmc}
+D.M. Ceperley, {\it Path integrals in the theory of condensed helium}, Rev. Mod. Phys. \textbf{67}, 279 (1995).
+
+\bibitem{2dqmc2}
+W.M.C. Foulkes, L. Mitas, R.J. Needs, and G. Rajagopal, {\it Quantum Monte Carlo simulations of solids}, Rev. Mod. Phys. \textbf{73}, 33 (2001).
+
+\bibitem{2sw}
+R.H. Swendsen and J.-S. Wang, {\it Nonuniversal critical dynamics in Monte Carlo simulations}, Phys. Rev. Lett. \textbf{58}, 86 (1987).
+
+\bibitem{2looprev}
+H.G. Evertz: {\it The loop algorithm}, Adv. Phys. \textbf{52} (2003).
+
+\bibitem{2dualmc}
+D. Kandel and E. Domany, {\it General cluster Monte Carlo dynamics}, Phys. Rev. B \textbf{43}, 8539 (1991);\\
+N. Kawashima and J. E. Gubernatis, {\it Generalizaiton of the Fortuin-Kasteleyn Transformation and Its Application to Quantum Spin Simulations}, J. Stat. Phys. \textbf{80} (1995).
+
+\bibitem{2fk}
+P.W. Kasteleyn and C.M. Fortuin, J. Phys. Soc. Jpn. Suppl. \textbf{26}(Suppl.), 11 (1969);\\
+C.M. Fortuin and P.W. Kasteleyn, {\it On the random-cluster model: I. Introduction and relation to other models}, Physica (Utrecht) \textbf{57}, 536 (1972).
+
+\bibitem{2hk}
+J. Hoshen and R. Kopelman, {\it Percolation and cluster distribution. I. Cluster multiple labeling technique and critical concentration algorithm}, Phys. Rev. B \textbf{14}, 3438 (1976).
+
+\bibitem{2wlie}
+R.Brower, S. Chandrasekharan, and U.-W. Wiese, {\it Green's functions from quantum cluster algorithms}, Physica A \textbf{261}, 520 (1998).
+
+\bibitem{2sseobs}
+A.W. Sandvik, {\it A generalization of Handscomb's quantum Monte Carlo scheme-application to the 1D Hubbard model}, J. Phys. A \textbf{25}, 3667 (1992).
+
+\bibitem{2sseapp}
+O.F. Syljuasen, {\it Directed loop updates for quantum lattice models}, Phys. Rev. E \textbf{67}, 046701 (2003).
+
+\bibitem{2jq}
+A.W. Sandvik, S. Daul, R.R.P. Singh, and D.J. Scalapino, {\it Striped Phase in a Quantum XY Model with Ring Exchange}, Phys. Rev. Lett. \textbf{89}, 247201 (2002).
+
+\bibitem{2gdl}
+F. Alet, S. Wessel, and M. Troyer, {\it Generalized directed loop method for quantum Monte Carlo simulations}, Phys. Rev. E \textbf{71}, 036706 (2005).
+
+\bibitem{2jq2}
+A.W. Sandvik, {\it Evidence for Deconfined Quantum Criticality in a Two-Dimensional Heisenberg Model with Four-Spin Interactions}, Phys. Rev. Lett. \textbf{98}, 227202 (2007);\\
+A.W. Sandvik, {\it Continuous Quantum Phase Transition between an Antiferromagnet and a Valence-Bond Solid in Two Dimensions: Evidence for Logarithmic Corrections to Scaling}, Phys. Rev. Lett. \textbf{104}, 172201 (2010).
+
+\bibitem{2dqcp}
+T. Senthil, A. Vishwanath, L. Balents, S. Sachdev, and M.P.A. Fisher, {\it Deconfined Quantum Critical Points}, Science \textbf{303}, 1490 (2004);\\
+T. Senthil, L. Balents, S. Sachdev, A.Vishwanath, and M.P.A. Fisher, {\it Quantum criticality beyond the Landau-Ginzburg-Wilson paradigm}, Phys. Rev. B \textbf{70}, 144407 (2004).
+
+\bibitem{2liang}
+S. Liang, B. Doucot, and P.W. Anderson, {\it Some New Variational Resonating-Valence-Bond-Type Wave Functions for the Spin-1/2 Antiferromagnetic Heisenberg Model on a Square Lattice}, Phys. Rev. Lett. \textbf{61}, 365 (1988);\\
+S. Liang, {\it Monte Carlo calculations of the correlation functions for Heisenberg spin chains at T=0}, Phys. Rev. Lett. \textbf{64}, 1597 (1990);\\
+S. Liang, {\it Existence of Néel order at T=0 in the spin-1/2 antiferromagnetic Heisenberg model on a square lattice}, Phys. Rev. B \textbf{42}, 6555 (1990).
+
+\bibitem{2vbs}
+A.W. Sandvik, {\it Ground State Projection of Quantum Spin Systems in the Valence-Bond Basis}, Phys. Rev. Lett. \textbf{95}, 207203 (2005).
+
+\bibitem{2vbs2}
+A.W. Sandvik and H.G. Evertz, {\it Loop updates for variational and projector quantum Monte Carlo simulations in the valence-bond basis}, Phys. Rev. B \textbf{82}, 024407 (2010).
+
+\bibitem{2lieb}
+E.H. Lieb and D. Mattis, {\it Ordering Energy Levels of Interacting Spin Systems}, J. Math. Phys. (N.Y.) \textbf{3}, 749 (1962).
+
+\bibitem{2marshall}
+W. Marshall, {\it Antiferromagnetism}, Proc. R. Soc. A \textbf{232}, 48 (1955).
+
+\bibitem{2ksdbeach}
+K.S.D. Beach and A.W. Sandvik, {\it Some formal results for the valence bond basis}, Nucl. Phys. B \textbf{750}, 142 (2006).
+
+\bibitem{2lou}
+J. Lou and A.W. Sandvik, {\it Variational ground states of two-dimensional antiferromagnets in the valence bond basis}, Phys. Rev. B \textbf{76}, 104432 (2007).
+
+\bibitem{2sovs}
+A.W. Sandvik, K.S.D. Beach, {\it Monte Carlo Simulations of Quantum Spin Systems in the Valence Bond Basis}, arxiv:cond-mat/0704.1469v1.
+
+\bibitem{2vbee}
+F. Alet, S. Capponi, N. Laflorencie, and M. Mambrini, {Valence Bond Entanglement Entropy}, Phys. Rev. Lett. \textbf{99}, 117204 (2007);\\
+R.W. Chhajlany, P. Tomczak, and A. Wojcik, {Topological Estimator of Block Entanglement for Heisenberg Antiferromagnets}, Phys. Rev. Lett. \textbf{99}, 167204 (2007).
+
+\bibitem{2vbsneel}
+K.S.D. Beach and A.W. Sandvik, {\it Valence Bond Solid Phases in a Cubic Antiferromagnet}, Phys. Rev. Lett. \textbf{99}, 047202 (2007).
+
+\bibitem{2alps}
+http://alps.comp-phys.org/mediawiki/index.php/Main\_Page
+
+\bibitem{2ed}
+A.W. Sandvik, {\it Computational Studies of Quantum Spin Systems}, arxiv:cond-mat/1101.3281.
+
+\bibitem{2dmrg}
+S.R. White, {\it Density matrix formulation for quantum renormalization groups}, Phys. Rev. Lett. \textbf{69}, 2863 (1992);\\
+U. Schollwock, {\it The density-matrix renormalization group}, Rev. Mod. Phys. \textbf{77}, 259 (2005).
+
+\bibitem{2dmft}
+G. Kotliar, S.Y. Savrasov, K. Haule, V.S. Oudovenko, O. Parcollet, and C.A. Marianetti, {\it Electronic structure calculations with dynamical mean-field theory}, Rev. Mod. Phys. \textbf{78}, 865 (2006);\\
+E. Gull, A.J. Millis, A.I. Lichtenstein, A.N. Rubtsov, M. Troyer, and P. Werner, {\it Continuous-time Monte Carlo methods for quantum impurity models}, Rev. Mod. Phys. \textbf{83}, 349 (2011).
+
+\bibitem{2tebd}
+http://physics.mines.edu/downloads/software/tebd/
+
+\bibitem{2alps2}
+http://course.zjnu.cn/qm/eWebEditor/uploadfile/2010629185853887.PDF
+
+\bibitem{2python}
+http://woodpecker.org.cn/abyteofpython\_cn/chinese/
+
+\bibitem{2qwl}
+F. Wang and D.P. Landau, {\it Efficient, Multiple-Range Random Walk Algorithm to Calculate the Density of States}, Phys. Rev. Lett. \textbf{86}, 2050 (2001);\\
+F. Wang and D.P. Landau, {\it Determining the density of states for classical statistical models: A random walk algorithm to produce a flat histogram}, Phys. Rev. E \textbf{64}, 056101 (2001).
+
+\end{thebibliography} 

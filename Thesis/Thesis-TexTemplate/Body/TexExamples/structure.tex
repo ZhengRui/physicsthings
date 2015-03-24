@@ -1,0 +1,77 @@
+\chapter{文档结构}
+\section{插入空白}
+
+这是\hspace{1cm}1cm空白.
+
+这是\hspace{4em}4个M空白.
+
+这是\qquad\qquad4个标准字空白.
+
+这也是\hspace{44pt}4个标准字空白.\\
+开始 \dotfill\ 结束\\
+左边 \hrulefill\ 中间 \hrulefill\ 右边\\
+北京 \dotfill\ 8:30 \hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill\hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+北京 \dotfill\ 8:30 \hfill\hfill\hfill\hfill\hfill\hfill\hfill\hfill\hfill
+长沙 \dotfill\ 11:45\\
+\section{制表符}
+\begin{tabbing}
+  \hspace*{10em} \=\hspace{10em}\= sample column \= \kill %kill表示制表符结束，\\也可。
+  % \> for next tab, \\ for new line...
+  aaa \> ba \> cccc \\
+  b \> asdf \> h \\
+  hjk \> k \> kl
+\end{tabbing}
+\section{定义盒子}
+\subsection{LR盒子}
+以下文本\makebox[3.5cm]{居中文本}，多余的地方用空白填充。\\ %r,l,s 为位置
+\framebox[3.5cm][r]{文本}\\ %r,l,s 为位置
+\setlength{\fboxrule}{1pt}
+\framebox[3.5cm][r]{文\dotfill 本}\\
+
+%\begin{minipage}[位置][高度][内部位置] {宽度} 文本 \end{minipage}
+
+\subsection{子段盒子和小页1}
+\begin{minipage}[b]{4.3cm} %b ottom,t op.
+\aaa
+\end{minipage}\hfill
+\begin{minipage}[b]{4.3cm} %b ottom,t op.
+\aaa
+\end{minipage}\hfill
+\begin{minipage}[b]{4.3cm} %bottom,top,center,s
+\aaa
+\end{minipage}\hfill
+
+\subsection{子段盒子和小页2}
+\begin{minipage}[b]{14.3cm} %b ottom,t op.
+
+\begin{minipage}[b][13cm][b]{4.3cm} %b ottom,t op.
+\bbb
+\end{minipage}\hfill
+\begin{minipage}[b][13cm][t]{4.3cm} %b ottom,t op.
+\aaa
+\end{minipage}\hfill
+\begin{minipage}[b][13cm][b]{4.3cm} %bottom,top,center,s
+\bbb
+\end{minipage}\hfill
+
+\end{minipage}\hfill
+
+\section{插入脚注}
+这是一个标准脚注\footnote{第一个}这是一个标准脚注\footnote{第二个}
+
+这是一个非标准脚注\footnote[8]{第88个}

@@ -1,0 +1,2822 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y=\frac{1}{b-a}\int_{a}^{b}f(x)dx
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y_{est}=\frac{1}{N}\sum_{i}F(x_{i})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $N\rightarrow\infty$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p'(x)=\frac{p(x)}{\int_{a}^{b}p(x)dx}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y=\frac{\int_{a}^{b}p(x)dx}{b-a}\frac{\int_{a}^{b}\frac{f(x)}{p(x)}p(x)dx}{\int_{a}^{b}p(x)dx}=\frac{1}{b-a}\int_{a}^{b}\frac{f(x)}{p'(x)}p'(x)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y_{est}=\frac{\int_{a}^{b}p(x)dx}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{p(x_{i})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y_{est}=\frac{1}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{p'(x_{i})}\equiv\frac{\int_{a}^{b}p(x)dx}{b-a}\frac{1}{N}\sum_{i}\frac{f(x_{i})}{p(x_{i})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\bar{O}=\frac{\int_{x\in X}O(x)p(x)dx}{\int_{x\in X}p(x)dx}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\bar{O}_{est}=\frac{1}{N}\sum_{i}O(x_{i})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{mc}\propto N^{-\frac{1}{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{net}\propto N^{-\frac{2}{d}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E=\langle H\rangle_{T}/N
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\textbf{M}=\langle\sum_{i}\overrightarrow{S_{i}}\rangle_{T}/N
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle O(x)\rangle_{T}=\frac{1}{Z}\int dxexp[-H(x)/k_{B}T]O(x)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\int dxexp(-H(x)/k_{B}T)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(x)=\frac{1}{Z}exp[-H(x)/k_{B}T]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $x_{i}\rightarrow x_{j}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(x_{i})W(x_{i}\rightarrow x_{j})=p(x_{j})W(x_{j}\rightarrow x_{i})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{W(x_{i}\rightarrow x_{j})}{W(x_{j}\rightarrow x_{i})}=\frac{p(x_{j})}{p(x_{i})}=exp(-\frac{\delta H}{k_{B}T})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+W(x_{i}\rightarrow x_{j}) & = & \frac{1}{\tau_{0}}exp(-\frac{\delta H}{k_{B}T})
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(x_{i}\rightarrow x_{j})=\frac{1}{2\tau_{0}}[1-tanh(\frac{\delta H}{2k_{B}T})]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Y(x)=\int_{0}^{x}p(x')dx$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Y^{-1}(x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H_{Ising}=-J\sum_{\langle i,j\rangle}\sigma_{i}\sigma_{j}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sigma_{i}=\pm1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H_{Heisenberg}=-J\sum_{\langle i,j\rangle}\overrightarrow{S_{i}}\cdot\overrightarrow{S_{j}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $|\overrightarrow{S_{i}}|=1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $T_{c}=\frac{2J}{log(1+\sqrt{2})}\simeq2.269J$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{J}{k_{B}T_{c}}=\frac{log(1+\sqrt{2})}{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{J}{k_{B}T_{c}}\simeq0.6930$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Delta E\leq0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sigma_{i}\rightarrow-\sigma_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\overrightarrow{S_{i}}\rightarrow\overrightarrow{S_{i}^{'}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $r<exp(-\Delta E/k_{B}T)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Delta E=2J\sigma_{i}\sum_{j\in\{nb\}}\sigma_{j}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(\theta,\phi)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $d\Omega=sin\theta d\theta d\phi=-d(cos\theta)d\phi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $[0,2\pi]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\phi=2\pi u$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\theta=cos^{-1}(2v-1)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\zeta_{1}=1-2r_{1},\zeta_{2}=1-2r_{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\zeta^{2}=\zeta_{1}^{2}+\zeta_{2}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\zeta^{2}<1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+S_{x}=2\zeta_{1}(1-\zeta^{2})^{1/2},S_{y}=2\zeta_{2}(1-\zeta^{2})^{1/2},S_{z}=1-2\zeta^{2}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+C & = & \frac{1}{N}\frac{\partial\langle H\rangle}{\partial T}\nonumber \\
+ & = & \frac{1}{N}\frac{\partial}{\partial T}\frac{\sum_{x}H(x)exp(-H(x)/k_{B}T)}{\sum_{x}exp(-H(x)/k_{B}T)}\nonumber \\
+ & = & \frac{1}{Nk_{B}T^{2}}(\frac{\sum_{x}H^{2}(x)exp(-H(x)/k_{B}T)}{\sum_{x}exp(-H(x)/k_{B}T)}-(\frac{\sum_{x}H(x)exp(-H(x)/k_{B}T)}{\sum_{x}exp(-H(x)/k_{B}T)})^{2})\nonumber \\
+ & = & \frac{1}{Nk_{B}T^{2}}(\langle H^{2}\rangle-\langle H\rangle^{2})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\chi & = & \frac{1}{N}\lim_{H\rightarrow0}\frac{\partial\langle m\rangle}{\partial H}\\
+ & = & \frac{1}{N}\lim_{H\rightarrow0}\frac{\partial}{\partial H}\frac{\sum_{x}m(x)exp(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}exp(-\frac{H(x)-m(x)H}{k_{B}T})}\\
+ & = & \frac{1}{Nk_{B}T}\lim_{H\rightarrow0}(\frac{\sum_{x}m^{2}(x)exp(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}exp(-\frac{H(x)-m(x)H}{k_{B}T})}-(\frac{\sum_{x}m(x)exp(-\frac{H(x)-m(x)H}{k_{B}T})}{\sum_{x}exp(-\frac{H(x)-m(x)H}{k_{B}T})})^{2})\\
+ & = & \frac{1}{Nk_{B}T}(\frac{\sum_{x}m^{2}(x)exp(-H(x)/k_{B}T)}{\sum_{x}exp(-H(x)/k_{B}T)}-(\frac{\sum_{x}m(x)exp(-H(x)/k_{B}T)}{\sum_{x}exp(-H(x)/k_{B}T)})^{2})\\
+ & = & \frac{1}{Nk_{B}T}(\langle m^{2}\rangle-\langle m\rangle^{2})\\
+ & = & \frac{N}{k_{B}T}(\langle M^{2}\rangle-\langle M\rangle^{2})
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+M & \propto & t^{\beta}\\
+\chi & \propto & t^{-\gamma}\\
+C & \propto & t^{-\alpha}\\
+\xi & \propto & t^{-\nu}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $t=|1-T/T_{c}|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+U_{4}=1-\frac{\langle M^{4}\rangle}{\langle M^{2}\rangle^{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+M_{L}(t) & = & L^{-\beta/\nu}g_{M}(tL^{1/\nu})\\
+\chi_{L}(t) & = & L^{\gamma/\nu}g_{\chi}(tL^{1/\nu})\\
+C_{L}(t) & = & L^{\alpha/\nu}g_{C}(tL^{1/\nu})\\
+\xi_{L}(t) & = & Lg_{\xi}(tL^{1/\nu})\\
+U_{4_{L}}(t) & = & g_{U_{4}}(tL^{1/\nu})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle(\delta O)^{2}\rangle=\frac{1}{N}[\langle O^{2}\rangle-\langle O\rangle^{2}]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle(\delta O)^{2}\rangle=\frac{1}{N}[\langle O^{2}\rangle-\langle O\rangle^{2}](1+2\frac{\tau_{O}}{\delta t})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\delta t\ll\tau_{O}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\tau_{obs}=N\delta t$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle(\delta O)^{2}\rangle=2\frac{\tau_{O}}{\tau_{obs}}[\langle O^{2}\rangle-\langle O\rangle^{2}]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\tau\propto\xi^{z}\propto|1-T/T_{c}|^{-\nu z}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\tau_{max}\propto L^{z}(T=T_{c})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\langle(\delta M)^{2}\rangle_{T_{c}} & = & \frac{2\tau_{max}}{t_{obs}}(\langle M^{2}\rangle_{T_{c}}-\langle|M|\rangle_{T_{c}}^{2})\nonumber \\
+ & = & \frac{2\tau_{max}\chi_{T_{c}}k_{B}T}{t_{obs}L^{d}}\propto\frac{L^{z+\gamma/\nu-d}}{t_{obs}}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $4\times4$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $|S\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $p=1-exp(-2\beta J)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{1}{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $n_{same}^{'}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+E_{|S\rangle} & = & E_{interior}+E_{exterior}+E_{left}-Jn_{same}+Jn_{diff}\\
+E_{|S^{'}\rangle} & = & E_{interior}+E_{exterior}+E_{left}-Jn_{same}^{'}+Jn_{same}^{'}\\
+W(|S\rangle\rightarrow|(S,C)\rangle) & = & (1-p)^{n_{same}}\\
+W(|S^{'}\rangle\rightarrow|S^{'},C\rangle) & = & (1-p)^{n_{same}^{'}}\\
+p(|S,C\rangle) & = & p(|S\rangle)W(|S\rangle\rightarrow|(S,C)\rangle)\\
+p(|S^{'},C\rangle) & = & p(|S^{'}\rangle)W(|S^{'}\rangle\rightarrow|(S^{'},C)\rangle)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p(|S,C\rangle)W(|S,C\rangle\rightarrow|S^{'},C\rangle)=p(|S^{'},C\rangle)W(|S^{'},C\rangle\rightarrow|S,C\rangle)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+W(|S,C\rangle & \rightarrow & |S^{'},C\rangle)=min\{1,\frac{p(|S^{'},C\rangle)}{p(|S,C\rangle)}\}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+W(|S,C\rangle\rightarrow|S^{'},C\rangle) & = & min\{1,\frac{p(|S^{'},C\rangle)}{p(|S,C\rangle)}\}\\
+ & = & min\{1,\frac{exp(-\beta(-Jn_{same}^{'}+Jn_{diff}^{'}))(1-p)^{n_{same}^{'}}}{exp(-\beta(-Jn_{same}+Jn_{diff}))(1-p)^{n_{same}}}\}\\
+ & = & min\{1,(\frac{exp(-2\beta J)}{1-p})^{n_{same}}(\frac{1-p}{exp(-2\beta J)})^{n_{diff}}\}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+dimension d
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Metropolis
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Wolff
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Swendsen Wang
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.167
+\begin_inset Formula $\pm$
+\end_inset
+
+0.001
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.25
+\begin_inset Formula $\pm$
+\end_inset
+
+0.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.25
+\begin_inset Formula $\pm$
+\end_inset
+
+0.01
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.02
+\begin_inset Formula $\pm$
+\end_inset
+
+0.02
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.33
+\begin_inset Formula $\pm$
+\end_inset
+
+0.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.54
+\begin_inset Formula $\pm$
+\end_inset
+
+0.02
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.25
+\begin_inset Formula $\pm$
+\end_inset
+
+0.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.86
+\begin_inset Formula $\pm$
+\end_inset
+
+0.02
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathbb{R}^{3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+S_{i}^{old}\rightarrow S_{i}^{new}=R(\overrightarrow{r})S_{i}^{old}=S_{i}^{old}-2(S_{i}^{old}\cdot\overrightarrow{r})\overrightarrow{r}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathcal{P}_{r_{\perp}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+R(\overrightarrow{r})^{2} & = & 1\\
+{}[R(\overrightarrow{r})S_{i}]\cdot[R(\overrightarrow{r})S_{j}] & = & S_{i}\cdot S_{j}\\
+S_{i}\cdot[1-R(\overrightarrow{r})]S_{j} & = & 2(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+p(S_{i}^{new},S_{j}) & = & 1-exp\{min[0,\beta S_{i}^{new}\cdot[1-R(\overrightarrow{r})]S_{j}]\}\\
+ & = & 1-exp\{min[0,2\beta(\overrightarrow{r}\cdot S_{i}^{new})(\overrightarrow{r}\cdot S_{j})]\}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{W(|S\rangle\rightarrow|S^{'}\rangle)}{W(|S^{'}\rangle\rightarrow|S\rangle)} & = & \frac{(N_{c}/N)P_{int}P_{ext}}{(N_{c}/N)P_{int}^{'}P_{ext}}\prod_{\langle i,j\rangle\in\partial c}\frac{1-P(R(\overrightarrow{r})S_{i},S_{j})}{1-P(R(\overrightarrow{r})S_{i}^{'},S_{j})}\\
+ & = & exp\{\sum_{\langle i,j\rangle\in\partial c}(min\{0,-2\beta(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\}-min\{0,2\beta(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\})\}\\
+ & = & exp\{\sum_{\langle i,j\rangle\in\partial c}-2\beta(\overrightarrow{r}\cdot S_{i})(\overrightarrow{r}\cdot S_{j})\}\\
+ & = & exp\{\beta\sum_{\langle i,j\rangle\in\partial c}S_{i}\cdot[R(\overrightarrow{r})-1]S_{j}\}\\
+ & = & exp\{\beta\sum_{\langle i,j\rangle}(S_{i}^{'}\cdot S_{j}-S_{i}\cdot S_{j})\}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle\sigma_{i}\sigma_{j}\rangle=1
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle M^{2}\rangle=\frac{1}{N^{2}}\sum_{i,j}\langle\sigma_{i}\sigma_{j}\rangle=\frac{1}{N^{2}}\sum_{c}\langle V_{c}^{2}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle V_{c}\rangle=\langle\frac{V_{c}}{N}V_{c}\rangle=\frac{1}{N}\langle V_{c}^{2}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{dU_{4_{L}}(t)}{dt}|_{t\rightarrow0}=L^{1/\nu}G_{U_{4}}(0)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{x}e^{-\beta E(x)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=Tr\{e^{-\beta H}\}=\sum_{x}\langle x|e^{-\beta H}|x\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle O\rangle=\frac{1}{Z}Tr(Oe^{-\beta H})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{n=0}^{\infty}\sum_{S_{n}}\frac{(-\beta)^{n}}{n!}Tr\{\prod_{j=1}^{n}H_{l_{j}}\}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H=\sum_{i=1}^{M}H_{i}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Tr\{A\prod_{j=1}^{n}H_{l_{j}}\}=0,ifTr\{\prod_{j=1}^{n}H_{l_{j}}\}=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle A\rangle=Tr\{Ae^{-\beta H}\}=\sum_{n=0}^{\infty}\sum_{\{S_{n}\}}A(S_{n})W(S_{n})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(S_{n})=\frac{1}{Z}\frac{(-\beta)^{n}}{n!}Tr\{\prod_{j=1}^{n}H_{l_{j}}\}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+A(S_{n})=Tr\{A\prod_{j=1}^{n}H_{l_{j}}\}/Tr\{\prod_{j=1}^{n}H_{l_{j}}\}ifW(S_{n})\neq0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+e^{-\beta H}=\lim_{L\rightarrow\infty}[\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}]^{L}=\lim_{L\rightarrow\infty}\prod_{k=1}^{L}\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+Z & = & \lim_{L\rightarrow\infty}Tr\{\prod_{k=1}^{L}\prod_{i=1}^{M}e^{-\Delta\tau H_{i}}\}\nonumber \\
+ & = & \lim_{L\rightarrow\infty}\sum_{\{\psi_{i}(k)\}}\prod_{k=1}^{L}\prod_{i=1}^{M}\langle\psi_{i+1}(k)|e^{-\Delta\tau H_{i}}|\psi_{i}(k)\rangle
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\psi_{M+1}(k)=\psi_{1}(k+1)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\psi_{1}(1)=\psi_{M+1}(L)=\psi_{1}(L+1)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle\psi_{i+1}(k)|e^{-\Delta\tau H_{i}}|\psi_{i}(k)\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H_{two\hspace{1em}sites} & = & J_{x}(S_{1}^{x}S_{2}^{x}+S_{1}^{y}S_{2}^{y})+J_{z}S_{1}^{z}S_{2}^{z}\nonumber \\
+ & = & \frac{J_{x}}{2}(S_{1}^{x}S_{2}^{x}+S_{1}^{y}S_{2}^{y})+J_{z}S_{1}^{z}S_{2}^{z}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle\uparrow_{1}\downarrow_{2}|H_{twosites}|\downarrow_{1}\uparrow_{2}\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle\downarrow_{1}\uparrow_{2}|H_{twosites}|\uparrow_{1}\downarrow_{2}\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle A\rangle=\frac{\langle sign[W(\{\psi_{i}(k)\})]A(\{\psi_{i}(k)\})\rangle_{|W|}}{\langle sign[W(\{\psi_{i}(k)\})]\rangle_{|W|}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $O(\Delta\tau^{2})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Delta\tau\rightarrow0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(S)=exp(K\sum_{\langle i,j\rangle}\sigma_{i}\sigma_{j})=\prod_{u}w(S_{u})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $w(S_{u})\equiv exp(K\sigma_{i}\sigma_{j})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+w(S_{u})=\sum_{G_{u}}w(S_{u},G_{u})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+w(S_{u},G_{u})=e^{-K}(G_{u}=0)e^{K}-e^{-K}(\sigma_{i}=\sigma_{j}andG_{u}=1)0(\sigma_{i}\neq\sigma_{j}andG_{u}=1)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(S)=\sum_{G}W(S,G)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(S,G)=\prod_{u}w(S_{u},G_{u})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(G)=\sum_{S}W(S,G)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T(S\rightarrow(S,G))=\frac{W(S,G)}{W(S)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T(G\rightarrow(S,G))=\frac{W(S,G)}{W(G)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+T((S,G)\rightarrow(S^{'},G))=\frac{1}{2^{N_{c}(G)}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+W(S)T(S & \rightarrow & S^{'})=W(S)\sum_{G}T(S\rightarrow(S,G))T((S,G)\rightarrow(S^{'},G))\nonumber \\
+ & = & \sum_{G}W(S)\frac{W(S,G)}{W(S)}T((S,G)\rightarrow(S^{'},G))\nonumber \\
+ & = & \sum_{G}W(S^{'})\frac{W(S^{'},G)}{W(S^{'})}T((S^{'},G)\rightarrow(S,G))\nonumber \\
+ & = & W(S^{'})T(S^{'}\rightarrow S)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $W(S,G)=W(S^{'},G)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+Z & = & \lim_{L\rightarrow\infty}\sum_{S}W_{L}(S)\\
+W_{L}(S) & = & \prod_{u}w(S_{u})\\
+w(S_{u}) & = & \langle\psi_{u}^{'}|e^{-\Delta\tau H_{u}}|\psi_{u}\rangle\nonumber \\
+ & = & \langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle\nonumber \\
+ & = & \sum_{G_{u}=0,1}\langle\psi_{u}^{'}|(-\Delta\tau H_{u})^{G_{u}}|\psi_{u}\rangle
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+w(S_{u},G_{u}) & = & \langle\psi_{u}^{'}|(-\Delta\tau H_{u})^{G_{u}}|\psi_{u}\rangle\\
+W_{L}(S) & = & \prod_{u}\sum_{G_{u}=0,1}w(S_{u},G_{u})\nonumber \\
+ & = & \sum_{G}W(S,G)\\
+W(S,G) & = & \prod_{u}w(S_{u},G_{u})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\langle\Omega_{1}|w(S_{u})|\Omega_{2}\rangle & = & \left(\begin{array}{cc}
+e^{K} & e^{-K}\\
+e^{-K} & e^{K}
+\end{array}\right)\nonumber \\
+ & = & e^{-K}\left(\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}\right)+(e^{K}-e^{-K})\left(\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right)\nonumber \\
+ & = & w(S_{u},G_{u}=0)\left(\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}\right)+w(S_{u},G_{u}=1)\left(\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right)\nonumber \\
+ & = & w(S_{u},G_{u}=0)\hat{G_{0}}+w(S_{u},G_{u}=1)\hat{G_{1}}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\{\uparrow_{1}\uparrow_{2},\uparrow_{1}\downarrow_{2},\downarrow_{1}\uparrow_{2},\downarrow_{1}\downarrow_{2}\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H_{i,j}=-J(S_{i}^{x}S_{j}^{x}+S_{i}^{y}S_{j}^{y}+(\frac{1}{4}-S_{i}^{z}S_{j}^{z}))
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+w(S_{u}) & = & \left(\begin{array}{cccc}
+1 & 0 & 0 & 0\\
+0 & 1+\frac{J\Delta\tau}{2} & \frac{J\Delta\tau}{2} & 0\\
+0 & \frac{J\Delta\tau}{2} & 1+\frac{J\Delta\tau}{2} & 0\\
+0 & 0 & 0 & 1
+\end{array}\right)\nonumber \\
+ & = & \left(\begin{array}{cccc}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{array}\right)+\frac{J\Delta\tau}{2}\left(\begin{array}{cccc}
+0 & 0 & 0 & 0\\
+0 & 1 & 1 & 0\\
+0 & 1 & 1 & 0\\
+0 & 0 & 0 & 0
+\end{array}\right)\nonumber \\
+ & = & \hat{g}_{0}+\frac{J\Delta\tau}{2}\hat{g}_{H}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $J\Delta\tau/2/(1+J\Delta\tau/2)=J\Delta\tau/2$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H_{ij} & = & \sum_{\hat{g}}H_{ij}(\hat{g})=\sum_{\hat{g}}-a(\hat{g})\hat{g}\\
+1-\Delta\tau H_{ij} & = & \hat{g}_{0}+\sum_{\hat{g}}a(\hat{g})\Delta\tau\hat{g}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{I}/\Delta\tau$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(\Delta\tau)a(g)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+C_{\mathrm{I/\Delta\tau}}^{n}((\Delta\tau)a(g))^{n}(1-(\Delta\tau)a(g))^{\mathrm{I/(\Delta\tau)-n}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{1}{n!}(\mathrm{I}a(g))^{n}e^{-\mathrm{I}a(g)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\int_{0}^{\infty}P(t)dt=1
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $t\sim t+dt$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P(t)=a(g)e^{-a(g)t}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\int_{0}^{t}P(t)dt=1-e^{-a(g)t}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $-ln(r)/a(g)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $t^{new}>t_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $J_{z}>J_{x}>J_{y}>0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $p(L_{i})=exp(-Bm_{L_{i}})/exp(Bm_{L_{i}})+exp(-Bm_{L_{i}})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+m_{L_{i}}=\int_{L_{i}}S^{z}(X)dX
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\langle O\rangle & = & Tr(e^{-\beta H}O)/Z\nonumber \\
+ & = & \sum_{S}\frac{\prod_{\tilde{u}\neq u}w(S_{\tilde{u}})\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{Z}\nonumber \\
+ & = & \sum_{S}\frac{W(S)}{Z}\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+O(S) & = & \frac{1}{\beta/\Delta\tau}\sum_{u}\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}\nonumber \\
+ & = & \frac{1}{\beta}\sum_{u}O(S_{u})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+O(S_{u})=\frac{\langle\psi_{u}^{'}|\Delta\tau O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|1-\Delta\tau H_{u}|\psi_{u}\rangle}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{\langle\psi_{u}^{'}|O|\psi_{u}\rangle}{\langle\psi_{u}^{'}|-H_{u}|\psi_{u}\rangle}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\psi_{u}=\psi_{u}^{'}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+O(S)=\frac{1}{\beta}\int_{0}^{\beta}d\tau O(\tau)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $O(\tau)=\langle\psi(\tau)|O|\psi(\tau)\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sum_{i}S_{i}^{z}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Gamma_{AB}(\tau,\tau^{'})=A(\tau)B(\tau^{'})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Gamma_{AB}^{\tau\tau^{'}}(S)=\frac{1}{\beta}\int_{0}^{\beta}dtA(\psi(t))B(\psi(t+\tau^{'}-\tau))
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $A(\psi(\tau))B(\psi(\tau^{'}))$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\chi_{AB}=\int_{0}^{\beta}d\tau\Gamma_{AB}(0,\tau)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\chi_{AB}(S)=\frac{1}{\beta}\int_{0}^{\beta}d\tau A(\psi(\tau))\int_{0}^{\beta}d\tau B(\psi(\tau))
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H^{off}(S) & = & \frac{1}{\beta}\sum_{u_{kink}}\frac{\langle\psi_{u_{kink}}^{'}|O|\psi_{u_{kink}}\rangle}{\langle\psi_{u_{kink}}^{'}|-O|\psi_{u_{kink}}\rangle}\nonumber \\
+ & = & -\frac{n_{kink}(S)}{\beta}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H(S)=H^{diag}(S)-\frac{1}{\beta}n_{kink}(S)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+O(G)=\sum_{S}W(S,G)O(S)/W(G)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\chi_{zz}(S) & = & N^{-1}\int_{0}^{\beta}d\tau\langle M_{z}(\tau)M_{z}(0)\rangle\nonumber \\
+ & = & (N\beta)^{-1}(\int dXS^{z}(X))^{2}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $X\equiv(i,\tau)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\int dX$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sum_{i}\int d\tau$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\chi_{zz}(G)=(N\beta)^{-1}\sum_{l}(V_{l})^{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $V_{l}=\int_{l}dX\mathbf{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\chi_{xx}(G)=\frac{1}{4N\beta}\sum_{l}(V_{l})^{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle C(S)\rangle=\beta^{2}[\langle H_{diag}^{2}(S)\rangle-\langle H_{diag}(S)\rangle^{2}]+\langle n_{kink}^{2}\rangle-\langle n_{kink}\rangle^{2}-\langle n_{kink}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H=J\sum_{\langle i,j\rangle}[S_{i}^{x}S_{j}^{x}+S_{i}^{y}S_{j}^{y}+S_{i}^{z}S_{j}^{z}]-h\sum_{i}S_{i}^{z}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $|\alpha\rangle=|S_{1}^{z},S_{2}^{z},...,S_{N}^{z}\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H & = & -J\sum_{b=1}^{N_{b}}H_{b}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $N_{b}=dN$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $H_{b}=H_{1,b}-H_{2,b}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H_{1,b} & = & C-\Delta S_{i(b)}^{z}S_{j(b)}^{z}+h_{b}(S_{i(b)}^{z}+S_{j(b)}^{z})\\
+H_{2,b} & = & \frac{1}{2}[S_{i(b)}^{+}S_{j(b)}^{-}+S_{i(b)}^{-}S_{j(b)}^{+}]
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $h_{b}=h/(2dJ)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+C=C_{0}+\epsilon,C_{0}=\Delta/4+h_{b}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\epsilon\ge0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $S_{n}=[a_{1},b_{1}],[a_{2},b_{2}],\ldots,[a_{n},b_{n}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a_{i}\in\{1,2\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b_{i}\in\{1,\ldots,N_{b}\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{\alpha}\sum_{n=0}^{\infty}\sum_{S_{n}}(-1)^{n_{2}}\frac{\beta^{n}}{n!}\langle\alpha|\prod_{i=1}^{n}H_{a_{i},b_{i}}|\alpha\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\alpha(p)\rangle\sim\prod_{i=1}^{p}H_{a_{i},b_{i}}|\alpha\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{\{\sigma\}}\sum_{n=0}^{\infty}\frac{(-\beta E(\sigma))^{n}}{n!}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle f\rangle=\frac{1}{Z}\sum_{\{\sigma\}}\sum_{n=0}^{\infty}f(\sigma)\frac{(-\beta E(\sigma))^{n}}{n!}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $E(\sigma)\rightarrow E(\sigma)-C$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $H(\sigma)=C-E(\sigma)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle H\rangle=\frac{1}{Z}\sum_{\sigma,n}H(\sigma)W(\sigma,n),Z=\sum_{\sigma,n}W(\sigma,n),W(\sigma,n)=\frac{\beta^{n}H(\sigma)^{n}}{n!}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sum_{\sigma,n}H(\sigma)W(\sigma,n)=\sum_{\sigma,m}\frac{m}{\beta}W(\sigma,m)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle H\rangle=\frac{1}{\beta}\langle n\rangle_{W}\Rightarrow E=C-\frac{1}{\beta}\langle n\rangle_{W}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle H^{2}\rangle=\frac{1}{\beta^{2}}\langle n(n-1)\rangle_{W}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $C=\beta^{-1}(\langle E^{2}\rangle-\langle E\rangle^{2})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+C=\frac{1}{\beta}(\langle n^{2}\rangle-\langle n\rangle^{2}-\langle n\rangle)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle n\rangle=\beta N_{b}|E_{b}|
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle n\rangle\propto\beta N$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\sqrt{\langle n^{2}\rangle-\langle n\rangle^{2}}\approx\sqrt{\langle n\rangle}\propto(\beta N)^{1/2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{\alpha}\sum_{S_{M}}\frac{\beta^{n}(M-n)!}{M!}\langle\alpha|\prod_{i=1}^{M}H_{a_{i},b_{i}}|\alpha\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $H_{0,0}\equiv1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W([0,0]_{p})P([0,0]_{p}\rightarrow[1,b]_{p})\frac{1}{N_{b}}=W([1,b]_{p})P([1,b]_{p}\rightarrow[0,0]_{p})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\pm1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+P([0,0]_{p} & \rightarrow & [1,b]_{p})=min\{1,\frac{N_{b}\beta\langle\alpha(p)|H_{1,b}|\alpha(p)\rangle}{M-n}\}\\
+P([1,b]_{p}\rightarrow[0,0]_{p}) & = & min\{1,\frac{M-n+1}{N_{b}\beta\langle\alpha(p)|H_{1,b}|\alpha(p)\rangle}\}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\alpha\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\alpha_{b_{p}}(p)\rangle=|S_{i(b_{p})}^{z}(p),S_{j(b_{p})}^{z}(p)\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(\alpha,S_{n})=\frac{\beta^{n}}{n!}\prod_{p=1}^{n}\langle\alpha_{b_{p}}(p)|H_{b_{p}}|\alpha_{b_{p}}(p-1)\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\{\ldots[1,b]_{p_{2}}\longleftrightarrow[1,b]_{p_{1}}\ldots\}\Leftrightarrow\{\ldots[2,b]_{p_{2}}\longleftrightarrow[2,b]_{p_{1}}\ldots\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\{\leftarrow[1,b]_{p_{2}}\ldots\ldots[1,b]_{p_{1}}\rightarrow\}\Leftrightarrow\{\leftarrow[2,b]_{p_{2}}\ldots\ldots[2,b]_{p_{1}}\rightarrow\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{2,1}=\frac{W(\begin{array}{cc}
++ & +\\
+- & -
+\end{array})}{W(\begin{array}{cc}
++ & +\\
++ & +
+\end{array})+W(\begin{array}{cc}
++ & +\\
+- & -
+\end{array})+W(\begin{array}{cc}
+- & +\\
+- & +
+\end{array})+W(\begin{array}{cc}
++ & -\\
+- & +
+\end{array})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(\begin{array}{cc}
+f_{3} & f_{4}\\
+f_{1} & f_{2}
+\end{array})(p)=\langle f_{3}S_{i}^{z}(p),f_{4}S_{j}^{z}(p)|H_{b}|f_{1}S_{i}^{z}(p),f_{2}^{z}(p)\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $S_{i}^{+}S_{j}^{+}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(s)P(s\rightarrow s^{'})=W(s^{'})P(s^{'}\rightarrow s)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+(W(1)W(2)W(3)W(4)W_{others})(P(1_{1,4})P(2_{1,3})P(3_{4,4})P(2_{3,2}^{temp})P(4_{3,2})) & = & (W(4^{'})W(3^{'})W(2^{'})W(1^{'})W_{others})(P(4_{2,3}^{'})P(2_{2,3}^{'})P(3_{4,4}^{'})P(2_{3,1}^{temp})P(1_{4,1}^{'}))
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+W(1)P(1_{1,4}) & = & W(1^{'})P(1_{4,1}^{'})\\
+W(2)P(2_{1,3}) & = & W(2^{temp})P(2_{3,1}^{temp})\\
+W(2^{temp})P(2_{3,2}^{temp}) & = & W(2^{'})P(2_{2,3}^{'})\\
+ & \vdots
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $W(i)P(i,e,x)=W(i^{'})P(i^{'},x,e)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $W(i)P(i,e,x)=W(i,e,x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W(i,l_{1},l_{2})=W(i^{'},l_{2},l_{1})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sum_{l_{2}}P(i,l_{1},l_{2})=1
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sum_{l_{2}}W(i,l_{1},l_{2})=W(i)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+W(II_{1}) & = & b_{1}+a+b\nonumber \\
+W(I_{1}) & = & a+b_{2}+c\\
+W(III_{1}) & = & b+c+b_{3}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+W_{1} & = & W(II_{1}),W_{2}=W(I_{1}),W_{3}=W(III_{1})\\
+a & = & W(II_{1},1,2)=W(I_{1},2,1),b=W(II_{1},1,4)=W(III_{1},4,1),c=W(I_{1},2,4)=W(III_{1},4,2)\\
+b_{1} & = & W(II_{1},1,1),b_{2}=W(I_{1},2,2),b_{3}=W(III_{1},4,4)
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+a & = & W_{1}W_{2}/(W_{1}+W_{2}+W_{3})\nonumber \\
+b & = & W_{1}W_{3}/(W_{1}+W_{2}+W_{3})\nonumber \\
+c & = & W_{2}W_{3}/(W_{1}+W_{2}+W_{3})\\
+b_{i} & = & W_{i}^{2}/(W_{1}+W_{2}+W_{3})\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+a & = & \frac{1+\Delta}{4}+\frac{h_{b}}{2}+\frac{-b_{1}-b_{2}+b_{3}}{2}\nonumber \\
+b & = & \frac{1-\Delta}{4}-\frac{h_{b}}{2}+\frac{-b_{1}+b_{2}-b_{3}}{2}\\
+c & = & \frac{\Delta-1}{4}+\frac{h_{b}}{2}+\epsilon+\frac{b_{1}-b_{2}-b_{3}}{2}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(1+\Delta)/4+h_{b}/2+(-b_{1}-b_{2}+b_{3})/2=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(\Delta-1)/4+h_{b}/2+\epsilon+(b_{1}-b_{2}-b_{3})/2=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(1-\Delta)/4-h_{b}/2+(-b_{1}+b_{2}+b_{3})/2=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a^{'},b^{'},c^{'},b_{1}^{'},b_{2}^{'},b_{3}^{'}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $|\psi_{0}\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\psi_{0}\rangle=\sum_{\alpha}(-1)^{\Gamma(\alpha)}f_{\alpha}|\sigma_{\alpha}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+(a,b)=(|\uparrow_{a}\downarrow_{b}\rangle-|\downarrow_{a}\uparrow_{b}\rangle)/\sqrt{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\psi_{0}\rangle=\sum_{\alpha}f_{\alpha}|(a_{1}^{\alpha},b_{1}^{\alpha})\ldots(a_{N/2}^{\alpha},b_{N/2}^{\alpha})\rangle=\sum_{\alpha}f_{\alpha}|V_{\alpha}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|V_{\alpha}\rangle=\frac{1}{2^{N/4}}\sum_{i=1}^{2^{N/2}}(-1)^{A_{\downarrow}(\alpha,i)}|S_{1}^{z}(\alpha,i),\ldots,S_{N}^{z}(\alpha,i)\rangle=\frac{1}{2^{N/4}}\sum_{i=1}^{2^{N/2}}(-1)^{A_{\downarrow}(\alpha,i)}|Z_{i}^{\alpha}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+(a,c)(b,d)=(a,b)(c,d)-(a,d)(c,b)(a,c\in A,b,d\in B)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{N!}{(N/2)!(N/2+1)!}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle V_{l}|V_{r}\rangle=\frac{1}{2^{N/2}}\sum_{i,j}\langle Z_{j}^{l}|Z_{i}^{r}\rangle(-1)^{A_{\downarrow}(r,i)+A_{\downarrow}(l,j)}=2^{N_{loop}-N/2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{\langle V_{l}|S_{i}\cdot S_{j}|V_{r}\rangle}{\langle V_{l}|V_{r}\rangle}=
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+|\psi_{0}\rangle=\sum_{r}w_{r}|V_{r}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+w_{r}=\prod_{b=1}^{N/2}h(x_{b}^{r},y_{b}^{r})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E=\frac{\langle\psi|H|\psi\rangle}{\langle\psi|\psi\rangle}=\frac{\sum_{lr}W_{lr}E_{lr}}{\sum_{lr}W_{lr}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle V_{l}|V_{r}\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W_{lr}=w_{l}w_{r}\langle V_{l}|V_{r}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E_{lr}=\frac{\langle V_{l}|H|V_{r}\rangle}{\langle V_{l}|V_{r}\rangle}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{accept}=min[\frac{h(x_{1}^{r^{'}},y_{1}^{r^{'}})h(x_{2}^{r^{'}},y_{2}^{r^{'}})}{h(x_{1}^{r},y_{1}^{r})h(x_{2}^{r},y_{2}^{r})}2^{N_{loop}^{\langle l|r^{'}\rangle}-N_{loop}^{\langle l|r\rangle}}]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $N_{loop}^{\langle l|r^{'}\rangle}-N_{loop}^{\langle l|r\rangle}=\pm1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+M_{s}^{2}=\frac{1}{N^{2}}\sum_{ij}\phi_{i}\phi_{j}S_{i}\cdot S_{j}=\frac{1}{N^{2}}\sum_{\lambda=1}^{N_{loop}}L_{\lambda}^{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle L_{i}\rangle=N\langle M_{s}^{2}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{accept}=min[\frac{h(x_{1}^{r^{'}},y_{1}^{r^{'}})h(x_{2}^{r^{'}},y_{2}^{r^{'}})}{h(x_{1}^{r},y_{1}^{r})h(x_{2}^{r},y_{2}^{r})}\delta_{\langle l|r^{'}\rangle,Z}]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\frac{\partial\langle E\rangle}{\partial h(l)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+(C-H)^{m}|\psi\rangle=c_{0}(C-E_{0})^{m}[|0\rangle+\sum_{n}\frac{c_{n}}{c_{0}}(\frac{C-E_{n}}{C-E_{0}})^{m}|n\rangle]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+(C-H)^{m}=\sum_{\alpha}\prod_{i=1}^{m}H_{a_{i}^{\alpha}b_{i}^{\alpha}}=\sum_{\alpha}P_{\alpha}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H_{ab}|\cdots(a,b)\cdots\rangle & = & |\cdots(a,b)\cdots\rangle\\
+H_{bc}|\cdots(a,b)\cdots(c,d)\cdots\rangle & = & \frac{1}{2}|\cdots(c,b)\cdots(a,d)\cdots\rangle
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{\alpha}|V_{r}\rangle=(\frac{1}{2})^{O_{\alpha}^{r}}|V_{r}(\alpha)\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\langle O\rangle=\frac{\langle\psi|(C-H)^{m}O(C-H)^{m}|\psi\rangle}{\langle\psi|(-H)^{2m}|\psi\rangle}=\sum_{lr\alpha\beta}W_{lr}^{\alpha\beta}O_{lr}^{\alpha\beta}/\sum_{lr\alpha\beta}W_{lr}^{\alpha\beta}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+W_{lr}^{\alpha\beta} & = & w_{l}w_{r}\langle V_{l}(\beta)|V_{r}(\alpha)\rangle2^{-(o_{r}^{\alpha}+o_{l}^{\beta})}\\
+O_{lr}^{\alpha\beta} & = & \langle V_{l}(\beta)|O|V_{r}(\alpha)\rangle/\langle V_{l}(\beta)|V_{r}(\alpha)\rangle
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{accept}=min[1,\frac{\langle V_{l}(\beta^{'})|V_{r}(\alpha^{'})\rangle2^{-(o_{r}^{\alpha^{'}}+o_{l}^{\beta^{'}})}}{\langle V_{l}(\beta)|V_{r}(\alpha)\rangle2^{-(o_{r}^{\alpha}+o_{l}^{\beta})}}]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+H_{ab}(1) & = & \frac{1}{4}-S_{a}^{z}S_{b}^{z}\\
+H_{ab}(2) & = & -\frac{1}{2}(S_{a}^{+}S_{b}^{-}+S_{a}^{-}S_{b}^{+})
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $P_{\alpha}\rightarrow P_{\alpha}^{e}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle Z_{j}^{l}|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+W_{lr,ij}^{\alpha\beta,ef}=w_{l}w_{r}(\frac{1}{2})^{2m+N/2}\delta_{P_{\alpha}^{e}|Z_{i}^{r}\rangle,P_{\beta}^{f}|Z_{j}^{l}\rangle}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(P_{\beta}^{f})^{T}P_{\alpha}^{e}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Z_{i}^{r}(\alpha,e)=Z_{j}^{l}(\beta,f)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{\{[Mn_{12}O_{12}(O_{2}CCH_{2}Br)_{16}(H_{2}O)_{4}]\cdot4CH_{2}Cl_{2}\}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{Mn_{12}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{\{Mn_{6}^{III}O_{2}(Et-sao)_{6}[O_{2}CPh(Me)_{2}]_{2}\cdot(EtOH)_{6}\}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{[Mn_{12}O_{12}(O_{2}CR)_{16}(H_{2}O)_{4}]}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{[Mn_{12}O_{12}(O_{2}CCH_{2}Br)_{16}(H_{2}O)_{4}]\cdot4CH_{2}Cl_{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{Mn_{4}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathrm{\{Mn[N(CN)_{2}]_{6}\}^{4-}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+H=-K\sum_{i}(S_{i}^{z})^{2}-\sum_{ij}J_{ij}\overrightarrow{S_{i}}\cdot\overrightarrow{S_{j}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $J_{ij}>0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $L\times L$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $C_{\nu}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $M=\langle|\overrightarrow{s}|\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $U_{4}=1-\langle\overrightarrow{s}{}^{4}\rangle/(3\langle\overrightarrow{s}\rangle^{2})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $C_{\nu}=(\langle H^{2}\rangle-\langle H\rangle^{2})/T^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\chi=(\langle\overrightarrow{s}{}^{2}\rangle-\langle|\overrightarrow{s}|\rangle^{2})/T$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $(1/L^{2})\sum\overrightarrow{s_{i}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\langle A\rangle$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+d_{m}=1-\langle(s^{z})^{2}\rangle/\langle\overrightarrow{s}{}^{2}\rangle
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

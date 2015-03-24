@@ -1,0 +1,166 @@
+source code: xxzloop.cpp 用环算法在连续时间极限下求解不含外场的xxz模型
+
+***********************3rd.Sep.2011*********************
+
+loop结构，num表示该环所属的本质环的标号，flip表示这条环要不要反转，1不翻转，-1翻转，len长度，tmp是用来表示该环所属的本质环在lp2[]数组的位置,如lp[5]表示第五个环，lp[5].num=3,而lp2[2]存着第3个本质环，所以lp[5].tmp=2. rootloop结构的rooti表示该本质环的标号，len长度
+
+环的数目是1~~~lnum-1
+
+本质环的数目1~~~lnum2-1
+
+lp[lnum]是所有环构成的loop结构体数组
+
+lp2[lnum2]是所有本质环构成的rootloop结构体数组
+
+lpstart指针指向存着所有环开始位置的链表
+
+********************5th.Sep.2011***********************
+
+vtx1指向存储着由第一类算符(如1,2)串成的链表，vtx2指向存储着由第二类算符(如3,4等可以将两个环路连成一条环路的算符)串成的链表，这两个链表的元素都是vtx结构体，四个指针指向四个脚所连接的segement，type为算符类型
+
+一个Mc step结束时要将链表vtx1,vtx2,lpstart以及数组lp,lp2的内存清除掉,还要将合适的segment并掉，并对segment里的变量进行正确的初始化，以进入下一个Mc step
+
+worldline的每个segment结构体变量说明：
+s：该段segment的自旋
+n: 该段segment所在的格点指标，即在格点链表中的位置
+kkdn,kkup：在S representation中，如果下脚或上脚是通过kink和另一个segment连在一起，则kkdn,kkup为下脚或上脚所在的kink所连的另一个segment的.n值，如果没有kink连着这些脚，则kkdn或kkup为-1
+c: 该段segment所在的环指标
+tdn,tup：该段segment的下脚开始时间和上脚结束时间
+*sdn,*sup: 指向在S representation中，该segment所在的worldline中与该segment连在一起的下和上segment
+*ldn,*lup,ldnuod,lupuod: ldn和lup指向在Vertex representation(即文献中的G representation)中，在形成loop的过程中，下脚和上脚所连的那个segment，ldnuod，lupuod表示下脚和上脚所连的是ldn,lup所指向的segment的下脚还是上脚，所过指向下脚，就是0，指向上脚，就是1，不同vertex的劈裂方式的区别就会在这两个指针和两个标识上
+*vdn,*vup：指向在G representation中该segment下脚和上脚所连的vertex结构体
+
+切记(判断条件？a:b)=c 和 判断条件？a:b=c 的区别，检查了一下午加半晚上才检查出来
+
+********************6th.Sep.2011************************
+
+开始以为形成kink的步骤是在模掉vertex，合并segment之后，再从世界线的状态来判断哪些地方是kink，可是这样在给定一个worldline S pattern后，往上放kink可能有简并的情况，如：
+
+|	*	|	*
+|	*	|	*
+|	*	|	*
+|	*	|	*
+*	|	*	|
+*	|	*	|
+*	|	*	|
+*	|	*	|
+|	*	|	*
+|	*	|	*
+|	*	|	*
+|	*	|	*
+
+可以这样形成kink pattern1：
+
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+*-------|       *-------|   
+*       |       *       |   
+*       |       *       |   
+*       |       *       |   
+|-------*       |-------*   
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+
+也可以这样形成kink pattern2：
+
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+*       |-------*       |-----   
+*       |       *       |   
+*       |       *       |   
+*       |       *       |   
+|-------*       |-------*   
+|       *       |       *   
+|       *       |       *   
+|       *       |       *   
+
+如果按常规的依次考虑每个bond所连的两worldline在0---beta的间隔内哪些地方要放上kink的做法，那上面的pattern2是肯定不会出现的，所以这样可能会有遍历性的问题。
+
+仔细研究后发现：其实kink是和第一类vtx联系在一起的，第二类vtx所在的地方是不会产生kink的，因为，1，第二类vtx本身不会在S representation中kink处产生，2，第二类vtx反转后，此处的局域环境也不满足产生kink的条件。 kink在当前hamiltonian下只有一种，即<s,-s|-s,s>, 在复杂点的xyz模型中，还有一种kink是<s,s|-s,-s>，不过这也是和第一类算符联系在一起的。所以在环反转完之后，我们可以根据第一类vtx构成的链表(vtx1指针)，再加上判断.p1,.p2,.p3,.p4四个指针给定局域条件来决定是否放kink，这样形成kink就是一个与G representation联系更紧密的确定的过程，放完kink后，再删除vtx1,vtx2链表清除vtx，并合并一些segment就可以进入下个Mc setp了
+
+在Mc setp末尾，清除掉vertex后，合并worldline中某些segment的部分代码中，标识符j判断p2是否已经越过beta回到了当前worldline的起始segment(0表示p2到了起始segment,1表示还可以往上走)，标识符k表示p1和p2是否就是上下相邻的两个segments，0表示相邻的，那p1的sup,kkup,tup，p2的sdn就没必要动，1表示p1和p2之间有segments, 则p1的sup,kkup,tup，p2的sdn就有必要更新一下，当然还有一下其他的东西是必须更新的，于是否相邻无关
+
+vi的多行缩进方法：到你需要缩进的第一行最前面，按v，接着按j到需要缩进的最下面一行，再按大写的I（插入），再按四次空格键或tab键，最后按Esc.还可以：
+1、按Ctrl+v进入visual状态，选择多行，用>或<缩进或缩出
+2、将光标移动到要移动的块的第一行行首，再按n>j，n为要缩进的行数
+3、如果编辑的是代码文件，可以将光标放在{或者}上，然后按=%，vim将自动将里面的代码块进行缩进
+
+**********************8th.Sep.2011***************************
+
+Jz<=-Jx时，会出现第2种vertex以及第4种vertex，这种情况比Jz>=Jx要复杂，体现在两个方面：
+1，Jz>=Jx时，形成环的过程中我们只需要一直往上走，故uod设置起来很简单，lupuod=0,ldnuod=1，在边界上也是这样，并且反转过程中也不会变。Jz<=-Jx时，边界上的segments与其他segments就不一样，其他的lupuod=1,ldnuod=0,而边界上的lupuod=0,ldnuod=1。每个Mcs结束后，被保留的segments的uod都会设置成lupuod=0,ldnuod=1,并且lup指向上面，ldn指向下面，这样设置对于Jz>=Jx来说是下一个Mcs的一个很好的初始化设置，而对于Jz<=-Jx来说就不是下一个Mcs的很好的初始化设置，需要在放vertex的过程中将uod和lup,ldn正确的更新。
+2，Jz<=-Jx时，在放第4种vertex时，上面一般会有一个第2种vertex在哪里，这时(*p1).lup=p2，(*p2).lup=p1, 所以我们动(*(*p1).lup).lup或ldn时，实际上是动了p2的lup或ldn，后面有关p2的lup或ldn的语句就可能不是想当然要得效果了，比如(*(*p1).lup).lup=ip1, 实际上让(*p2).lup指向了ip1,接着(*(*p2).lup).lup=ip2,实际上是让(*ip1).lup指向了ip2，而不是让(*p1).lup指向ip2。如果某个方向的边长L=2，那么这个方向的bond在放第2种vertex时也会考虑两次从而出现和放第4种vertex一样的需要特殊考虑的情况。Jz>=Jx时(或Jz<=-Jx，考虑往边长>2的方向上的bond放第2种vertex时)，不管是放第1种vertex，还是第3种vertex，p1，p2的上脚都是和非p2,非p1的某个segment的下脚连在一起，(或非p2,非p1的某个segment的上脚或下脚(下脚出现在前个Mcs刚结束，对uod和lup,ldn刚初始化完成，如上段所述的时候))，不会出现p1和p2的上脚连在一起的情况，所以就可以很直接地更新(*p1).lup与ip1,(*p2).lup与ip2之间的连接关系。
+
+**********************9th.Sep.2011***************************
+
+在放第3种，第4种算符时，也可以直接让ip1与p1,p3连接，ip2与p2,p4连接，相当与直线穿过，这样建立脚连接关系的时候要简单一些，后面就比较左右两条路径p1,p2的环指标就行了。
+
+*********************13th.Sep.2011***************************
+
+在一个mcs结束之后的清理vtx1,vtx2链表所占内存过程中，不但要清理这个链表所占内存，还要清理每个节点指向的vertex所占的内存(*vtemp).pvtx
+
+在计算<M>的时候，注意要统计加在一起的是abs(M(S))，而不是直接将M(S)加在一起
+
+本程序不适合算某条边为2的情况，因为由周期边界条件，在那个方向上的键会考虑两次，那么会人为加大kink出现的概率，从而使基态能量偏低
+
+********************14th.Sep.2011****************************
+
+mag和sus出现nan是因为在将所有本质环的mag,sus统计求和的时候，从指标0开始的，而前面说了，本质环应该是1~lnum2-1
+
+通过与alps2的对比，目前uniform magnetization, uniform susceptibility, staggered susceptibility的结果没有问题，还有energy, specific heat和staggered magnetization需要纠正，sse.f90 code在energy, magnetization, susceptibility都没有问题，specific heat因为误差较大，包括alps2里面也是一样，所以没有参考价值，sse.f90的spin stiffness和staggered structure factor还有带验证
+
+*******************16th.Sep.2011*****************************
+
+经过调试发现，以前energy求出来是错的是因为在根据vtx1链表判断最终哪些地方形成了kink的时候，用了(*(*(*vtemp).pvtx).p1).s!=((*(*(*vtemp).pvtx).p2).s)判断条件，导致在只有铁磁相互作用的时候Jz>=Jx算出来的能量是正确的，一旦有反铁磁作用，就会引入第2种，第4种vertex，这种情况下上述的判断条件是不对的，正确的判断条件是(*(*(*vtemp).pvtx).p1).s!=((*(*(*vtemp).pvtx).p3).s)，只有第1种和第3种算符时，(*(*(*vtemp).pvtx).p1).s!=((*(*(*vtemp).pvtx).p2).s)判断条件碰巧和(*(*(*vtemp).pvtx).p1).s!=((*(*(*vtemp).pvtx).p3).s)判断条件作用一致，所以才不会出问题
+
+通过研究sandvik的sse示例程序，发现在利用worldline pattern 计算staggered magnetization的时候，正确的做法是求在每一个镜像时间点的abs(smag)对镜像时间的积分再除以镜像时间长度，而不是像我前面做的那样，求在每一个镜像时间点的smag对镜像时间的积分之后再取abs再除以beta，所以我用kk1到kk2的这样一个链表按时间顺序将所有的kink存起来，然后再按这个链表求正确的积分以得到smag
+
+xxzloop_bak1：对每个segment的上下脚分别建立一个指针链表，指向与之相连的另一个(没vertex，或有第1种，第3种vertex)或另三个(第2种或第4种vertex)segments，这么做的目的性是期望一次性将所有segments所属的环的标号标正确，结果表明在formloop的时候，这种方法在逻辑上要多做很多重复无用的判断操作，逻辑上比较复杂，与环的拓扑结构有关系，算出来标号也不对，还不如先形成单环，再根据vtx2将一些单环合并，这样简单直接点
+xxzloop_bak2: 判断程序运行过程是否正确的输出语句们没有被注释掉的代码，便于调试
+xxzloop_bak3：smag没有通过对镜像时间求积分在平均的方法，而是直接取的t=0时刻的abs(smag)来算的
+xxzloop_lastsave: 最后一次保存的代码
+
+alps的models.xml和lattices.xml文件在/usr/lib/xml文件夹里，查看(或修改)models.xml文件可以知道model有哪些参数我们可以自己设置
+
+开始mcsteps,blsteps,binsteps设置为一般整形，结果在计算N*binsteps*binsteps时发生了溢出，导致比热超大，将这三个变量设置为long int后就正常了，但是和alps的计算结果仍不一致
+
+*******************18th.Sep.2011****************************
+
+Jxy的正负会带来什么区别，假设只有两个自旋：
+
+				-(S1x*S2y+S1y*S2x)		-S1z*S2z
+
+1/sqrt(2)|上下+下上>  (三重态)		-1/2			   1/4
+
+|上上>或|下下>	     (极化态)		0			  -1/4
+
+1/sqrt(2)|上下-下上>  (单重态)		1/2			   1/4
+
+所以Jxy=Jz=-1时，三重态和极化态是简并基态，当Jxy=1,Jz=-1时，单重态和极化态是简并基态，可是程序里面包括alps算出来的物理量平均值与Jxy的取正取负完全没有什么关系，比如磁化强度都为2/3，为什么？因为Jxy取正与取负时，区别体现在基态上(也有可能是所有的本征态上)仅仅是构成这个态的基矢前面那个系数前面的正负号差别，就像单重态与三重态的差别一样，系数本身是没有差别的，而MonteCarlo在抽样的过程中是不会体现出这个正负号差别的，因为蒙卡care的是模方，这种差别只有我们自己心里知道，又由于极化态与单重态或三重态是简并的，蒙卡可能就让极化态出现的概率为2/3，单重态或三重态出现的概率为1/3，所以磁化强度就成了2/3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,225 @@
+\chapter{二维交错二聚物Heisenberg模型的量子蒙特卡洛研究}
+\label{chap5}
+\section{研究背景}
+自从二十多年前铜氧化物高温超导体\cite{afrev}的发现，人们对二维自旋$S$=$1/2$的反铁磁Heisenberg模型已经进行了广泛地研究。作为未掺杂铜氧化物高温超导体的$\mathrm{CuO_{2}}$
+平面的的一个合适模型，二维反铁磁Heisenberg模型已经成为一个很好的研究强关联系统的出发点，尤其是在研究量子相变领域\cite{qpt}，它提供了一个很好的模版。通过引入由几何结构
+或竞争机制所带来的阻搓，这些模型会经历一个从Neel态到自旋液体\cite{sl}的量子相变，比如掺杂铜氧化物会使其成为共振价键态(RVB)\cite{rvb}。对于那些有不同的局域相互作用
+但不带来阻搓的模型，这些局域相互作用的竞争会导致一个价键态固体(VBS)形式的基态，所谓价键态固体就是自旋两两配对形成自旋单态，而这些配对的单态又以某种特定的方式进行
+排列从而破坏了格子的平移对称性\cite{vbs}。人们对这些Dimerized Heisenberg模型中的VBS-Neel相变已经进行了广泛地研究，通常这种类型的相变通过对应到一个非线性$\sigma$模型\cite{nlsigma}，从而可以用三维Heisenberg O(3)普适类来很好地描述。但是如果VBS基态是由各向同性从而保持了格子各种对称性的相互作用之间的竞争所形成，则在所对应的非线性$\sigma$模型中Berry相将是相关(relevant)的，
+这时就会导致所谓的退禁闭量子临界现象(DQCP)\cite{dqcp}，这种退禁闭量子临界现象违背了通常的Landau-Ginzburg-Wilson规范(LGW)\cite{lgw1,lgw2}。有许多理论
+和数值的工作\cite{Levin,Motrunich,Sandvik,Jiang1,Kuklov,Kragset}试图证实这种退禁闭临界现象理论的可靠性，其中有些工作提出了其他的看法，显示了这一领域仍然具有
+极大的争议性。
+
+尽管二维交错$J$-$J'$模型与自旋梯子模型十分相似，自旋梯子模型是一个很好地符合了LGW规范的模型\cite{csl}，而交错$J$-$J'$模型则被认为是一种可能存在退禁闭临界现象的
+模型\cite{Ichinose}，具有与通常三维Heisenberg普适类不同的临界指数。Wenzel对于交错$J$-$J'$模型的量子蒙特卡洛研究\cite{Wenzel1}确实给出了意外的临界指数，暗示
+由$J$和$J'$的交错排列方式可能对临界点具有非常规的贡献。然而，这个看起来非传统的相变点可能只是由一个立方不相关(cubic irrelevant)项所引起的\cite{cubic}，所以才导致了Wenzel工作中得到的临界指数$\nu$=$0.689(5)$，并且Jiang后来的模拟工作也表明\cite{Jiang2,Jiang3}，对正方以及六角格子的交错$J$-$J'$模型，
+非传统的$\nu$=$0.689(5)$可以利用模拟过程中的大部分数据点，并且在拟合时考虑sub-leading项而得到，但如果只用大尺寸体系的数据点，拟合时只考虑leading项就可以得到
+与通常O(3)普适类一致的$\nu$值，目前对O(3)普适类通过蒙特卡洛模拟方法得到的最精确的$\nu$=$0.7112(5)$\cite{O3}。
+
+为了对这个问题有更深入地了解，我们模拟了一类拓展的具有空间排列各向异性的Heisenberg类二聚物模型，我们称之为$J_0$-$J_1$-$J_2$模型，如图\ref{fig1}。这个模型的哈密顿量
+形式如下
+\begin{equation}
+H=J_{0}\sum_{\langle i,j\rangle}S_{i}\cdot S_{j}+J_{1}\sum_{\langle i,j\rangle'}S_{i}\cdot S_{j}+J_{2}\sum_{\langle i,j\rangle''}S_{i}\cdot S_{j}
+\end{equation}
+上式中的$J_0$，$J_1$，$J_2$是如图\ref{fig1:a}所示的各种反铁磁耦合作用。当$J_1/J_0$=$1$时，这个模型就是正方格子上的$J$-$J'$模型\ref{fig1:b}，$J_0$和$J_2$分别对应
+此时的$J$和$J'$。当$J_1/J_0$=$0$时，这个模型就转化为六角格子上的$J$-$J'$模型\ref{fig1:c}。已经有数值模拟工作对这两个模型进行模拟\cite{Wenzel1,Jiang2,Jiang3}，但是关于这种二维格子上的
+耦合作用的交错排列是否会导致非传统相变的问题仍然没有一个明确的答案。我们用量子蒙特卡洛方法研究了$J_1/J_0$在$0$到$1$的范围内的所有相变点$\alpha_c$($\alpha$=$J_2/J_0$)的性质，得到了
+所有相变点的精确位置，并且通过对不同物理量进行有限尺寸标度分析，我们得到了一些临界指数的值以与他人的工作进行对比。
+
+\begin{figure}[!Htbp]
+ \centering
+ \subfigure[]{
+  \label{fig1:a}
+  \includegraphics[scale=0.4]{fig1a.eps}}\\
+ \subfigure[]{
+  \label{fig1:b}
+  \includegraphics[scale=0.4]{fig1b.eps}}
+ \subfigure[]{
+  \label{fig1:c}
+  \includegraphics[scale=0.4]{fig1c.eps}}
+\caption{(a) The $J_0$-$J_1$-$J_2$ model simulated in this study. (b) For $J_1/J_0=1$, this model becomes the staggered $J$-$J'$ model on square lattice. (c) For $J_1/J_0=1$, this model becomes the staggered $J$-$J'$ model on honeycomb lattice.}
+\label{fig1}
+\end{figure}
+
+\section{计算细节}
+本章的模拟工作是利用ALPS软件包\cite{alps}中的环算法\cite{loop}来进行的。为了确定量子临界点，我们计算了一些标准的物理量如交错磁化强度(staggered magnetization)$m_s$，还有它所对应的磁四极矩$Q_2$，以及自旋刚度$\rho_s$，这些物理量的定义如方程\ref{equ2}、\ref{equ3}、\ref{equ4}所示，
+方程\ref{equ4}中的$W_x$和$W_y$分别表示沿$x$和$y$方向的绕数。
+\begin{equation}
+m_{s}=\frac{1}{N}\sum_{i}^{N}(-1)^{x_{i}+y_{i}}S_{i}
+\label{equ2}
+\end{equation}
+\begin{equation}
+Q_{2}=\frac{\langle(M_{s}^{z})^{4}\rangle}{\langle(M_{s}^{z})^{2}\rangle^{2}}
+\label{equ3}
+\end{equation}
+\begin{equation}
+\rho_{s}=\frac{3}{4\beta N}\langle W_{x}^{2}+W_{y}^{2}\rangle
+\label{equ4}
+\end{equation}
+
+根据重整化群理论，在临界点附近存在如下的标度形式
+\begin{equation}
+\mathcal{O}_{L}(t)=L^{\lambda/\nu}[1+c(tL^{1/\nu})L^{-\omega}]\textsl{\textrm{g}}_{\mathcal{O}}(tL^{1/\nu})
+\end{equation}
+上式中$t$表示约化的耦合强度$t=(\alpha-\alpha_{c})/\alpha_{c}$，$L$表征体系尺寸。$\nu$是衡量关联长度的临界指数，$\lambda$是物理量$\mathcal{O}$所对应的
+临界指数，对于物理量$Q_2$和$\rho_sL$，$\lambda$等于0，而对于$|m_s^z|$和$L^2m_s^2$，$\lambda/\nu$应该分别替换为$-\beta/\nu$以及$d-z-\eta$。$d=2$表示我们
+模拟的是二维格子，并且我们假设衡量虚时关联的临界指数$z$为1。$c(tL^{1/\nu})L^{-\omega}$是sub-leading修正项，$\omega$是confluent修正指数，
+$\textsl{\textrm{g}}_{\mathcal{O}}(tL^{1/\nu})$是普适标度函数。实际在相变点附近，$c(x)$($x=tL^{1/\nu}$)可以用一个常数$c$来近似，于是得到如下的常见的标度形式
+\begin{equation}
+\mathcal{O}_{L}(t)=L^{\lambda/\nu}(1+cL^{-\omega})\textsl{\textrm{g}}_{\mathcal{O}}(x)
+\label{equ6}
+\end{equation}
+
+大部分物理量所对应的标度形式都可以用方程\ref{equ6}来很好地描述，而为了更好地描述自旋刚度，最好再引入一个偏移修正项\cite{shift1,shift2}，从而标度形式变为
+一种推广的形式
+\begin{equation}
+\mathcal{O}_{L}(t)=L^{\lambda/\nu}(1+cL^{-\omega})\textsl{\textrm{g}}_{\mathcal{O}}(x')
+\end{equation}
+上式中$x'=tL^{1/\nu}+dL^{-\phi/\nu}$，这里的$d$与$c$都不是普适的，而应该视为拟合时的参数。
+
+在临界点附近，解析的普适函数$\textsl{\textrm{g}}_{\mathcal{O}}(x)$可以进行Taylor展开，我们一直展开到了四阶从而得到用来进行拟合和做数据坍缩时的标度形式
+\begin{equation}
+\mathcal{O}_{L}(t)=L^{\lambda/\nu}(1+cL^{-\omega})(\textsl{\textrm{g}}_0+\textsl{\textrm{g}}_1x+\textsl{\textrm{g}}_2x^2+\textsl{\textrm{g}}_3x^3+\textsl{\textrm{g}}_4x^4+...)
+\label{equ8}
+\end{equation}
+对$\textsl{\textrm{g}}_{\mathcal{O}}(x')$也可以做同样的展开以进行拟合。
+
+\section{计算结果分析}
+对每个固定的$J_1/J_0$值所对应的模型，我们都模拟了从$L=10$到$L=80$共$16$中不同尺寸的体系，虽然通过磁化率的峰值可以近似确定相变点的范围，但是更精确地确定
+相变点位置的方法还是要依赖于各物理量在相变点的标度形式，一种很好的办法是利用不同尺寸$L$和$2L$所对应的$Q_2$或者$\rho_sL$等物理量的交点$\alpha_c(L,2L)$
+来确定相变点$\alpha_c$\cite{bindercros}，$\alpha_c(L,2L)$具有如下形式
+\begin{equation}
+    \alpha_c(L,2L)=\alpha_c+\frac{b}{L^{1/\nu+\omega}}
+    \label{equ9}
+\end{equation}
+图\ref{fig2}给出了模拟出来的在$J_1/J_0=0.6$时的$Q_2$和$\rho_sL$随$\alpha$的变化关系，以及利用这两个物理量和方程\ref{equ9}的形式拟合出来
+的$\alpha_c(L,2L)$与$1/L$的曲线，得到的相变点$\alpha_c$为$2.1904(4)$，通过这种方式得到的在$J_1/J_0=1$时所对应的正方格子交错反铁磁Heisenberg模型的相变点和
+在$J_1/J_0=0$时所对应的六角格子交错反铁磁Heisenberg模型的相变点分别为$2.5198(3)$和$1.7355(2)$，与Wenzel以及Jiang所得到的相变点是非常一致的，confluent修正项
+使得在相变点对不同尺寸$L$的$Q_2$、$\rho_sL$并不严格相交于一点，而是随着$L$慢慢趋近与它们的临界值。
+\begin{figure}[!Htbp]
+\centering
+\includegraphics[scale=0.47]{j1eq0.6_bsc.eps}
+\caption{The Binder cumulant $Q_2$ (top) and the multiplication of spin stiffness with lattice size $\rho_sL$ (middle) for various lattice sizes from $L$=$10$ to $L$=$80$ while $J_1/J_0$ is set to be $0.6$, the lines are the fitting results with polynomial form expanded up to 8th order. Scaling of crossing points used to extract the critical coupling $\alpha_c$ (bottom), the lines are the fitting result according to Equ.(\ref{equ9}).}
+\label{fig2}
+\end{figure}
+
+在根据方程\ref{equ8}对磁四极矩$Q_2$(Binder cumulant)进行拟合时，我们发现如果对所有尺寸的数据进行拟合，得到的$\nu$值会稍微偏小一点，在$0.7$左右，如果只对尺寸稍大
+一点的数据进行拟合，得到的$\nu$值会增大一些，有向$O(3)$普适类的$\nu=0.7112(2)$靠近的趋势， 并且在体系足够大时，不论考虑confluent修正项与否，拟合得到的结果是一样的，所以我们认为这时拟合得到的结果是可靠的。而对自旋刚度$\rho_sL$进行拟合时，
+虽然像$Q_2$一样如果拟合稍大体系的数据得到的$\nu$值也会有所增大，但是趋势并不明显，并且对所模拟的尺寸，要使拟合过程收敛必须考虑confluent修正项，
+对有些情况还需要考虑shift修正项才能保证收敛。所有$J_1/J_0$从$0$到$1$的情况下，由方程\ref{equ9}得到的相变点和根据$Q_2$和$\rho_sL$拟合得到的
+相变点以及$\nu$值如表\ref{tb1}所示，其中$L_{min}$表示拟合用数据的最小尺寸，可以看到各种方法得到的相变点是一致的(除了$J_1/J_0=0.8$之外)，由$Q_2$拟合得到的$\nu$值与$O(3)$普适类一致，
+然而由$\rho_sL$拟合得到的$\nu$值却与Wenzel得到的结果一致，利用各自的拟合结果对$Q_2$和$\rho_sL$所做的数据坍缩如图\ref{bsclp}所示，可以看到虽然$Q_2$和$\rho_sL$
+的拟合结果互相不一致，但各自的数据坍缩图仍然是令人满意的，文献\cite{Jiang3}指出的整个体系进行平均之后的$\rho_sL$的confluent修正项很大可能是造成这种不一致的原因，
+考虑到各向异性，沿某一特定方向上的$\rho_sL$的修正会比较小，对沿这个方向上的$\rho_sL$进行拟合或许可以得到一致的符合O(3)普适类的结果，在相变点的$Q_2(\alpha_c)$值在
+$J_1/J_0=1$时在$2.41$左右，到$J_1/J_0=0$时降为$2.33$左右。
+\begin{table}[!Htbp]
+\centering
+\caption{Fitting results of $\alpha_c$ and $\nu$}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+\multirow{2}{*}{$J_{1}/J_{0}$} & \multirow{2}{*}{$\alpha_{c}$ from Equ.\ref{equ9}} & \multicolumn{3}{c|}{fitting results of $Q_{2}$} & \multicolumn{3}{c}{fitting result of $\rho_{s}L$}\tabularnewline
+\cline{3-8}
+ &  & $L_{min}$ & $\alpha_{c}$ & $\nu$ & $L_{min}$ & $\alpha_{c}$ & $\nu$\tabularnewline
+\hline
+0.0 & 1.7355(2) & 24 & 1.7357(3) & 0.712 & 28 & 1.7358(3) & 0.680\tabularnewline
+0.1 & 1.8067(3) & 28 & 1.8070(3) & 0.708 & 36 & 1.8065(4) & 0.697\tabularnewline
+0.2 & 1.8802(2) & 28 & 1.8804(3) & 0.707 & 28 & 1.8804(3) & 0.687\tabularnewline
+0.3 & 1.9553(3) & 28 & 1.9555(2) & 0.707 & 28 & 1.9553(3) & 0.691\tabularnewline
+0.4 & 2.0326(3) & 32 & 2.0326(2) & 0.711 & 28 & 2.0326(2) & 0.687\tabularnewline
+0.5 & 2.1110(3) & 24 & 2.1108(3) & 0.705 & 24 & 2.1106(4) & 0.688\tabularnewline
+0.6 & 2.1904(4) & 28 & 2.1904(3) & 0.710 & 24 & 2.1904(2) & 0.685\tabularnewline
+0.7 & 2.2715(2) & 28 & 2.2713(2) & 0.706 & 28 & 2.2714(2) & 0.687\tabularnewline
+0.8 & 2.3531(4) & 28 & 2.3532(3) & 0.701 & 28 & 2.3525(5) & 0.693\tabularnewline
+0.9 & 2.4358(2) & 24 & 2.4360(3) & 0.711 & 32 & 2.4358(2) & 0.701\tabularnewline
+1.0 & 2.5198(4) & 40 & 2.5196(3) & 0.705 & 24 & 2.5194(2) & 0.689\tabularnewline
+\hline
+\end{tabular}
+\label{tb1}
+\end{table}
+
+\begin{figure}[!Htbp]
+ \centering
+ \subfigure[]{
+  \label{bsclp:a}
+  \includegraphics[scale=0.36]{bclp.eps}}
+ \subfigure[]{
+  \label{bsclp:b}
+  \includegraphics[scale=0.36]{sclp.eps}}
+\caption{Data collapsing of $Q_2$ (a) and $\rho_sL$ (b), the lines are the fitting results of the universal functions.}
+\label{bsclp}
+\end{figure}
+
+为了得到$\beta/\nu$以及$d-z-\eta$的值，我们做了临界点上的不同尺寸的$|m_s^z|$以及$L^2m_s^2$关于$L$的对数关系图，如图\ref{msfit}所示，我们对这些拟合出来的直线
+做了一些垂直方向的偏移以让不同尺寸的拟合直线能够分开，可以看到在整个范围内$\beta/\nu$基本在$0.54$到$0.55$之间，$1-\eta$范围在$0.905$到$0.92$之间，并且在
+$J_1/J_0=1$时我们得到的结果与Wenzel得到的结果非常一致，通常的O(3)普适类情况下$\beta/\nu$为$0.518$\cite{O3,Wenzel1}，$d-z-\eta$为$0.971$\cite{Wenzel1}， 所以从这两个临界指数来看，这一类模型是否属于O(3)普适类仍然需要更多工作来进行检验。
+\begin{figure}[!Htbp]
+ \centering
+ \subfigure[]{
+  \label{msfit:a}
+  \includegraphics[scale=0.36]{msproj1.eps}}
+ \subfigure[]{
+  \label{msfit:b}
+  \includegraphics[scale=0.36]{l2ms2proj1.eps}}
+\caption{Extract values of $\beta/\nu$ and $d-z-\eta$.}
+\label{msfit}
+\end{figure}
+
+\section{总结讨论}
+我们利用量子蒙特卡洛方法研究了一类二维交错反铁磁Heisenberg类模型的VBS-Neel相变点的性质，得到相变点的精确位置，并通过各种标度形式做标度分析
+得到了临界指数$\nu$、$\beta/\nu$以及$d-z-\eta$的值，我们发现，在对$Q_2$进行拟合时利用大尺寸体系的数据可以得到符合O(3)普适类的$\nu$值，然而
+由$\rho_sL$拟合得到的$\nu$值以及由$|m_s^z|$和$L^2m_s^2$得到的$\beta/\nu$和$d-z-\eta$却显示这一类交错模型无法用O(3)普适类描述，也许考虑到
+各向异性，只对沿某一方向上的confluent修正项较小的$\rho_sL$进行拟合能够得到符合O(3)普适类的$\nu$值，而$\beta/\nu$以及$d-z-\eta$与O(3)普适类的
+偏离仍然需要更多的解释，或许与立方不相关(cubic irrelevant)项有关系。总的来说，对这一类模型中耦合作用的交错排列方式是否会导致非传统的相变仍然需要
+更多的工作来进行探讨。
+
+\begin{thebibliography}{999}
+
+\bibitem{afrev} E. Manousakis, {\it The spin-$1/2$ Heisenberg antiferromagnet on a square lattice and its application to the cuprous oxides}, Rev. Mod. Phys. \textbf{63}, 1 (1991).
+
+
+\bibitem{qpt} S. Sachdev, \textbf{Quantum Phase Transitions} (Cambridge University Press, Cambridge, 1999).
+
+
+\bibitem{sl} L. Balents, {\it Spin liquids in frustrated magnets},Nature \textbf{464}, 199 (2010).
+
+
+\bibitem{rvb} P.W. Anderson, {\it The Resonating Valence Bond State in $La_2CuO_4$ and Superconductivity}, Science \textbf{235}, 1196 (1987).
+
+
+\bibitem{vbs} N. Read and Subir Sachdev, {\it Valence-bond and spin-Peierls ground states of low-dimensional quantum antiferromagnets}, Phys. Rev. Lett. \textbf{62}, 1694 (1989);\\ N. Read and Subir Sachdev, {\it Spin-Peierls, valence-bond solid, and Neel ground states of low-dimensional quantum antiferromagnets}, Phys. Rev. B \textbf{42}, 4568 (1990).
+
+
+\bibitem{nlsigma} F.D.M. Haldane, {\it O(3) Nonlinear $\sigma$ Model and the Topological Distinction between Integer- and Half-Integer-Spin Antiferromagnets in Two Dimensions}, Phys. Rev. Lett. \textbf{61}, 1029 (1988);\\ S. Chakravarty, B.I. Halprin, and D.R. Nelson, {\it Two-dimensional quantum Heisenberg antiferromagnet at low temperatures}, Phys.Rev.B \textbf{39}, 2344 (1989).
+
+
+\bibitem{dqcp} T. Senthil, A. Vishwanath, L. Balents, S. Sachdev, and M.P.A. Fisher, {\it Deconfined Quantum Critical Points}, Science \textbf{303}, 1490 (2004);\\ T. Senthil, L. Balents, S. Sachdev, A. Vishwanath, and M.P.A. Fisher, {\it Quantum criticality beyond the Landau-Ginzburg-Wilson paradigm}, Phys. Rev. B \textbf{70}, 144407 (2004).
+
+
+\bibitem{lgw1} L.D. Landau, E.M. Lifshitz, E.M. Pitaevskii, \textit{Statistical Physics} (Butterworth-Heinemann, New York, 1999).
+\bibitem{lgw2} K.G. Wilson, J. Kogut, {\it The renormalization group and the $\epsilon$ expansion}, Phys.Rep. \textbf{12}, 75 (1974).
+
+\bibitem{Levin} M. Levin and T. Senthil, {\it Deconfined quantum criticality and Neel order via dimer disorder}, Phys. Rev. B \textbf{70}, 220403(R) (2004).
+\bibitem{Motrunich} O.I. Motrunich and A. Vishwanath, {\it Emergent photons and transitions in the O(3) sigma model with hedgehog suppression}, Phys. Rev. B \textbf{70}, 075104 (2004);\\ O.I. Motrunich and A. Vishwanath {\it Comparative study of Higgs transition in one-component and two-component lattice superconductor models}, arXiv:0805.1494.
+\bibitem{Sandvik} A.W. Sandvik, {\it Evidence for Deconfined Quantum Criticality in a Two-Dimensional Heisenberg Model with Four-Spin Interactions}, Phys. Rev. Lett. \textbf{98}, 227202 (2007);\\ A.W. Sandvik, {\it Continuous Quantum Phase Transition between an Antiferromagnet and a Valence-Bond Solid in Two Dimensions: Evidence for Logarithmic Corrections to Scaling}, Phys. Rev. Lett. \textbf{104}, 177201 (2010).
+\bibitem{Jiang1} F.-J. Jiang, M. Nyfeler, S. Chandrasekharan, and U.-J. Wiese, {\it From an antiferromagnet to a valence bond solid: evidence for a first-order phase transition}, J. Stat. Mech. (2008) P02009.
+\bibitem{Kuklov} A.B. Kuklov, M. Matsumoto, N.V. Prokof'ev, B.V. Svistunov, and M. Troyer, {\it Deconfined Criticality: Generic First-Order Transition in the SU(2) Symmetry Case}, Phys. Rev. Lett. \textbf{101}, 050405 (2008)
+\bibitem{Kragset} S. Kragset, E. Smorgrav, J. Hove, F.S. Nogueira, and A. Sudbo, {\it First-Order Phase Transition in Easy-Plane Quantum Antiferromagnets}, Phys. Rev. Lett. \textbf{97}, 247201 (2006);\\ F.S. Nogueira, S. Kragset, and A. Sudbo, {\it Quantum critical scaling behavior of deconfined spinons}, Phys. Rev. B \textbf{76}, 220403(R) (2007).
+
+\bibitem{csl} T. Senthil, L. Balents, S. Sachdev, A. Vishwanath. and M.P.A. Fisher, {\it Deconfined Criticality Critically Defined}, J. Phys. Soc. Jpn. \textbf{74}, 1 (2005)
+\bibitem{Ichinose} D. Yoshioka, G. Arakawa, I. Ichinose, and T. Matsui, {\it Neel-dimer transition in an antiferromagnetic Heisenberg model and deconfinement of spinons at the critical point}, Phys. Rev. B \textbf{70}, 174407 (2004);\\ S. Takashima, I. Ichinose, and T. Matsui, {\it Deconfinement of spinons on critical points: Multiflavor $\mathrm{CP^1+U(1)}$ lattice gauge theory in three dimensions}, Phys. Rev. B \textbf{73}, 075119 (2006).
+
+\bibitem{Wenzel1} S. Wenzel, L. Bogacz, and W. Janke, {\it Evidence for an Unconventional Universality Class from a Two-Dimensional Dimerized Quantum Heisenberg Model}, Phys. Rev. Lett. \textbf{101}, 127202 (2008).
+\bibitem{cubic} L. Fritz, R.L. Doretto, S. Wessel, S.Wenzel, S. Burdin, and M. Vojta, {\it Cubic interactions and quantum criticality in dimerized antiferromagnets}, Phys. Rev. B \textbf{83}, 174416 (2011).
+\bibitem{Jiang2} F.-J. Jiang and U. Gerber, {\it Subtlety of determining the critical exponent $\nu$ of the spin-$1/2$ Heisenberg model with a spatially staggered anisotropy on the honeycomb lattice}, J. Stat. Mech. (2009) P09016.
+\bibitem{Jiang3} F.-J. Jiang, {\it Monte Carlo simulations of an unconventional phase transition for a two-dimensional dimerized quantum Heisenberg model}, Phys. Rev. B \textbf{85}, 014414 (2012).
+\bibitem{O3} M. Campostrini, M. hasenbusch, A. Pelissetto, P. Rossi, and E. Vicari, {\it Critical exponents and equation of state of the three-dimensional Heisenberg universality class}, Phys. Rev. B \textbf{65}, 144520 (2002).
+
+\bibitem{alps} B. Bauer \textit{et al}., {\it The ALPS project release 2.0: open source software for strongly correlated systems}, J. Stat. Mech. (2011) P05001.
+\bibitem{loop} H.G. Evertz, {\it The Loop Algorithm}, Adv.Phys. \textbf{52}, 1 (2003);\\ N.Kawashima and K. Harada, {\it Recent Developments of World-Line Monte Carlo Methods}, J. Phys. Soc. Jpn. \textbf{73}, 1379 (2004).
+
+\bibitem{shift1} L. Wang, K.S.D. Beach, and A.W. Sandvik, {\it High-precision finite-size scaling analysis of the quantum-critical point of S=1/2 Heisenberg antiferromagnetic bilayers}, Phys. Rev. B \textbf{73}, 014431 (2006).
+\bibitem{shift2} S. Wenzel and W. Janke, {\it Comprehensive quantum Monte Carlo study of the quantum critical points in planar dimerized/quadrumerized Heisenberg models}, Phys. Rev. B \textbf{79}, 014410 (2009).
+
+\bibitem{bindercros} K. Binder, {\it Finite Size Scaling Analysis of Ising Model Block Distribution Functions}, Z. Phys. B: Condens. Matter \textbf{43}, 119 (1981).
+
+\end{thebibliography}

@@ -1,0 +1,119 @@
+\chapter{绪论}
+\label{chap1}
+
+\section{蒙特卡洛方法介绍}
+蒙特卡洛方法,也称统计模拟方法，是二十世纪四十年代中期由于科学技术的发展和电子计算机的发明，而被提出的一种以概率统计理论为指导
+的一类非常重要的数值计算方法，是指使用随机数(或更常见的伪随机数)来解决很多计算问题的方法。
+
+早在17世纪，人们就知道用事件发生的频率来决定事件的概率。19世纪，Georges-Louis Leclerc和Comte de Buffon提出所谓的投针实验，假设地板由宽度为$t$的长木条间铺成，往地板上投递一些长为$l$的针，问针
+跨越两块木条之间的间隔线的概率是多少？可以计算得知，当$l<t$时，这个概率是$2l/t\pi$，通过这种大量随机投针的实验并统计某种特定事件出现概率的方法就是蒙特卡洛方法
+的原型。20世纪40年代，在John von Neumann，Stanislaw Ulam和Nicholas Metropolis在洛斯阿拉莫斯国家实验室处理中子实验后的数据时，发明了蒙特卡洛方法\cite{0mcstart}。
+因为Ulam的叔叔经常在摩洛哥的蒙特卡洛赌场输钱，故起名蒙特卡洛方法，而蒙特卡洛方法正是以概率为基础的方法。
+尽管当时受到计算机资源的严重限制，蒙特卡洛方法在曼哈顿工程的计算机模拟工作中起到了核心作用，并在50年代应用于与氢弹相关的
+早期工作中，后来在物理\cite{0mcbook,0mcbook2,0mcbook3,0mcbook4}、化学、工程\cite{0mcpp}以及金融中\cite{0mcbook5}都得到了广泛的应用。
+蒙特卡洛方法要求产生大量的随机数，而这也促进了伪随机数生成器的发展。
+
+蒙特卡洛方法有很多种，但大致框架如下：\\
+1，定义一个问题所要求的输入的范围(如态空间)。\\
+2，在此范围内根据某个概率分布(如玻尔兹曼分布)随机产生输入。\\
+3，对输入进行某种运算(如计算物理量)。\\
+4，统计结果(如得到物理量平均值以及误差)。
+
+下面是一个常用的介绍蒙特卡洛方法的求$\pi$值的例子，如图\ref{pisample}：\\
+1，在一个正方形内画出一个$1/4$圆形区域。\\
+2，往正方形内随机均匀地撒点。\\
+3，统计撒点的总数$n$以及落在圆形区域内的点的总数$n_0$。\\
+4，计算$4n_0/n$的值我们就可以近似得到$\pi$值。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{pisample}
+\caption{Extract the value of $\pi$ by monte carlo method}
+\label{pisample}
+\end{figure}
+
+\section{蒙特卡洛方法的应用}
+蒙特卡洛方法特别适用于模拟具有不确定性输入的现象(如风险投资)，以及具有大量耦合在一起的自由度的系统(如统计物理)，下面列举一些其在不同学科中的应用：
+
+\textbf{物理科学}
+
+蒙特卡洛方法在计算物理，物理化学及相关应用领域发挥着至关重要的作用，并且在复杂的量子色动力学的计算中具有广泛应用。在统计物理中，蒙特卡洛分子建模
+方式是分子动力学的一种替代方法，并且蒙特卡洛方法也应用在简单粒子以及聚合物系统\cite{0poly}中的统计场论相关工作中。量子蒙特卡洛方法处理量子多体系统。
+在实验粒子物理中，蒙特卡洛方法被用于设计探测器，理解他们的行为并用于将实验数据与理论进行比较。在空间物理中，蒙特卡洛方法被广泛地应用于
+模拟星系演化\cite{0gala}以及行星表面微波辐射\cite{0micro}的建模工作中。现代天气预测学也是从蒙特卡洛方法在系综模型中的应用发展而来的。
+
+\textbf{工程学}
+
+微电子工程学中的模拟与数字集成电路的关联与无关联变化分析；冶金学中的矿物加工工艺流程；统计学中的数量风险分析；风能领域的风场电能输出预估；环境污染
+的影响评估；自动控制领域机器人位置的定位等。
+
+\textbf{计算生物学}
+
+亲缘关系的贝叶斯推断；蛋白质膜的模拟以及癌症肿瘤的成像；生物分子对环境变化的响应模拟；同时可以做一些物理上无法实现的假象生物学实验，如破坏某些键，在特定位置引入杂质，改变局部或全局
+结构，引入外作用场等。
+
+\textbf{数学}
+
+数值积分；最优化问题；逆算问题；计算数学等。
+
+\textbf{金融与贸易}
+
+评估公司市值；评估投资风险；评估金融衍生品；也可以对某项金融工程进行建模，模拟最坏情况，最好情况，每项任务的持续时间，最终评估整个工程的结果。
+
+蒙特卡洛方法还在人工智能游戏领域，设计与视觉效果领域，通信领域等都有广泛的应用。
+
+\section{蒙特卡洛方法优缺点分析}
+蒙特卡罗模拟是一种有效的统计实验计算法，即基本思想是当所求解问题是某种随机事件出现的概率，或者是某个随机变量的期望值时，
+通过某种“实验”的方法，以这种事件出现的频率估计这一随机事件的概率，或者得到这个随机变量的某些数字特征，并将其作为问题的解。
+蒙特卡洛方法的主要缺点是收敛速度慢，无论是理论上还是在实践中，传统的蒙特卡罗技术都存在工作量大的问题。
+从理论上来说，蒙特卡罗方法需要大量的实验。实验次数越多，所得到的结果才越精确。
+而且实验表明，一直到公元20世纪初期，尽管实验次数数以千计，利用蒙特卡罗方法所得到的圆周率$\pi$值，还是达不到公元5世纪祖冲之的推算精度。
+这可能是传统蒙特卡罗方法长期得不到推广的主要原因。但计算机技术的发展使得蒙特卡罗方法在最近三十年得到快速的普及。
+现代的蒙特卡罗方法，己经不必亲自动手做实验，而是借助计算机的高速运转能力，使得原本费时费力的实验过程，变成了快速和轻而易举的事情。
+借助计算机技术，蒙特卡罗方法实现了两大优点：一是简单，省却了繁复的数学推导和演算过程，使得一般人也能够理解和掌握；
+二是快速，这也是蒙特卡罗方法现在获得广泛应用的技术基础。
+
+\section{选题意义与文章结构}
+蒙特卡洛方法对研究多体问题的基态和相变问题具有十分重要的意义。通过利用不同蒙特卡洛方法来模拟磁性模型，我们希望能对各种材料或模型的基态及低温性质、
+外场下的动态性质、相变点的临界性质以及蒙特卡洛方法的理论基础有更深入地了解。长在合适基底下的单分子磁体构成的膜结构可以具有很强的垂直单轴各向
+异性，并且单分子磁体本身具有比较大的自旋值，这些令其成为重要的潜在磁存储材料，利用蒙特卡洛方法模拟这些单分子模型的磁性具有重要的验证和指导意义；
+退禁闭临界理论自从提出以来一直备受争议并且现在已经成为一个研究热点，有工作指出二维交错反铁磁模型可能存在这种临界现象，并且数值上有工作
+确实得到了非常规的临界指数值，利用量子蒙特卡洛方法来对这些二维交错反铁磁模型进行进一步地研究和拓展是十分必要的。
+
+本文结构安排如下：第二章介绍了经典蒙特卡洛方法的数学基础以及两种实现随机抽样的算法，Metropolis算法以及团簇算法；第三章介绍了三种玻色型
+量子蒙特卡洛方法的发展历史、理论基础以及抽样过程的细节；第四章介绍了我们利用经典蒙特卡洛方法模拟单分子铁磁薄膜的研究工作；第五章给出了利用
+量子蒙特卡洛方法中的环算法研究二维交错反铁磁模型中VBS-Neel相变的计算结果。
+
+\begin{thebibliography}{999}
+\bibitem{0mcstart}
+N. Metropolis, {\it THE BEGINNING of the MONTE CARLO METHOD}, {\it Los Alamos Science}, Special Issue, 125 (1987)
+
+\bibitem{0mcbook}
+K. Binder and D.W. Heermann, \textbf{Monte Carlo Simulation in Statistical Physics: An Introduction (5th ed.)} (Springer, 2010).
+
+\bibitem{0mcbook2}
+D.P. Landau and K. Binder, \textbf{A Guide to Monte Carlo Simulations in Statistical Physics (2nd ed.)} (Cambridge University Press, 2005).
+
+\bibitem{0mcbook3}
+M.E.J. Newman and G.T. Barkema, \textbf{Monte Carlo Methods in Statistical Physics} (Oxford University Press, 1999).
+
+\bibitem{0mcbook4}
+J.M. Hammersley and D.C. Handscomb, \textbf{Monte Carlo Methods}  (Halsted Press, New York, 1975).
+
+\bibitem{0mcpp}
+J.G. Amar, {\it The Monte Carlo Method in Science and Engineering}, Computing in Science \& Engineering, Vol.8, No.2.(March 2006), pp.9-19.
+
+\bibitem{0mcbook5}
+P. Glasserman, \textbf{Monte Carlo Methods in Financial Engineering} (Springer, 2003).
+
+\bibitem{0poly}
+S.A. Baeurle, {\it Multiscale modeling of polymer materials using field-theoretic methodologies: A survey about recent developments}, Journal of Mathematical Chemistry, \textbf{46},(2),363 (2009).
+
+\bibitem{0gala}
+H.T. MacGillivray and R.J. Dodd, {\it Monte-Carlo simulations of galaxy systems}, Astrophysics and Space Science (Springer Netherlands) \textbf{82} (2) (1982)
+
+\bibitem{0micro}
+L.M. Golden, {\it The Effect of Surface Roughness on the Transmission of Microwave Radiation Through a Planetary Surface}, Icarus \textbf{38} (3) 451 (1979)
+
+
+
+\end{thebibliography} 

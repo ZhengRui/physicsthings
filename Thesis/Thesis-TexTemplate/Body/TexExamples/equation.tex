@@ -1,0 +1,183 @@
+\chapter{数学公式示例}
+\section{公式样本}
+\label{chap1:sample:equation}
+\subsection{典型例子}
+贝叶斯公式如下：
+\begin{equation}
+p(y|\textbf{x}) = \frac{p(\mathrm{x},y)}{p(\mathrm{x})}=
+\frac{p(\textrm{x}|y)p(y)}{p(\textbf{x})} \label{equ:chap1:bayes}
+\end{equation}
+
+%\newcommand{\supcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
+
+\noindent式(\ref{equ:chap1:bayes})中$p(y|\mathbf{x})$为后验；$p(\mathbf{x})$为先验
+；分母$p(\mathbf{x})$为归一化因子\upcite{Bayes63:classical}。(即参见文献\cite{Bayes63:classical})
+
+\section{自动控制专业常用公式：用Mathtype生成的公式源码直接应用于程序中（导出时请选择 TeX-AMS-LaTeX ）}
+
+\verb"\renewcommand{\mathbf}[1]{\boldsymbol{#1}}%重新定义 \mathbold 为矢量黑斜体"
+已经在fomat.tex中重新定义了。
+
+    \[
+\left\{ {\begin{array}{*{20}c}
+   {{\mathbf{\dot x}} = {\mathbf{Ax}} + {\mathbf{Bu}}}  \\
+   {{\mathbf{y}} = {\mathbf{Cx}} + {\mathbf{Du}}}  \\
+\end{array}} \right.
+\]
+
+\verb"$e i j d \me \mi \mj \dif$"  $e i j d \me \mi \mj \dif$
+
+$$F(y)=\frac{1}{\sqrt{2\pi}}\int_0^y\me^{-\frac{x^2}{2}}\dif x$$
+
+\begin{verbatim}
+变量~$x$~的值, 变量 $x$ 的值, 变量$x$的值\end{verbatim}
+
+变量~$x$~的值, 变量 $x$ 的值, 变量$x$的值
+
+\section{各种公式实例}
+\setcounter{subsubsection}{0}
+\subsubsection{指数、指标}
+$x^{2n}$ \,\, $x^{y_1}$ \,\, $A^{x_i^2}_{j^{2n}_{m,n}}$
+\subsubsection{分数}
+$\frac{1}{x+y}$ \,\, $\frac{a^2-b^2}{a-b}$
+\subsubsection{根式}
+$\sqrt[k]{x^2+y^3}$ \,\, $\sqrt[n]{\frac{x^n-y^n}{1+u^{2n}}}$
+\subsubsection{求和与积分}
+在正文公式中求和 $\sum_{i=1}^n$ 积分$\int_a^b$
+
+在显示公式中求和$$\sum_{i=1}^n$$ 积分$$\int_a^b$$
+
+\subsubsection{连续点、省略号}
+ldots $\ldots$  cdots $\cdots$  vdots $\vdots$  ddots $\ddots$
+
+\begin{example}{请看下列文本}
+Each of the measurements $x_1<x_2<\cdots<x_r$ occurs $p_1,p_2,\ldots,p_r$ times. The mean value and standard deviation are then
+
+$$x=\frac{1}{n}\sum_{i=1}^{r}p_i x_i , \qquad s=\sqrt{\frac{1}{n}\sum_{i=1}^{r}p_i {(x_i-x)}^2}$$ \\
+Where $n=p_1+p_2+\cdots+p_r$.
+\end{example}
+
+\section{各种字符}
+\setcounter{subsubsection}{0}
+\subsubsection{带圈字符}
+\textcircled{\footnotesize 1}\textcircled{\footnotesize 2}\textcircled{\footnotesize 3}\textcircled{\footnotesize 4}\textcircled{\footnotesize 5}\textcircled{\footnotesize 6}\textcircled{\footnotesize 7}\textcircled{\footnotesize 8}\textcircled{\footnotesize 9}\textcircled{\scriptsize 88}
+
+\subsubsection{希腊字母}
+  \begin{tabbing}
+    \hspace*{2em} \= \hspace{6em} \= \hspace{6em} \= \hspace{6em} \= \hspace{6em} \= \hspace{6em} \=\kill
+    % \> for next tab, \\ for new line...
+    \>alpha $\alpha$ \> theta $\theta$ \> beta $\beta$ \> gamma $\gamma$ \> delta $\delta$ \> eta $\eta$ \\
+    \>varepsilon $\varepsilon$ \> lambda $\lambda$ \> mu $\mu$ \> sigma $\sigma$ \> rho $\rho$ \> xi $\xi$ \\
+    \>pi $\pi$ \> psi $\psi$ \> phi $\phi$ \> tau $\tau$ \> omega $\omega$ \> nu $\nu$\\
+    \>Gamma $\Gamma$ \> Lambda $\Lambda$ \> Sigma $\Sigma$ \> Psi $\Psi$ \> Delta $\Delta$ \> Omega $\Omega$ \\
+    \> Theta $\Theta$ \> Pi $\Pi$ \> Phi $\Phi$
+
+  \end{tabbing}
+
+大写斜体 $\mathnormal{\Gamma\Pi\Phi}$
+
+\subsubsection{数学符号}
+$\otimes$
+
+\[
+\frac{{ \pm \left| {\begin{array}{*{20}c}
+   {x_1-x_2} & {y_1-y_2} & {z_1-z_2}  \\
+   {l_1} & {m_1} & {n_1}  \\
+   {l_2} & {m_2} & {n_2}  \\
+\end{array}} \right|}}{{\sqrt {\left| {\begin{array}{*{20}c}
+   {l_1} & {m_1}  \\
+   {l_2} & {m_2}  \\
+\end{array}} \right|^2  + \left| {\begin{array}{*{20}c}
+   {m_1} & {n_1}  \\
+   {m_2} & {n_2}  \\
+\end{array}} \right|^2  + \left| {\begin{array}{*{20}c}
+   {n_1} & {l_1}  \\
+   {n_2} & {l_2}  \\
+\end{array}} \right|^2 } }}
+\]
+
+$$
+\underbrace {a + \overbrace {b + \cdots + y}^{123} + z}_{\alpha \beta \gamma }
+$$
+
+
+
+\section{各种矩阵}
+pmatrix
+$
+\begin{pmatrix}
+  1 & 2 & 3  \\
+  6 & 3 & 5 \\
+  7 & 98 & 78  \\
+\end{pmatrix}
+$
+bmatrix
+$
+\begin{bmatrix}
+  1 & 2  & 3   \\
+  6 & 3  & 5   \\
+  7 & 98 & 78 \\
+\end{bmatrix}
+$
+vmatrix
+$
+\begin{vmatrix}
+  2 & 3 & 4  \\
+  6 & 3 & 5  \\
+\end{vmatrix}
+$
+Vmatrix
+$
+\begin{Vmatrix}
+  2 & 3 & 4  \\
+  6 & 3 & 5  \\
+\end{Vmatrix}
+$
+\section{用户定义命令(有参数值的命令)---自定义公式}
+\setcounter{subsubsection}{0}
+%% \ensuremath 为使得该自定义命令既可在数学模式使用又可在文本模式使用
+%% 定义了三个参数，其中只且仅有第一个是可省的，第二个方括号内的（x）为缺省值
+\newcommand{\subvec}[3][x]{\ensuremath{#1_{#2},\cdots,#1_{#3}}}
+\subsubsection{文本中的公式1}
+\subvec [a]ij ;
+\subvec 1n ;
+\subvec ij ;
+\subvec [A]{ij}{lk} .
+\subsubsection{文本中的公式2}
+$\subvec ij $ ;
+$\subvec [A]{ij}{lk} $ .
+\subsubsection{居中的公式(不带编号)}
+$$\subvec [a]ij $$
+$$\subvec [A]{ij}{lk} $$
+\subsubsection{自动编号的单个的公式}
+\begin{equation}
+   \subvec [A]{ij}{lk}
+\end{equation}
+\begin{equation}
+   \subvec [A]{ij}{lk}
+\end{equation}
+\begin{equation}
+   \subvec [A]{ij}{lk}
+\end{equation}
+\subsubsection{自动编号的公式组}
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  \subvec ij &=& \subvec ij \\
+  \subvec ij &=& \subvec ij
+\end{eqnarray}
+\subsubsection{自动编号的公式组 2-a,2-b 格式}
+产生形如 4-a,4-b 的编号
+\alpheqn  %产生形如 4-a,4-b 的编号
+\begin{eqnarray}
+  \subvec ij &=& \subvec ij \\
+  \subvec ij &=& \subvec ij
+\end{eqnarray}
+\reseteqn  %恢复形如 4,5 的编号
+
+恢复正常公式编号
+\begin{equation}
+\subvec ij
+\end{equation}
+\begin{equation}
+\subvec ij
+\end{equation}

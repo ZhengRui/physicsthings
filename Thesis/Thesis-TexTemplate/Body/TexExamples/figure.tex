@@ -1,0 +1,54 @@
+\chapter{插图样本}
+\label{chap5:figure}
+\begin{verbatim}
+   注意! 在 \begin{figure}后加[!] 可取消当前页面关于浮动对象和文本数量的限制.
+即\begin{figure}[!]  ;若参见不能正常显示请编译两次！
+\end{verbatim}
+\setcounter{subsubsection}{0} %将计数器subsubsection置零
+\subsubsection{单图排列 \label{chap5:figure1}}
+\begin{figure}[h]
+\centering
+\includegraphics[totalheight=3cm]{chap1_learn2}
+\caption{学习机的结构框图 \label{fig:chap5:learning}}
+\end{figure}
+如图\ref{fig:chap5:learning}所示：
+\subsubsection{两图并排 \label{chap5:figure2}}
+\alphfig %产生形如 4-a,4-b 的编号
+产生形如 4-a,4-b 的编号：参见图\ref{fig:float1-1}、图\ref{fig:float1-2}；恢复形如 4,5 的编号：参见图\ref{fig:float2-1} 
+\begin{figure}[htbp]
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\textwidth]{tif}
+\caption{这是左边的图\label{fig:float1-1}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[totalheight=4cm]{shanshui}
+\caption{这是右边的图\label{fig:float1-2}}
+\end{minipage}
+\end{figure} 
+\resetfig
+
+\begin{figure}[htbp]
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\textwidth]{tif}
+\caption{这是左边的图\label{fig:float2-1}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\textwidth]{tif}
+\caption{这是右边的图\label{fig:float2-2}}
+\end{minipage}
+\end{figure} 
+\iffalse
+\begin{figure}
+  % Requires \usepackage{graphicx}
+  \subfigure[第一个图]{\includegraphics[width=8cm]{tif}}
+  \subfigure[第二个图]{\includegraphics[width=8cm]{tif}} \\
+    \caption{两个子图}\label{twofig}
+\end{figure}
+
+\fi 

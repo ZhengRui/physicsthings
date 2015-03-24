@@ -1,0 +1,8 @@
+ ===========+++++++++++================
+ Dimension:                        1
+ Lattice size L:                 100
+ J,T,aniso,H,e:     1.00000000     0.05000000     1.00000000     0.00000000     0.00000000
+ balancesteps,bin numbers,steps in each bin:  20000      5  20000
+ simulation start time:16:43: 9 14/ 9/  11
+ simulation end   time:16:43:35 14/ 9/  11
+ ===========-----------================

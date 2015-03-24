@@ -1,0 +1,174 @@
+\chapter{具有垂直单轴各向异性的分子磁体单层膜磁性研究}
+\label{chap4}
+\section{研究背景}
+
+因为在极低温下所具有的量子隧穿、干涉和相干效应，以及在磁存储和量子计算中的潜在应用，单分子纳米磁体已经成为当前的一个研究热点\cite{31,32,33,34,35,36,37,38}。单分子
+磁体通常具有很大的自旋$S$以及强的单轴各向异性，自旋指向有一个易轴(easy axis)\cite{38}，所以在低温下自旋要想翻转需要克服一个有效势垒$U_{eff}$，比如研究得很多的$\mathrm{Mn_{12}}$单分子磁体$\mathrm{\{[Mn_{12}O_{12}(O_{2}CCH_{2}Br)_{16}(H_{2}O)_{4}]\cdot4CH_{2}Cl_{2}\}}$
+具有自旋$S$=$10$，其翻转势垒$U_{eff}$达到了74 K\cite{38,39}，而自旋$S$=$12$的单分子磁体$\mathrm{\{Mn_{6}^{III}O_{2}(Et-sao)_{6}[O_{2}CPh(Me)_{2}]_{2}\cdot(EtOH)_{6}\}}$具有更大的$U_{eff}$，为86.4 K\cite{310}。
+
+单分子磁体可以被合成为单个磁体，二聚物和其他团簇\cite{31,32,33,34,35}，通过化学方法，还可以将其合成为三维晶体结构或二维层状结构\cite{39,310,311,312,313}。
+这些结构的基本构筑单元就是单分子磁体，单分子磁体之间的相互作用通常是反铁磁作用，并且不太容易控制，导致要由单分子磁体构成一个稳定的铁磁体是比较困难的。
+然而最近有些小组已经在金和硅表面合成了由单分子磁体构成的单层铁磁膜\cite{314,315,316}。虽然根据Mermin-Wagner理论，对于二维各向同性Heisenberg自旋模型不存在
+有限温度下的相变\cite{317,318}，但这项实验上的突破仍使我们相信由单分子磁体构成的二维规则格子可以形成理想的二维铁磁体。
+
+在有足够强的垂直单轴各向异性时，通过调节单分子磁体间的相互作用，由单分子磁体是可以构成稳定铁磁体的。单分子磁体可以看成一个大自旋，易轴方向垂直与二维自旋格子，
+可以将这种二维铁磁层状结构描述为具有单轴各向异性和相对较弱铁磁相互作用的Heisenberg模型。这种描述是合理和可靠的，因为自旋之间的偶极相互作用常约化为反铁磁作用
+并且自旋之间的相互作用可以通过选择合适的基底以及控制它们的距离来进行调节\cite{319}。因为大的自旋值以及各向异性能，所以可以将模型视为一个经典模型\cite{38,39,310}，
+然后我们通过蒙特卡洛方法来模拟了不同参数条件下体系的物理性质\cite{320,321}。我们的模拟结果证明了在实验室可控的参数条件下，由单分子磁体可以构成稳定的二维铁磁体。
+
+\section{自旋模型与模拟细节}
+单分子纳米磁体比如$\mathrm{Mn_{12}}$有大的自旋，强的各向异性能，以及相对较弱的交换相互作用\cite{38,39,310,319}。当放在合适的基底上时，这些单分子磁体间可以具有
+相同的单轴各向异性和可调节的单分子磁体间的相互作用\cite{314,315,316}。因此，这个二维铁磁体可以用如下的哈密顿量来描述，
+\begin{equation}
+H=-K\sum_{i}(S_{i}^{z})^{2}-\sum_{ij}J_{ij}\overrightarrow{S_{i}}\cdot\overrightarrow{S_{j}}
+\label{eq3.1}
+\end{equation}
+上式中$K$描述垂直于二维格子的单轴各向异性，易轴方向为$z$轴，$\overrightarrow{S_{i}}$是在格点$i$的自旋，$J_{ij}$是$\overrightarrow{S_{i}}$和$\overrightarrow{S_{j}}$
+之间的相互作用，这里我们主要考虑$J_{ij}>0$的铁磁情形，求和是对所有最近邻进行。因为$S$很大，我们要研究室是平衡态性质，所以可以将量子自旋算符$\overrightarrow{S_i}$视为
+一个经典矢量$S\overrightarrow{s_{i}}$，$\overrightarrow{s_{i}}$是一个单位矢量。
+
+我们用蒙特卡洛方法研究这个模型的平衡态性质\cite{320,321}，在模拟过程中用到了Metropolis算法和团簇算法\cite{322,323}。我们取大小为$L\times L$的格子，虽然单分子磁体之间最常见的是偶极相互作用，但是我们只考虑最近邻间的相互作用$J_{ij}$=$J$，这样不失主要的物理。我们使用了周期边界条件，并令Boltzmann常数$k_{B}$为$1$，
+用$D$=$K/J$来描述相对于交换相互作用，系统所具有的各向异性强度，这时温度单位可视为$JS^2$。经过测试，在$100000$个蒙特卡洛步(MCS)之后，系统就达到了热平衡。
+系统的平均磁化强度$M$，磁四极矩$U_4$，比热$C_{\nu}$，磁化率$\chi$的统计方式如下，
+\begin{equation}
+\begin{cases}
+M=\langle|\overrightarrow{s}|\rangle\\
+U_{4}=1-\langle\overrightarrow{s}{}^{4}\rangle/(3\langle\overrightarrow{s}\rangle^{2})\\
+C_{\nu}=(\langle H^{2}\rangle-\langle H\rangle^{2})/T^{2}\\
+\chi=(\langle\overrightarrow{s}{}^{2}\rangle-\langle|\overrightarrow{s}|\rangle^{2})/T
+\end{cases}
+\end{equation}
+上式中$\overrightarrow{s}$=$(1/L^{2})\sum\overrightarrow{s_{i}}$，$\langle A\rangle$是物理量$A$的平均值。 在热平衡后，每$50000$个蒙特卡洛步作为一个单元(bin)求一次各物理量的平均值，得到$10$个单元的结果后再求物理量的最终的平均值及误差\cite{320,321}。
+
+\section{模拟结果}
+图\ref{3f1}中给出了在$0.05$至$500$的范围内$16$种$D$值所对应的平均磁化强度$M$关于温度$T$的函数曲线图。$T$=$0$时，磁化强度$M$归一化为$1$，高温时磁化强度随
+$D$的增大而增大，对给定$D$值的某条特定曲线有一个拐点，拐点位置随$D$的增大而向高温方向移动，意味着相变点$T_c$随$D$的增加而增大。为了更精确地确定相变点位置，
+我们用了不同$L$体系对应的$U_4-T$曲线的共同交点，这是目前获得精确相变温度值的最好方法\cite{320,321}。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{31}
+\caption{Normalized magnetization $M$ as functions of temperature $T$ (in $JS^2$)}
+\label{3f1}
+\end{figure}
+
+图\ref{3f2}中，我们给出了在$D$=$7.0$时磁四极矩$U_4$，比热$C_{\nu}$，磁化率$\chi$随温度的变化关系。可以看到$8$种不同尺寸的$U_4-T$曲线交于同一个点，其所对应的
+温度值即为$T_c$，从$C_{\nu}$和$\chi$的温度曲线图可以看到模拟到$L$=$80$已经可以得到比较满意的结果。对于更大的$D$值，不同尺寸的$U_4-T$曲线都交于同一个点，
+并且模拟到$L$=$80$也都可以得到可靠的$C_{\nu}-T$和$\chi-T$曲线。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{32}
+\caption{Simulated results of $U_4$(top)，$C_{\nu}$(middle)，and $\chi$(bottom) as functions of temperature}
+\label{3f2}
+\end{figure}
+
+计算得到的$T_c$随$D$的变化关系如图\ref{3f3}所示，红线是Ising极限\cite{324,325}，可以看到，随着$D$的增大，相变点逐渐收敛到Ising极限(约为2.269)。$D$=$0$时，
+我们获得$T_c$=$0$，这与由短程相互作用构成的二维自旋模型没有有限温度相变的结论是一致的\cite{317,318}，要想获得有限的$T_c$，一个非$0$的$D$值是必须的。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{33}
+\caption{The $D$ dependence of Curie temperature $T_c$}
+\label{3f3}
+\end{figure}
+
+我们通过定义如下的量来衡量自旋矢量相对与易轴方向的偏离程度，
+\begin{equation}
+d_{m}=1-\langle(s^{z})^{2}\rangle/\langle\overrightarrow{s}{}^{2}\rangle
+\end{equation}
+$d_m$=$0$则意味着自旋沿着$\pm z$轴方向。图\ref{3f4}给出了对于不同$D$值的$d_m(T)$关系。显然低温时$d_m$为$0$或者很小的值，当$D$很小时，$d_m$会由低温的接近于$0$上升到高温时对应于各向同性
+Heisenberg模型的$2/3$，$d_m$随$D$增加而减小，在$D>100$时$d_m$几乎是$0$，表明基本达到了$D$为无穷大时的Ising极限。
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{34}
+\caption{The temperature dependence of the deviation $d_m$ of the spin vector from the easy axis}
+\label{3f4}
+\end{figure}
+
+实验上自旋间相互作用是可以改变的，甚至可以进行人为调节以达到某种特定目的\cite{319}，这意味着$J$可以从几K变化到$0$，考虑到方程\ref{eq3.1}中的$K$可以
+接近于$80$K\cite{310}，所以各向异性参数$D$可以达到$10$甚至更大，这个参数区间所对应的相变温度$T_c$的范围是$1.8$-$2.269$K，当$K$=$80$K时，如果$J$=$1$K，则
+$T_c$=$2.2$K，如果$J$=$8$K，则$T_c$为$14.4$K。因为二维铁磁体对应于大$D$的参数区域，此时自旋相对易轴方向的偏离$d_m$非常小，即使是在相变点位置也小于$0.001$，
+在低温下可以视为$0$，这样在强单轴各向异性情况下可以达到Ising极限，形成稳定的铁磁体以作为信息存储的媒介。
+
+\section{总结讨论}
+我们提出通过选择合适的基底以调节单分子磁体间的交换相互作用强度以及单轴各向异性强度，可以形成由单分子磁体构成的稳定的二维铁磁薄膜以用于信息存储。
+当分子磁体的自旋及各向异性都很大时，可以将它的自旋视为一个经典单位矢量，我们的模拟结果显示在强各向异性情况下自旋对易轴方向的偏离小于$0.1\%$，因而
+可以形成稳定的铁磁态。如果各向异性等于$\mathrm{Mn_{12}}$所对应的各向异性能$80$K，则相变温度$T_c$约为$15$K，所以这样一种稳定的自旋系统具有
+应用在信息存储领域的前景。
+
+\begin{thebibliography}{999}
+
+\bibitem{31}
+W. Wernsdorfer, N. Aliaga-Alcalde, D.N. Hendrickson, and G. Christou, {\it Exchange-biased quantum tunnelling in a supramolecular dimer of single-molecule magnets}, Nature (London) \textbf{416}, 406 (2002).
+
+\bibitem{32}
+W. Wernsdorfer and R. Sessoli, {\it Quantum Phase Interference and Parity Effects in Magnetic Molecular Clusters}, Science \textbf{284}, 133 (1999).
+
+\bibitem{33}
+S. Hill, R.S. Edwards, N. Aliaga-Alcalde, and G. Christou, {\it Quantum Coherence in an Exchange-Coupled Dimer of Single-Molecule Magnets}, Science \textbf{302}, 1015 (2003).
+
+\bibitem{34}
+C. Schlegel, J. van Slageren, M. Manoli, E.K. Brechin, and M. Dressel, {\it Direct Observation of Quantum Coherence in Single-Molecule Magnets}, Phys. Rev. Lett. \textbf{101}, 147203 (2008).
+
+\bibitem{35}
+S. Bertaina, S. Gambarelli, T. Mitra, B. Tsukerblat, A. Mueller, and B. Barbara, {\it Quantum oscillations in a molecular magnet}, Nature (London) \textbf{453}, 203 (2008).
+
+\bibitem{36}
+M.N. Leuenberger and D. Loss,{\it Quantum computing in molecular magnets},  Nature (London) \textbf{410}, 789 (2001).
+
+\bibitem{37}
+L. Bogani and W. Wernsdorfer, {\it Molecular spintronics using single-molecule magnets}, Nature Mater. \textbf{7}, 179 (2008).
+
+\bibitem{38}
+D. Gatteschi, R. Sessoli, and J. Villain, {\it Molecular Nanomagnets} (Oxford University Press, New York, 2006).
+
+\bibitem{39}
+N.E. Chakov, S.-C. Lee, A.G. Harter, P.L. Kuhns, A.P. Reyes, S.O. Hill, N.S. Dalal, W. Wernsdorfer, K.A. Abboud, and G. Christou, {\it The Properties of the $\mathrm{[Mn_{12}O_{12}(O_{2}CR)_{16}(H_{2}O)_{4}]}$ Single-Molecule Magnets in Truly Axial Symmetry: $\mathrm{[Mn_{12}O_{12}(O_{2}CCH_{2}Br)_{16}(H_{2}O)_{4}]\cdot4CH_{2}Cl_{2}}$}, J. Am. Chem. Soc. \textbf{128}, 6975 (2006).
+
+\bibitem{310}
+C.J. Milios, A. Vinslava, W. Wernsdorfer, S. Moggach, S. Parsons, S.P. Perlepes, G. Christou, and E.K. Brechin, {\it A Record Anisotropy Barrier for a Single-Molecule Magnet}, J. Am. Chem. Soc. \textbf{129}, 2754 (2007).
+
+\bibitem{311}
+H. Miyasaka, K. Nakata, K. Sugiura, and R. Clerac, {\it A Three-Dimensional Ferrimagnet Composed of Mixed-Valence $\mathrm{Mn_{4}}$ Clusters Linked by an $\mathrm{\{Mn[N(CN)_{2}]_{6}\}^{4-}}$ Unit}, Angew. Chem., Int. Ed. \textbf{43}, 707 (2004).
+
+\bibitem{312}
+C. Coulon, R. Clerac, W. Wernsdorfer, T. Clin, and H. Miyasaka, {\it Direct Observation of Quantum Coherence in Single-Molecule Magnets}, Phys. Rev. Lett. \textbf{102}, 167204 (2009).
+
+\bibitem{313}
+H. Miyasaka, K. Nakata, L. Lecren, C. Coulon, Y. Nakazawa, T. Fujisaki, K.-i. Sugiura, M. Yamashita, and R. Clerac, {\it Two-Dimensional Networks Based on $\mathrm{Mn_{4}}$ Complex Linked by Dicyanamide Anion: From Single-Molecule Magnet to Classical Magnet Behavior}, J. Am. Chem. Soc. \textbf{128}, 3770 (2006).
+
+\bibitem{314}
+B. Fleury, L. Catala, V. Huc, C. David, W.Z. Zhong, P. Jegou, L. Baraton, S. Palacin, P. Albouyd, and T. Mallah, {\it A new approach to grafting a monolayer of oriented $\mathrm{Mn_{12}}$ nanomagnets on silicon}, Chem. Commun. (Cambridge) \textbf{2005}, 2020.
+
+\bibitem{315}
+M. Cavallini, J. Gomez-Segura, D. Ruiz-Molina, M. Massi, C. Albonetti, C. Rovira, J. Veciana, and F. Biscarini, {\it Magnetic Information Storage on Polymers by Using Patterned Single-Molecule Magnets}, Angew. Chem., Ini. Ed. \textbf{44}, 888 (2005).
+
+\bibitem{316}
+A. Naitabdi, J.P. Bucher, P. Gerbier, P. Rabu, and M. Drillon, {\it Self-Assembly and Magnetism of $\mathrm{Mn_{12}}$ Nanomagnets on Native and Functionalized Gold Surfaces}, Adv. Mater. \textbf{17}, 1612 (2005).
+
+\bibitem{317}
+N.D. Mermin and H. Wagner, {\it Absence of Ferromagnetism or Antiferromagnetism in One- or Two-Dimensional Isotropic Heisenberg Models}, Phys. Rev. Lett. \textbf{17}, 1133 (1966).
+
+\bibitem{318}
+L.D. Landau and E.M. Lifshitz, {\it Statistical Physics} (Pergamon, London, 1959), Vol. 5, p. 482.
+
+\bibitem{319}
+W. Wernsdorfer, S. Bhaduri, A. Vinslava, and G. Christou, {\it Landau-Zener tunneling in the presence of weak intermolecular interactions in a crystal of $\mathrm{Mn_{4}}$ single-molecule magnets}, Phys. Rev. B \textbf{72}, 214429 (2005).
+
+\bibitem{320}
+K. Binder and D.W. Heermann, {\it Monte Carlo Simulation in Statistical Physics} (Springer, Berlin, 2002).
+
+\bibitem{321}
+K. Binder, {\it Finite size scaling analysis of ising model block distribution functions}, Z. Phys. B \textbf{43}, 119 (1981).
+
+\bibitem{322}
+N. Metropolis, A.W. Rosenbluth, M.N. Rosenbluth, A.M. Teller, and E. Teller, {\it Equations of State Calculations by Fast Computing Machines}, J. Chem. Phys. \textbf{21}, 1087 (1953).
+
+\bibitem{323}
+R.H. Swendsen and J.-S. Wang, {\it Nonuniversal critical dynamics in Monte Carlo simulations}, Phys. Rev. Lett. \textbf{58}, 86 (1987).
+
+\bibitem{324}
+L. Onsager, {\it Crystal statistics. I. A two-dimensional model with an order-disorder transition}, Phys. Rev. \textbf{65}, 117 (1944).
+
+\bibitem{325}
+E. Ising, {\it Beitrag zur Theorie des Ferromagnetismus}, Z. Phys. \textbf{31}, 253 (1925).
+
+\end{thebibliography} 

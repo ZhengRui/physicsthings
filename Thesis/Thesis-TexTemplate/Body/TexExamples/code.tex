@@ -1,0 +1,116 @@
+\renewcommand{\lstlistlistingname}{源代码目录}
+\renewcommand{\lstlistingname}{源代码}
+
+\lstlistoflistings
+
+\lstset{language=Matlab}
+\lstset{xleftmargin=3em,xrightmargin=1em}
+\lstset{frame=TBLR}
+\lstset{commentstyle=\color{blue},keywordstyle=\color{red},caption=\lstname,breaklines=true,columns=flexible,mathescape=true}
+\lstset{framexleftmargin=2em,framexrightmargin=1em,framextopmargin=1em,framexbottommargin=1em}
+\lstdefinestyle{numbers}{numbers=left,stepnumber=1,numberstyle=\small,numbersep=1em}
+
+\chapter{源代码宏包使用示例}
+
+本章使用的是 \texttt{listings} 宏包。版本为 1.0（2002年10月）。如果您的不是，\textbf{可能}无法编译，
+可以下载最新红包或不要编译本章内容。如果你要在其他章节使用本宏包，可以将本章导言区的内容拷贝过去。
+
+\begin{lstlisting}[style=numbers,caption={A Matlab Code},label={forMatlab}]
+function varargout = margin(a,b,c,d)
+%MARGIN  Gain and phase margins and crossover frequencies.
+%
+%   Andrew Grace 12-5-91
+%   Revised ACWG 6-21-92
+%   Revised A.Potvin 6-1-94
+%   Copyright 1986-2002 The MathWorks, Inc.
+%   $Revision: 1.17 $  $Date: 2002/04/04 15:18:47 $
+
+ni = nargin;
+no = nargout;
+if ni==0,
+   eval('exresp(''margin'')')
+   return
+end
+error(nargchk(2,4,ni));
+
+if no==0,
+   switch ni
+   case 2
+      margin(tf(a,b));
+   case 3
+      a = squeeze(a);
+      b = squeeze(b);
+      if ndims(a)>2 | ndims(b)>2  | ndims(c)>2,
+         error('MAG and PHASE must come from a SISO system')
+      elseif ~isequal(prod(size(a)),prod(size(b)),prod(size(c)))
+         error('MAG, PHASE, and W vectors must have the same number of elements.')
+      end
+      imargin(a(:),b(:),c(:));
+   case 4
+      margin(ss(a,b,c,d));
+   end
+
+else
+   switch ni
+   case 2
+      [varargout{1:no}] = margin(tf(a,b));
+   case 3
+      a = squeeze(a);
+      b = squeeze(b);
+      if ndims(a)>2 | ndims(b)>2,
+         error('MAG and PHASE must come from a SISO system')
+      end
+      [varargout{1:no}] = imargin(a(:),b(:),c(:));
+   case 4
+      [varargout{1:no}] = margin(ss(a,b,c,d));
+   end
+end
+% end margin
+\end{lstlisting}
+
+\lstset{language=C++}
+
+\begin{lstlisting}[style=numbers,caption=A C++ Code]
+#define S_FUNCTION_NAME controller_init
+#include "ttkernel.cpp"
+
+// Event-driven controller node
+class PD_Data { public:
+  // ctrl params
+  double K, Td, N, h, ad, bd;
+
+// ctrl states
+  double yold, Dold, u;
+};
+
+// controller code function
+double ctrl_code(int seg, void *data) {
+  double *m;
+  double r, y, P, D;
+  PD_Data* d = (PD_Data*) data;
+
+  switch(seg) {
+  case 1:
+    ttWait("packet");
+    return 0.0;
+
+  case 2:
+$\cdots\cdots\cdots\cdots\cdots\cdots$
+  case 3:
+    m = new double;
+    *m = d->u;
+    ttSendMsg(1, 2, m, 10); // Send 10 bytes to node 2 (actuator) on network 1
+    ttSetNextSegment(1); // loop and wait for new packet
+    return 0.0;
+  }
+}
+
+// interfering task code function
+double dummy_code(int seg, void *data) {
+$\cdots\cdots\cdots\cdots\cdots\cdots$
+}
+double msgRcvhandler(int seg, void *data) {
+$\cdots\cdots\cdots\cdots\cdots\cdots$
+}
+void init() {$\cdots\cdots\cdots\cdots\cdots\cdots$}
+\end{lstlisting}

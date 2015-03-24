@@ -1,0 +1,77 @@
+\chapter{各种字体示例}
+\section{文本模式下字体}
+These commands are used like `$\backslash$textit{italics text}'. The corresponding command in parenthesis is the "declaration form", which takes no arguments.
+    The scope of the declaration form lasts until the next type style command or the end of the current group.
+   The declaration forms are cumulative; i.e., you can say `$\backslash$ sffamily$\backslash$bfseries' to get sans serif boldface.
+   You can also use the environment form of the declaration forms; e.g.`$\backslash$ begin{ttfamily}...$\backslash$end{ttfamily}'.
+
+\begin{enumerate}
+    \item {Roman $\backslash$ textrm ($\backslash$ rmfamily)}\\
+    \textrm{\abc \\ \upabc}
+    \item {$\backslash$ textit ($\backslash$ itshape)}\\
+    \textit{\abc \\ \upabc}
+    \item {Emphasis $\backslash$emph }\\
+    \emph{\abc \\ \upabc}
+    \item {Boldface$\backslash$ textbf ($\backslash$ bfseries)}\\
+    \textbf{\abc \\ \upabc}
+    \item {Slanted $\backslash$ textsl ($\backslash$ slshape)}\\
+    \textsl{\abc \\ \upabc}
+    \item {Sans serif $\backslash$ textsf ($\backslash$ sffamily)}\\
+    \textsf{\abc \\ \upabc}
+    \item {Small caps $\backslash$ textsc ($\backslash$ scshape)}\\
+    \textsc{\abc \\ \upabc}
+    \item {Typewriter $\backslash$ texttt ($\backslash$ ttfamily)}\\
+    \texttt{\abc \\ \upabc}
+    \item {Main document font $\backslash$ textnormal ($\backslash$ normalfont)}\\
+    \textnormal{\abc \\ \upabc}
+\end{enumerate}
+
+\section{数学模式下字体}
+\begin{enumerate}
+    \item {Roman, for use in math mode $\backslash$ mathrm }\\
+    $\mathrm{\abc}$\\
+    $\mathrm{\upabc}$
+    \item {Boldface, for use in math mode $\backslash$ mathbf }\\
+    $\mathbf{\abc}$\\
+    $\mathbf{\upabc}$
+    \item {Sans serif, for use in math mode $\backslash$ mathsf }\\
+    $\mathsf{\abc}$\\
+    $\mathsf{\upabc}$
+    \item {Typewriter, for use in math mode $\backslash$ mathtt }\\
+    $\mathtt{\abc}$\\
+    $\mathtt{\upabc}$
+    \item {For use in math mode, e.g. inside another type style declaration $\backslash$ mathnormal }\\
+    ${\abc}$\\
+    ${\upabc}$
+    \item { `Calligraphic' letters, for use in math mode $\backslash$ mathcal }\\
+    $\mathcal{\upabc}$
+    \item {$\backslash$ mathbb }\\
+    $\mathbb{\upabc}$
+\end{enumerate}
+\begin{verbatim}
+   In addition, the command `\mathversion{bold}' can be used for switching
+   to bold letters and symbols in formulas. `\mathversion{normal}' restores
+    the default.
+\end{verbatim}
+
+\section{各种日期表示方法}
+
+\begin{verbatim}
+\CJKtoday\today\end{verbatim}
+
+\CJKtoday \today
+
+\begin{verbatim}
+\CJKtoday[0]\today\end{verbatim}
+
+\CJKtoday[0] \today
+
+\begin{verbatim}
+\CJKtoday[1]\today\end{verbatim}
+
+\CJKtoday[1] \today
+
+\begin{verbatim}
+\CJKtoday[2]\today\end{verbatim}
+
+\CJKtoday[2] \today

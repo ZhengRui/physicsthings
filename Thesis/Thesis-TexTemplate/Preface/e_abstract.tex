@@ -1,0 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   LaTeX File for phd thesis of Ncepubj University
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Copyright 2002  by  Wu Ying nian    (hdwyn@sohu.com)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{ \markboth{英文摘要}{英文摘要}}
+\addcontentsline{toc}{chapter}{英文摘要}
+\vspace*{-1.2cm}
+\begin{center}
+{\sf\LARGE Monte Carlo Methods and its applications on magnetic models}\\[1cm]
+{\bf\large Rui Zheng} \\[0.5cm]
+{\large Directed by} \\
+{\large Prof. Bang-Gui Liu} \\
+\end{center}
+\vspace{0.5cm} \centerline{\LARGE \textbf{Abstract}}
+
+\vspace{0.5cm}
+
+With the prevalence of computer, especially the development of high performance computer clusters, computational simulations have become an important tool in scientific research. In material science, computational simulations build a bridge between theories and experiments, at the same time, we can also predict and design new materials by computational simulations. As one of the so many numerical calculation methods, Monte Carlo methods have been widely used on lots of many-body systems, because of its complexity independence of dimension. In this thesis, we first introduce some different monte carlo methods in detail, including Classical Monte Carlo method with two ways of updating ,the local Metropolis algorithm and the nonlocal Cluster algorithm, as well as Quantum Monte Carlo methods like Stochastic Series Expansion method, Loop Algorithm in Continuous Time Limit and Valence-bond basis Projected Quantum Monte Carlo, then we use these methods to study the phase transition in two magnetic models. The works we have done are as follows:
+
+\iffalse
+Based on the different problems under research, Monte Carlo methods could be divided into Classical Monte Carlo methods and Quantum Monte Carlo methods. In Classical Monte Carlo methods, we introduce two ways of updating, local Metropolis algorithm and nonlocal Cluster algorithm. There are many different Quantum Monte Carlo methods, we mainly learned three types of bosonic Quantum Monte Carlo methods, Stochastic Series Expansion method which is based on Handscomb expansion、Loop Algorithm in Continuous Time Limit which is based on Trotter expansion、and Valence-bond basis Projected Quantum Monte Carlo, they are mainly used to study spin and bosonic models. ALPS~(Algorithms and Libraries for Physics Simulations)~ is a soft package that has integrated together most of the different popular numerical methods like Monte Carlo、Density Matrix Renormalization Group、Dynamic Mean Field Theory and so on, we briefly introduce the way to use its Monte Carlo module.
+\fi
+
+According to Mermin-Wagner theorem, for two dimensional systems which contain only short range interactions, there is no spontaneous breaking of continuous symmetries at finite temperature, in other words, there is no long range order at finite temperature. Using metropolis algorithm combined with cluster algorithm in classical monte carlo method, we study the magnetic properties of molecular magnetic film with vertical anisotropy, and we get the relation between Curie temperature and the anisotropic parameter. Our results show that, stable molecular magnetic film could be formed when being put on proper substrate.
+
+Recently there are works showing that the staggered $J$-$J'$ model on square lattice might have deconfined quantum critical point, using loop algorithm in the quantum monte carlo module of ALPS libraries, we study the quantum critical points for a generalized staggered Heisenberg dimer model, which we named $J_0$-$J_1$-$J_2$ model. For $J_1/J_0=1$, this model becomes the staggered $J$-$J'$ model on square lattice, while for $J_1/J_0=0$, it becomes the
+staggered $J$-$J'$ model on honeycomb lattice. We get all the the critical couplings of $J_2/J_1$ for a class of models with $J_1/J_0$ changed from $0$ to $1$, and by using finit size scaling we extract the values of  critical exponents $\nu$, $\beta/\nu$, $d-z-\eta$. While $\nu$ extracted from Binder cumulant $Q_2$ indicates the VBS-Neel transition belongs to the conventional three dimensional classical Heisenberg universality class, $\nu$ extracted from spin stiffness $\rho_sL$, and $\beta/\nu$, $d-z-\eta$ extracted from $|m_s^z|$, $L^2m_s^2$ as well as the critical value of $Q_2$ are not in agreement with the O(3) universality class. Our results show that, whether a staggered arrangement of couplings in 2D lattices will lead to an unconventional phase transition is still controversial.
+
+
+\vspace*{0.5cm} \textbf{Keywords: }\textbf{Monte Carlo Methods, Molecular Magnet, Phase Transition,
+Antiferromagnet, Finit Size Scaling}
+
+
+
+%--------------正文------------------%
+%\begin{Aphorism}{Wu YingNian  2002.10}
+%Stop using Microsoft Word immediately!
+%\end{Aphorism}

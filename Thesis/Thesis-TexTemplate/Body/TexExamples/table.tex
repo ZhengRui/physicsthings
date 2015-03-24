@@ -1,0 +1,162 @@
+\begin{verbatim}
+\end{verbatim} %原样输出
+\chapter{表格样本}
+\section{各种表格实例}
+
+\begin{table}[htbp]
+  \centering
+  \caption{一般表格1}\label{table:example:biaoge1}
+  \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+  \end{tabular}
+
+  \caption{一般表格2}\label{table:example:biaoge2}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \cline{2-11}
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+  \end{tabular}
+
+  \caption{一般表格3}\label{table:example:biaoge3}
+  \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+    \hline\hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    123 123123 123&   &&&&&&&&&\\
+    123 123123 123& 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    123 123123 123&   &&&&&&&&&\\
+    \hline
+    123 123123 123&   &&&&&&&&&\\
+    123 123123 123& 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+  \end{tabular}
+
+  \caption{一般表格4}\label{ceshi2}
+  \begin{tabular}{c|c|c|r|l} \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  \multicolumn{2}{c|}{左边的} & 中间的 & \multicolumn{2}{c}{右边的} \\ \hline
+  234 & 4 & ff & gh & vfhgd \\ \cline{2-5}
+  234 & 4 & ff & g4h & vfd \\  \cline{2-5}
+  2434 & 454 & ff & gh & vfhd \\
+  \hline
+    \end{tabular}
+
+  \caption{一般表格5}\label{table:example:biaoge5}
+  \begin{tabular}{!{\vlinewd wyn}c|c|c|c|c|c|c|c|c|c|c!{\vlinewd}}
+    \hlinewd{1pt}
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hline
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hlinewd{1pt}
+  \end{tabular}
+
+\end{table}
+ 下边为三线表1
+\begin{table}[h]
+  \centering
+  \caption{三线表}\label{sanxianbiao}
+ 左边为三线表2\hspace{22pt}
+    \begin{tabular}{c c c c c c c c c c c}
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    \hlinewd{0pt}
+    姓名：&&&&年龄：&&&& 性别:\\
+    \hlinewd{1.5pt}
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4  & 5  & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hlinewd{1pt}
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    67 & 890 & 13 & 123 & 4 & 5123 & 4 & 5 & 123 & 4 & 5\\
+    \hlinewd{1.5pt}
+    \end{tabular}
+\end{table}
+
+上边为三线表3
+
+\begin{table}[h]
+  \centering
+  \caption{一列占多行}\label{duohang}
+  \begin{tabular}{c p{15em} c}
+  \hlinewd{1.5pt}
+  这是第一列 & {\hfill 这是第二列 \hfill .}  & 这是第三列\\
+  \hlinewd{1pt}
+  这是第一列 & \bbb & 这是第三列 \\
+  \hlinewd{1.5pt}
+  \end{tabular}
+\end{table}
+
+\subsection{表格自动编号}
+%\iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+  \centering
+  \caption{表格}\label{chap6:biaoge1}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4 & 5 \\
+    \hline
+    67 & 890 & 13 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+产生形如 4-a,4-b 的编号.
+\alphtab %产生形如 4-a,4-b 的编号
+\begin{table}[htbp]
+\begin{minipage}[t]{0.33\linewidth}
+  \centering
+  \caption{表格}\label{chap6:biaoge2}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4 & 5 \\
+    \hline
+    67 & 890 & 13 \\
+    \hline
+  \end{tabular}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+  \centering
+  \caption{表格}\label{chap6:biaoge3}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4 & 5 \\
+    \hline
+    67 & 890 & 13 \\
+    \hline
+  \end{tabular}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+    \centering
+  \caption{表格}\label{chap6:biaoge4}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    123 & 4 & 5 \\
+    \hline
+    67 & 890 & 13 \\
+    \hline
+  \end{tabular}
+\end{minipage}
+\end{table}
+\resettab %恢复形如 4,5 的编号
+恢复形如 4,5 的编号.
+
+%\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

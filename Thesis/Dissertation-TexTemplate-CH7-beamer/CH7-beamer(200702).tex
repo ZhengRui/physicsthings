@@ -1,0 +1,2065 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  这是一份 beamer 文档. 本源文件仅供学习 beamer 参考之用.                               %%%
+%%%  使用请注明出处. 本文作者拥有版权 (c)2006. 保留所有权利.                               %%%
+%%%  若不能编译通过, 可能是您的 beamer 或 pgf 需要更新了.                                  %%%
+%%%  更新的具体方法可参考: http://bbs.ctex.org/forums/index.php?showtopic=27695            %%%
+%%%  Maintainers: 黄正华 (huangzh@whu.edu.cn)  2006-5-25                                   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[serif,envcountsect]{beamer}
+\usepackage{cctbase,ccmap,everb}               % CCT 的相关宏包, 使支持中文, 等等.
+\usepackage[normalem]{CCTfntef}                % 2005-11-18 向作者报告 bug 后, 修改.
+\hypersetup{CJKbookmarks=true}
+\usetheme{Madrid}%\usecolortheme{albatross}
+%\setbeamercolor{background canvas}{bg=blue!9} % 背景颜色可调.
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{tikz}
+%\usepackage{graphicx}
+\usepackage{subfigure}                         % 子图并排
+\usepackage{picins}                            % 图片嵌入段落宏包 比如照片
+\setbeamertemplate{theorems}[numbered]
+\setbeamertemplate{navigation symbols}{}       % 取消导航条
+%---------------------------自定义------------------------
+\usepackage{bbding}% 手势 \HandRight \HandLeft %\FiveStar \FourStar \SixStar
+\newcommand{\handr}{\textcolor{magenta}{\HandRight}} % 自定义\handr
+\newcommand{\zhuyi}{\noindent\alert{\handr}}
+\newcommand{\suojin}{　　} % 自定义的一个缩进. 括号里是两个全角的空格!
+%%==================================自定义=========================================%
+\newcommand{\jieda}{\noindent\textcolor{red}{\heiti 解:}\quad}
+\newcommand{\zheng}{\noindent\textcolor{red}{\heiti 证:}\quad}
+
+\makeatletter %自定义: 罗马数字
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+%==============自定义: 逐个 item 高亮(\hilite), 或"高黑"(\hidark)==================%
+\def\hilite<#1>{%
+\temporal<#1>{\color{blue!35}}{\color{magenta}}%
+{\color{blue!75}}}
+\def\hidark<#1>{%
+\temporal<#1>{\color{black!35}}{\color{magenta}}%
+{\color{black}}}
+%====================== metapost =================================================%
+\usepackage{xmpmulti}  %% metapost 动画.
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\graphicspath{{figures/}} %%图片路径
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\AtBeginSection[]{
+     \frametitle{框架}\small
+   \tableofcontents[currentsection,currentsubsection,subsectionstyle=show/show/hide]
+ }
+\title[图论~------~一份~beamer 文档]{图论({\small \kaishu 仅供学习~beamer, pgf 参考之用})}
+\author[黄正华]{黄\ 正\ 华\\[0.5em]Email:~\href{mailto:huangzh@whu.edu.cn}{\color{blue!70}\texttt{huangzh@whu.edu.cn}}}
+\institute[武汉大学]{\kaishu\textcolor{olive}{武汉大学~~数学与统计学院}}
+\date{}
+\titlegraphic{\includegraphics[height=2cm]{whulogo.1}}
+\frame{\titlepage}
+\begin{frame}\frametitle{目录}\small
+\tableofcontents
+\end{frame}
+%%%%%%%%%%%%%% 申明  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\frametitle{说明}\small
+\kaishu
+
+近一个月收到了十几个~Email, 发出需要拙文~DiscreteCH7.pdf 的源文件的要求, 我一直没有回复, 抱歉. 一个是源文件过大; 再有不得不考虑到
+版权的问题, 因为制作这样一份文档实在是花费了大量的时间精力.
+
+出于对这些朋友的礼貌, 我制作了原文的精简版, 保留了原文中比较有特色的内容, 对特殊宏包的引用加了注释.
+\pause
+\begin{itemize}
+ \hilite<2> \item 本幻灯片使用~beamer 宏包作出. 关于~beamer 的讨论(安装、更新)可参考:
+        \href{http://bbs.ctex.org/forums/index.php?showtopic=27695}{\texttt{http://bbs.ctex.org/forums/index.php?showtopic=27695}}
+ \hilite<3>  \item 本文的图形主要是用~pgf 宏包作出的, 另有个别的~MetaPost 图形.
+ \hilite<4>  \item 本幻灯片的源文件仅供学习~beamer, pgf 参考之用. 使用请注明出处.
+\end{itemize}
+\vfill
+{\normalsize\footnotesize\heiti
+{}\hfill  Copyright~$\copyright$~2006. 保留所有权利.\\
+{}\hfill\textsf{\textcolor{red}{H}UANG Z\textcolor{red}{h}eng-\textcolor{red}{h}ua}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}\frametitle{Very Brief History}
+The earliest paper on graph theory seems to be by Leonhard
+\hypertarget{target2}{Euler} in 1736. Euler discusses whether or not
+it is possible to stroll around Konigsberg  crossing each of its
+bridges across the Pregel exactly once.
+
+\begin{center}
+\includegraphics[height=0.3\textwidth]{Konigsberg.jpg}\qquad
+\includegraphics[height=0.3\textwidth]{bridges.jpg}
+\end{center}
+
+\hyperlink{target1}{\beamergotobutton{Leonhard Euler 简介}}
+\end{frame}
+%-------------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{参考书籍}
+\begin{thebibliography}{10}
+\beamertemplatebookbibitems
+\bibitem{bondy}
+J. A. Bondy  and  U. S. R. Murty.
+\newblock {\em Graph Theory with Applications}.
+\newblock The Macmillan Press Ltd., 1976
+
+\bibitem{bondy}
+J. A. 邦迪,~U. S. R. 默蒂~~著\\
+吴望名, 李念祖, 吴兰芳, 谢伟如, 梁文沛~~译
+\newblock {\em 图论及其应用}.
+\newblock 科学出版社, 1984.
+\end{thebibliography}
+\end{frame}
+%-------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Rules of the Game}
+
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{与图相关的概念和约定}
+\begin{itemize}
+\hilite<1>\item  每条边都是无向边的图叫\alert{无向图};
+\hilite<2>\item  每条边都是有向边的图叫\alert{有向图};
+\hilite<3>\item  既有无向边又有有向边的图叫\alert{混合图}.
+\end{itemize}
+
+\begin{center}\small
+\begin{figure}\setcounter{subfigure}{0}
+\onslide<1->{\subfigure[无向图]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25]
+\path (0,0) node(3) {$v_3$}
+      (-1,1.4) node(2) {$v_2$}
+      (0.3,3) node(1) {$v_1$}
+      (1.4,0.7) node(4) {$v_4$}
+      (1.5,2) node(5) {$v_5$};
+\foreach \source/\target in {1/2, 2/3, 3/4, 4/2}
+\draw[orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}}}\qquad
+\onslide<2->{\subfigure[有向图]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25]
+\path (0,0) node(3) {$v_3'$}
+      (-1.2,1.7) node(2) {$v_2'$}
+      (0.3,3) node(1) {$v_1'$}
+      (1.3,1.2) node(4) {$v_4'$};
+\foreach \source/\target in {1/2, 2/3, 3/1, 4/2, 1/4}
+\draw[->,orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}}}\qquad
+\onslide<3>{
+\subfigure[混合图]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25]
+\path (0,0) node(3) {$v_3''$}
+      (0.3,2) node(2) {$v_2''$}
+      (2.5,0.3) node(1) {$v_1''$}
+      (2,2.3) node(4) {$v_4''$};
+\foreach \source/\target in {1/3, 3/4}
+\draw[->,orange,line width=1.4pt] (\source) --(\target);
+\draw[orange,line width=1.4pt] (2) --(4);
+\draw[orange,line width=1.4pt] (1) --(4);
+\end{tikzpicture}}}
+\end{figure}
+\end{center}
+\end{frame}
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{与图相关的概念和约定}\small
+
+\begin{figure}\setcounter{subfigure}{0}
+\centering
+\subfigure[$G$~(无向图)]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25,scale=0.7]
+\path (0,0) node(3) {$v_3$}
+      (-1,1.4) node(2) {$v_2$}
+      (0.3,3) node(1) {$v_1$}
+      (1.4,0.7) node(4) {$v_4$}
+      (1.5,2) node(5) {$v_5$};
+\foreach \source/\target in {1/2, 2/3, 3/4, 4/2}
+\draw[orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}}\qquad
+\subfigure[$G'$~(有向图)]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25,scale=0.7]
+\path (0,0) node(3) {$v_3'$}
+      (-1.2,1.7) node(2) {$v_2'$}
+      (0.3,3) node(1) {$v_1'$}
+      (1.3,1.2) node(4) {$v_4'$};
+\foreach \source/\target in {1/2, 2/3, 3/1, 4/2, 1/4}
+\draw[->,orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}}\qquad
+\subfigure[$G''$~(混合图)]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25,scale=0.7]
+\path (0,0) node(3) {$v_3''$}
+      (0.3,2) node(2) {$v_2''$}
+      (2.5,0.3) node(1) {$v_1''$}
+      (2,2.3) node(4) {$v_4''$};
+\foreach \source/\target in {1/3, 3/4}
+\draw[->,orange,line width=1.4pt] (\source) --(\target);
+\draw[orange,line width=1.4pt] (2) --(4);
+\draw[orange,line width=1.4pt] (1) --(4);
+\end{tikzpicture}}
+\end{figure}
+\pause
+这些图可分别表示为:
+\begin{align*}
+   \onslide<2->{G=&\langle V,E\rangle=\Big\langle\big\{v_1,v_2,v_3,v_4,v_5\big\},
+   \big\{(v_1,v_2),(v_2,v_3),(v_3,v_4),(v_2,v_4) \big\} \Big\rangle\\}
+   \onslide<3->{G'=&\langle V',E'\rangle=\Big\langle\big\{v_1',v_2',v_3',v_4'\big\},
+   \big\{\langle v_1',v_2'\rangle,\langle v_2',v_3'\rangle,\langle v_3',v_1'\rangle,
+       \langle v_1',v_4'\rangle,\langle v_4',v_2'\rangle \big\} \Big\rangle\\}
+   \onslide<4->{G''=&\langle V'',E''\rangle=\Big\langle\big\{v_1'',v_2'',v_3'',v_4''\big\},
+   \big\{\alert{(}v_1'',v_4''\alert{)},\alert{(} v_2'',v_4''\alert{)},
+      \alert{\langle} v_1'',v_3''\alert{\rangle},
+       \alert{\langle} v_3'',v_4''\alert{\rangle} \big\} \Big\rangle}
+\end{align*}
+
+\end{frame}
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{与图相关的概念和约定}
+\begin{itemize}
+\hilite<1>  \item  若两个结点与同一条边相关联, 则称两个结点是\alert{邻接点}.
+\hilite<2>  \item  关联于同一结点的两条边叫\alert{邻接边}.
+\end{itemize}
+\only<1>{
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[$G$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt,circle,draw]
+\path (0,0) node(3)[fill=red!75] {$v_3$}
+      (-1,1.4) node(2)[fill=black!25] {$v_2$}
+      (0.3,3) node(1)[fill=black!25] {$v_1$}
+      (1.4,0.7) node(4)[fill=red!75] {$v_4$}
+      (1.5,2) node(5)[fill=black!25] {$v_5$};
+\foreach \source/\target in {1/2, 2/3, 4/2}
+\draw[black!25,line width=1.4pt] (\source) --(\target);
+\draw[red!45,line width=1.4pt] (3) --(4);
+\end{tikzpicture}}\qquad
+\subfigure[$G'$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt,circle,draw]
+\path (0,0) node(3)[fill=red!75] {$v_3'$}
+      (-1.2,1.7) node(2)[fill=black!25] {$v_2'$}
+      (0.3,3) node(1)[fill=red!75] {$v_1'$}
+      (1.3,1.2) node(4)[fill=black!25] {$v_4'$};
+\foreach \source/\target in {1/2, 2/3, 4/2, 1/4}
+\draw[->,black!25,line width=1.4pt] (\source) --(\target);
+\draw[->,red!45,line width=1.4pt] (3) --(1);
+\end{tikzpicture}}
+\caption{例如, ``$v_3$ 与~$v_4$'', ``$v_1'$ 与~$v_3'$'' 是\alert{邻接点}}
+\end{figure}
+\end{center}
+}
+\only<2>{
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[$G$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt]
+\path (0,0) node(3)[circle,draw,fill=red!45] {$v_3$}
+      (-1,1.4) node(2)[circle,draw,fill=black!25] {$v_2$}
+      (0.3,3) node(1)[circle,draw,fill=black!25] {$v_1$}
+      (1.4,0.7) node(4)[circle,draw,fill=black!25] {$v_4$}
+      (1.5,2) node(5)[circle,draw,fill=black!25] {$v_5$};
+\foreach \source/\target in {1/2, 4/2}
+\draw[black!25,line width=1.4pt] (\source) --(\target);
+\draw[red!85,line width=1.4pt] (3) --node[below,sloped]{$e_{34}$}(4) (3) --node[below,sloped]{$e_{23}$}(2) ;
+\end{tikzpicture}}\qquad
+\subfigure[$G'$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt]
+\path (0,0) node(3)[circle,draw,fill=red!45] {$v_3'$}
+      (-1.2,1.7) node(2)[circle,draw,fill=black!25] {$v_2'$}
+      (0.3,3) node(1)[circle,draw,fill=black!25] {$v_1'$}
+      (1.3,1.2) node(4)[circle,draw,fill=black!25] {$v_4'$};
+\foreach \source/\target in {1/2,  4/2, 1/4}
+\draw[->,black!25,line width=1.4pt] (\source) --(\target);
+\draw[->,red!85,line width=1.4pt] (3)--node[pos=0.4,below right=-1pt]{$e_{31}'$}(1);
+\draw[->,red!85,line width=1.4pt] (2)--node[below left=-4pt]{$e_{23}'$}(3);
+\end{tikzpicture}}
+\caption{例如, ``$e_{23}$ 与~$e_{34}$'', ``$e_{31}'$ 与~$e_{23}'$'' 是\alert{邻接边}}
+\end{figure}
+\end{center}
+}
+\end{frame}
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{与图相关的概念和约定}
+\begin{block}{}
+\begin{itemize}
+ \hidark<1>    \item  不与任何结点相邻接的结点, 称为\alert{孤立点}.
+ \hidark<2>    \item  仅由孤立结点组成的图叫\alert{零图}; 由一个孤立结点构成的图叫\alert{平凡图}.
+\end{itemize}
+\end{block}
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\onslide<1->{\subfigure[孤立点: $v_5$]{\fbox{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25]
+\path (0,0) node(3) {$v_3$}
+      (-1,1.4) node(2) {$v_2$}
+      (0.3,3) node(1) {$v_1$}
+      (1.4,0.7) node(4) {$v_4$}
+      (1.5,2) node(5) {$v_5$};
+\foreach \source/\target in {1/2, 2/3, 3/4, 4/2}
+\draw[orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}}}
+}\qquad\quad
+\onslide<2->{
+\subfigure[零图]{\fbox{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt,circle,draw,fill=black!25]
+\path (0,0) node(3) {$v_3'$}
+      (-1.2,1.7) node(2) {$v_2'$}
+      (0.3,2.9) node(1) {$v_1'$}
+      (1.3,1.2) node(4) {$v_4'$};
+\end{tikzpicture}}}
+}
+\end{figure}
+\end{center}
+\end{frame}
+%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{definition}
+在图~$G=\langle V,\, E\rangle$ 中, 与结点~$v$ 相关联的边数, 叫该结点的\alert{度数}, 记作~$\deg (v)$. \pause
+\begin{itemize}
+    \item 称~$ \Delta (G) = \max \{ \deg (v)\bigm| v\in V(G) \}$ 为图~$G$ 的\alert{最大度}; \pause
+    \item 称~$\delta  (G) = \min \{ \deg (v)\bigm| v\in V(G) \}$ 为图~$G$ 的\alert{最小度}. \pause
+    \item 约定: 每个环在其对应的结点上, 度数增加~$2$.
+\end{itemize}
+\end{definition}\pause\small
+\begin{minipage}[c]{5cm}
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,circle,draw,fill=black!25]
+\path (0,1) node(a) {$a$}
+      (-1,0) node(b) {$b$}
+      (-1,-2) node(c) {$c$}
+      (1,-2) node(d) {$d$}
+      (1,0) node(e) {$e$};
+\foreach \source/\target in {a/b, a/e, b/c, c/d, d/e, b/e}
+\draw[orange,line width=1.4pt] (\source) --(\target);
+\draw[orange,line width=1.4pt] (e) .. controls +(up:1.2cm) and +(right:1.2cm) .. (e);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}[c]{6cm}
+例如左图~$G$ 中, 各结点度数为:
+\begin{align*}
+   \deg (a)&=2;&\qquad \deg (b)&=3;\\
+   \deg (c)&=2;&\qquad \deg (d)&=2;\\
+   \deg (e)&=5.&&
+\end{align*}\pause
+最大度和最小度为:
+    \[\Delta (G)=5; \qquad \delta  (G)=2.\]
+\end{minipage}
+\end{frame}
+%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{theorem}
+ 每个图中, 结点度数的总和等于边数的~$2$ 倍.
+\[
+\sum\limits_{v \in V} {\deg (v)}  = 2|E|
+\]
+\end{theorem}\pause\small
+\zheng
+因为每条边关联两个结点, 且一条边给予所关联的每个结点的度数为~1,
+从而一条边产生且仅产生两度, 故结点度数的总和是边数的~2 倍.
+\begin{center}
+  \begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white]
+\path (0,0) node(3) {$v_3$}
+      (-1,1.4) node(2) {$v_2$}
+      (0.3,3) node(1) {$v_1$}
+      (1.4,0.7) node(4) {$v_4$}
+      (1.5,2) node(5) {$v_5$};
+\foreach \source/\target in {1/2, 2/3, 3/4, 4/2}
+\draw[orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}
+\end{center}\pause
+\begin{alertblock}{}
+\handr ~\alert{一个图的结点度数是偶数.}
+\end{alertblock}
+\end{frame}
+
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}
+\begin{minipage}[c]{4cm}
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white,scale=0.9]
+\path (0,0) node(c) {$c$}
+      (2,0) node(d) {$d$}
+      (0,3) node(a) {$a$}
+      (2,3) node(b) {$b$};
+\draw[->,blue!75,line width=1.4pt] (d) --(b);
+\draw[->,blue!75,line width=1.4pt] (a) --(c);
+\draw[->,blue!75,line width=1.4pt] (a) .. controls +(45:0.7cm) and +(135:0.7cm) ..(b);
+\draw[<-,blue!75,line width=1.4pt] (b) .. controls +(-145:0.7cm) and +(-35:0.7cm) ..(a);
+\draw[->,blue!75,line width=1.4pt] (c) .. controls +(45:0.7cm) and +(135:0.7cm) ..(d);
+\draw[->,blue!75,line width=1.4pt] (d) .. controls +(-145:0.7cm) and +(-35:0.7cm) ..(c);
+\draw[->,blue!75,line width=1.4pt] (a) .. controls +(115:2cm) and +(-135:2cm) ..(a);
+\end{tikzpicture}\quad
+\end{center}
+\end{minipage}
+\begin{minipage}[c]{7cm}
+左图中,
+\begin{itemize}
+    \item     结点~$a$ 的出度为~$4$, 入度为~$1$, 结点~$a$ 的度数为~$5$. \pause
+    \item     其余各结点的度数皆为~$3$:
+    \begin{itemize}
+        \item 结点~$b$ 的出度为~$0$, 入度为~$3$;
+        \item 结点~$c$ 的出度为~$1$, 入度为~$2$;
+        \item 结点~$d$ 的出度为~$2$, 入度为~$1$.
+    \end{itemize}
+\end{itemize}
+%    易知, 各结点出度之和等于各结点入度之和.
+\end{minipage}
+\end{example}
+\end{frame}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{definition}
+\begin{itemize}
+    \item  简单图~$G=\langle V,\,E\rangle $ 中, 若每对结点之间均有边相连, 则称该图为\alert{完全图}.  \pause
+    \item  有~$n$ 个结点的无向完全图记作~$K_n$.
+\end{itemize}
+\end{definition}\pause
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[完全图~$K_5$]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle in {P-1/234, P-2/162, P-3/90, P-4/18, P-5/-54}
+  \node[vertex] (\name) at (\angle:1.6cm){};
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1,1/3,2/4,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\end{tikzpicture}
+}\qquad\qquad
+\subfigure[完全图~$K_6$]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle in {P-1/30, P-2/90, P-3/150, P-4/-150, P-5/-90, P-6/-30}
+  \node[vertex] (\name) at (\angle:1.5cm){};
+\foreach \from in {1,2,3,4,5,6}
+\foreach \to in {1,2,3,4,5,6}
+  {\draw (P-\from) -- (P-\to);}
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+\end{frame}
+%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{图的同构}
+
+\begin{example}
+图中~$G_1$, $G_2$, $G_3$, $G_4$ 是彼此同构的.
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[$G_1$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white]
+\path (-0.8,0) node(c) {$c$}
+      (0,1.6) node(b) {$b$}
+      (0,0.6) node(a) {$a$}
+      (0.8,0) node(d) {$d$};
+\draw[orange,line width=1.4pt] (a) --(c) (a) --(d) (c) --(d) (b) --(c) (a)--(b) (b)--(d);
+\end{tikzpicture}}\qquad
+\subfigure[$G_2$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white]
+\path (0,0) node(c) {$c$}
+      (1.6,1.6) node(b) {$b$}
+      (0,1.6) node(a) {$a$}
+      (1.6,0) node(d) {$d$};
+\draw[orange,line width=1.4pt] (a) --(c) (a) --(d) (c) --(d) (b) --(c) (a)--(b) (b)--(d);
+\end{tikzpicture}}\qquad
+\subfigure[$G_3$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white]
+\path (0.8,0) node(c) {$c$}
+      (0,-0.8) node(b) {$b$}
+      (-0.8,0) node(a) {$a$}
+      (0,0.8) node(d) {$d$};
+\draw[orange,line width=1.4pt] (a) --(c) (b) --(d);
+\draw[orange,line width=1.4pt] (a) .. controls (-0.6,-0.6) .. (b);
+\draw[orange,line width=1.4pt] (b) .. controls (0.6,-0.6) .. (c);
+\draw[orange,line width=1.4pt] (c) .. controls (0.6,0.6) .. (d);
+\draw[orange,line width=1.4pt] (a) .. controls (-0.6,0.6) .. (d);
+\end{tikzpicture}}\qquad
+\subfigure[$G_4$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=red,circle,text=white]
+\path (0,0) node(c) {$c$}
+      (1.6,1.6) node(b) {$b$}
+      (0,1.6) node(a) {$a$}
+      (1.6,0) node(d) {$d$};
+\draw[orange,line width=1.4pt] (a) --(c) (c) --(d) (b) --(c) (a)--(b) (b)--(d);
+\draw[orange,line width=1.4pt] (a) .. controls (2.3,2.3) .. (d);
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+\end{example}
+\end{frame}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{}
+
+
+\begin{example}
+判断下列图是否同构:
+
+\begin{figure}\centering
+\setcounter{subfigure}{0} \subfigure[$G_1$]{\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=0.5pt,ball
+color=black!80,circle,text=white] \path (2.5,0) node(4) {$v_4$}
+      (0,0) node(3) {$v_3$}
+      (2.5,2) node(2) {$v_2$}
+      (0,2) node(1) {$v_1$};
+\draw[orange,line width=1.4pt] (4) --(3) (4) --(2) (2) --(1)
+(1)--(3);
+\end{tikzpicture}}\qquad\quad
+\subfigure[$G_2$]{\only<1-3>{\begin{tikzpicture}%
+\tikzstyle{every node}=[inner sep=0.4pt,ball
+color=black!90,circle,text=white] \path (2.5,0) node(4) {$u_4$}
+      (0,0) node(3) {$u_3$}
+      (2.5,2) node(2) {$u_2$}
+      (0,2) node(1) {$u_1$};
+\draw[orange,line width=1.4pt] (4) --(2) (3) --(1) (1) --(4)
+(2)--(3);\draw (2,2.8);
+\end{tikzpicture}}%
+\only<4>{\begin{tikzpicture}%
+\tikzstyle{every node}=[inner sep=0.4pt,ball
+color=black!90,circle,text=white] \path (2.25,1.25) node(4) {$u_4$}
+      (0,0) node(3) {$u_3$}
+      (2.5,2) node(2) {$u_2$}
+      (0,2) node(1) {$u_1$};
+\draw[orange,line width=1.4pt] (4) --(2) (3) --(1) (1) --(4)
+(2)--(3); \draw (2,2.8);
+\end{tikzpicture}}%
+\only<5>{\begin{tikzpicture}%
+\tikzstyle{every node}=[inner sep=0.4pt,ball
+color=black!90,circle,text=white] \path (2,2.5) node(4) {$u_4$}
+      (0,0) node(3) {$u_3$}
+      (2.5,2) node(2) {$u_2$}
+      (0,2) node(1) {$u_1$};
+\draw[orange,line width=1.4pt] (4) --(2) (3) --(1) (1) --(4)
+(2)--(3);\draw (2,2.8);
+\end{tikzpicture}}}
+\end{figure}\pause
+\zhuyi~~$v_1\to u_1$, $v_3\to u_3$, $v_4\to u_2$, $v_2\to u_4$,
+容易判断是同构的.\pause
+
+
+\end{example}
+({\kaishu 把图~$G_2$ 中的~$u_4$ 上移就看得更清楚了.})
+\end{frame}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}
+判断下列图是否同构:
+
+\begin{figure}
+\centering \setcounter{subfigure}{0}
+\subfigure[$G_1$]{\begin{tikzpicture} \tikzstyle{every node}=[inner
+sep=0.5pt,ball color=black!90,circle,text=white] \path (2.4,0)
+node(4) {$v_4$}
+      (0,0) node(3) {$v_3$}
+      (2.4,2) node(2) {$v_2$}
+      (0.8,1) node(5) {$v_5$}
+      (1.6,1) node(6) {$v_6$}
+      (0,2) node(1) {$v_1$};
+\draw[orange,line width=1.4pt] (4) --(3) (4) --(2) (2) --(1)
+(1)--(3) (3)--(5) (5)--(6) (6)--(2);
+\end{tikzpicture}}\qquad\qquad
+\subfigure[$G_2$]{%
+\only<1-3>{\begin{tikzpicture} \tikzstyle{every node}=[inner
+sep=0.4pt,ball color=black!90,circle,text=white] \path (2.4,0)
+node(4) {$u_4$}
+      (0,0) node(5) {$u_5$}
+      (2.4,2) node(3) {$u_3$}
+      (0.8,1) node(2) {$u_2$}
+      (1.6,1) node(6) {$u_6$}
+      (0,2) node(1) {$u_1$};
+\draw[orange,line width=1.4pt] (1) --(2) (2) --(3) (3) --(4)
+(4)--(5) (5) --(6) (3) --(6) (1)--(5);\draw (-0.8,2.8);
+\end{tikzpicture}}%
+\only<4->{\begin{tikzpicture} \tikzstyle{every node}=[inner
+sep=0.4pt,ball color=black!90,circle,text=white] \path (2.4,0)
+node(4) {$u_4$}
+      (0,0) node(5) {$u_5$}
+      (2.4,2) node(3) {$u_3$}
+      (0.8,1) node(2) {$u_2$}
+      (-0.5,2.5) node(6) {$u_6$}
+      (0,2) node(1) {$u_1$};
+\draw[orange,line width=1.4pt] (1) --(2) (2) --(3) (3) --(4)
+(4)--(5) (5) --(6) (3) --(6) (1)--(5); \draw (-0.8,2.8);
+\end{tikzpicture}}%
+}
+\end{figure}
+\onslide<2->{\suojin 注意~$G_1$ 中有两个度数为~$3$ 的结点~$v_3$,
+$v_2$; $G_2$ 中度数为~$3$ 的结点是~$u_5$, $u_3$.
+容易看到图形是同构的.}
+
+\onslide<3->{\suojin 把~$u_6$ 上移可以看得更清楚.}
+\end{example}
+\end{frame}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{}
+\begin{block}{练习~P.279~(4)}
+下面两个图是同构的. \footnote{彼得森图. 彼得森 (Julius Peter Christian Peterson, 1839~--~1910) 丹麦人. }
+\only<1>{
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[$G_1$]{
+\begin{tikzpicture}[orange,line width=1.4pt,scale=0.9]
+\tikzstyle{vertex}=[ball color=red!50!green,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle in {P-1/234, P-2/162, P-3/90, P-4/18, P-5/-54}
+  \node[vertex] (\name) at (\angle:1cm){};
+\foreach \name/\angle in {Q-1/234, Q-2/162, Q-3/90, Q-4/18, Q-5/-54}
+  \node[vertex] (\name) at (\angle:2cm){};
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+\end{tikzpicture}
+}\qquad\qquad
+\subfigure[$G_2$]{
+\begin{tikzpicture}[orange,line width=1.4pt,scale=0.9]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\node[vertex] (9) at (0:0cm) {};
+\foreach \name/\angle in {P-1/90, P-2/-150, P-3/-30, R-1/150, R-2/-90, R-3/30}
+  \node[vertex] (\name) at (\angle:1.2cm){};
+\foreach \name/\angle in {Q-1/90, Q-2/-150, Q-3/-30}
+  \node[vertex] (\name) at (\angle:2.4cm){};
+\foreach \from/\to in {1/1,1/3,2/1,2/2,3/2,3/3}
+  {\draw (Q-\from) -- (R-\to);}
+\foreach \from/\to in {1/1,2/2,3/3}
+  {\draw (P-\from) -- (Q-\to); \draw (P-\from) -- (9); }
+\draw (R-1) .. controls (60:0.6cm) .. (P-3);
+\draw (R-2) .. controls (180:0.6cm) .. (P-1);
+\draw (R-3) .. controls (-60:0.6cm) .. (P-2);
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+}\only<2->{
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[$G_1$]{
+\begin{tikzpicture}[orange,line width=1.4pt,scale=0.9]
+\tikzstyle{vertex}=[ball color=red!50!green,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle/\text in {P-1/234/8, P-2/162/7, P-3/90/6, P-4/18/10, P-5/-54/9}
+  \node[vertex] (\name) at (\angle:1cm) {$\text$};
+\foreach \name/\angle/\text in {Q-1/234/3, Q-2/162/2, Q-3/90/1, Q-4/18/5, Q-5/-54/4}
+  \node[vertex] (\name) at (\angle:2cm) {$\text$};
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+\end{tikzpicture}
+}\qquad\qquad
+\subfigure[$G_2$]{
+\begin{tikzpicture}[orange,line width=1.4pt,scale=0.9]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=14pt,inner sep=0.4pt,circle,text=white]
+\node[vertex] (9) at (0:0cm) {$9$};
+\foreach \name/\angle/\text in {P-1/90/6, P-2/-150/4, P-3/-30/7, R-1/150/2, R-2/-90/8, R-3/30/5}
+  \node[vertex] (\name) at (\angle:1.2cm) {$\text$};
+\foreach \name/\angle/\text in {Q-1/90/1, Q-2/-150/3, Q-3/-30/10}
+  \node[vertex] (\name) at (\angle:2.4cm) {$\text$};
+\foreach \from/\to in {1/1,1/3,2/1,2/2,3/2,3/3}
+  {\draw (Q-\from) -- (R-\to);}
+\foreach \from/\to in {1/1,2/2,3/3}
+  {\draw (P-\from) -- (Q-\to); \draw (P-\from) -- (9); }
+\draw (R-1) .. controls (60:0.6cm) .. (P-3);
+\draw (R-2) .. controls (180:0.6cm) .. (P-1);
+\draw (R-3) .. controls (-60:0.6cm) .. (P-2);
+\end{tikzpicture}}
+\end{figure}
+\end{center}}
+\onslide<3->{
+根据点与边的关联关系, 在两图编号相同的结点间建立双射, 便可知这两个图同构.
+}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{路与回路}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{}
+例如下图中:
+
+\begin{center}
+\only<1>{%
+\begin{tikzpicture}[line width=1.7pt]
+\tikzstyle{every node}=[inner sep=1pt]
+\path (0,4.8) node(1)[ball color=red,circle,text=white] {$v_1$}
+      (-1.3,2.6) node(2)[ball color=red,circle,text=white] {$v_2$}
+      (1.3,2.6) node(3)[ball color=red,circle,text=white] {$v_3$}
+      (-1.3,0) node(4)[ball color=red,circle,text=white] {$v_4$}
+      (1.3,0) node(5)[ball color=red,circle,text=white] {$v_5$};
+\draw[orange]
+(1) --node[above,sloped,text=black]{$e_1$}(2)
+(1) --node[above,sloped,text=black]{$e_2$}(3)
+(2) --node[left,text=black]{$e_5$}(4)
+(2) --node[below,sloped,text=black]{$e_6$}(5)
+(4) --node[below,text=black]{$e_8$}(5)
+(3) --node[right,text=black]{$e_7$}(5);
+\draw[orange] (2) .. controls (0,3)  ..node[above,sloped,text=black]{$e_3$}(3);
+\draw[orange] (2) .. controls (0,2.2)..node[below,sloped,text=black]{$e_4$}(3);
+\end{tikzpicture}}%
+\only<2>{%
+\begin{tikzpicture}[line width=1.7pt]
+\tikzstyle{every node}=[inner sep=1pt]
+\path (0,4.8) node(1)[ball color=red,circle,text=white] {$v_1$}
+      (-1.3,2.6) node(2)[ball color=red,circle,text=white] {$v_2$}
+      (1.3,2.6) node(3)[ball color=red,circle,text=white] {$v_3$}
+      (-1.3,0) node(4)[ball color=red,circle,text=white] {$v_4$}
+      (1.3,0) node(5)[ball color=red,circle,text=white] {$v_5$};
+\draw[red!75]
+(1) --node[above,sloped]{$e_1$}(2)
+(2) --node[left]{$e_5$}(4)
+(4) --node[below]{$e_8$}(5)
+(3) --node[right]{$e_7$}(5);
+\draw[black!30]
+(1) --node[above,sloped]{$e_2$}(3)
+(2) --node[below,sloped]{$e_6$}(5);
+\draw[black!30] (2) .. controls (0,3)  ..node[above,sloped]{$e_3$}(3);
+\draw[black!30] (2) .. controls (0,2.2)..node[below,sloped]{$e_4$}(3);
+\end{tikzpicture}}%
+\only<3>{%
+\begin{tikzpicture}[line width=1.7pt]
+\tikzstyle{every node}=[inner sep=1pt]
+\path (0,4.8) node(1)[ball color=red,circle,text=white] {$v_1$}
+      (-1.3,2.6) node(2)[ball color=red,circle,text=white] {$v_2$}
+      (1.3,2.6) node(3)[ball color=red,circle,text=white] {$v_3$}
+      (-1.3,0) node(4)[ball color=red,circle,text=white] {$v_4$}
+      (1.3,0) node(5)[ball color=red,circle,text=white] {$v_5$};
+\draw[red!75]
+(2) --node[below,sloped]{$e_6$}(5)
+(2) --node[left]{$e_5$}(4)
+(4) --node[below]{$e_8$}(5);
+\draw[black!30]
+(1) --node[above,sloped]{$e_1$}(2)
+(1) --node[above,sloped]{$e_2$}(3)
+(3) --node[right]{$e_7$}(5);
+\draw[red!75] (2) .. controls (0,3)  ..node[above,sloped]{$e_3$}(3);
+\draw[red!75] (2) .. controls (0,2.2)..node[below,sloped]{$e_4$}(3);
+\end{tikzpicture}}%
+\only<4>{%
+\begin{tikzpicture}[line width=1.7pt]
+\tikzstyle{every node}=[inner sep=1pt]
+\path (0,4.8) node(1)[ball color=red,circle,text=white] {$v_1$}
+      (-1.3,2.6) node(2)[ball color=red,circle,text=white] {$v_2$}
+      (1.3,2.6) node(3)[ball color=red,circle,text=white] {$v_3$}
+      (-1.3,0) node(4)[ball color=red,circle,text=white] {$v_4$}
+      (1.3,0) node(5)[ball color=red,circle,text=white] {$v_5$};
+\draw[red!75]
+(3) --node[right]{$e_7$}(5)
+(2) --node[below,sloped]{$e_6$}(5);
+\draw[black!30]
+(2) --node[left]{$e_5$}(4)
+(4) --node[below]{$e_8$}(5)
+(1) --node[above,sloped]{$e_1$}(2)
+(1) --node[above,sloped]{$e_2$}(3);
+\draw[red!75]   (2) .. controls (0,3)  ..node[above,sloped]{$e_3$}(3);
+\draw[black!30] (2) .. controls (0,2.2)..node[below,sloped]{$e_4$}(3);
+\end{tikzpicture}}
+\end{center}
+
+\begin{itemize}
+\hidark<2>    \item $v_1 e_1v_2 e_5 v_4e_8v_5 e_7v_3$ 是迹 (无重复的边), 也是通路 (无重复结点);
+\hidark<3>    \item $v_2 e_3v_3 e_4v_2e_6v_5 e_8v_4 e_5v_2$ 是回路 (起点与终点重合), 但不是圈;
+\hidark<4>    \item $v_2 e_3v_3 e_7v_5e_6v_2$ 是圈 (是回路, 但没有重复的结点).
+\end{itemize}
+\end{frame}
+%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}
+求下图所示的图~$G$ 的边连通度.
+\begin{center}
+\onslide<1->{
+\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=black,minimum size=13pt,circle,text=white]
+\path (1,2) node(c) {$c$}
+      (2,0) node(b) {$b$}
+      (0,0) node(a) {$a$}
+      (3,2) node(d) {$d$};
+\draw[black!75,line width=1.2pt] (a) --(b) (c) --(d) (b) --(c) (c) --(a);
+\end{tikzpicture}}
+\onslide<2->{
+\begin{tikzpicture}
+\tikzstyle{every node}=[inner sep=1pt,ball color=black,minimum size=13pt,circle,text=white]
+\path (1,2) node(c) {$c$}
+      (2,0) node(b) {$b$}
+      (0,0) node(a) {$a$}
+      (3,2) node(d) {$d$};
+\draw[black!75,line width=1.2pt] (a) --(b) (b) --(c) (c) --(a);
+\draw[black!15,line width=1.2pt] (c) --(d) ;
+\end{tikzpicture}}
+\end{center}\pause
+删除边~$e_{cd}$ 就会产生不连通图, 所以
+\[\lambda(G)=1\]
+\end{example}
+\end{frame}
+
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{}
+\begin{theorem}
+ 设~$G$ 为无向图, 则
+    \[k(G)\leqslant \lambda(G)\leqslant \delta (G)\]
+\end{theorem}\pause
+
+这个定理的证明可以用下图的例子予以说明. 这里
+\begin{align*}
+    k(G)&=2,\\ \lambda(G)&=3,\\  \delta(G)&=4.
+\end{align*}
+\begin{center}
+\begin{tikzpicture}[line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=10pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle in {P-1/252, P-2/180, P-3/108, P-4/36}
+  \node[vertex] (\name) at (\angle:1.2cm){};
+  \node[vertex] (P-5) at (-36:1.2cm){$u$};
+\foreach \name/\angle in {Q-1/216, Q-3/72, Q-4/0, Q-5/-72}
+  \node[vertex, xshift=5cm] (\name) at (\angle:1.2cm){};
+  \node[vertex, xshift=5cm] (Q-2) at (144:1.2cm){$v$};
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2,1/2,2/3,3/4,1/5}
+  {\draw[orange] (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2,2/3,3/4,4/5,5/1}
+  {\draw[orange] (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {5/2,4/2,5/1}
+  {\draw[red!75] (P-\from) -- (Q-\to); }
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{欧拉图与汉密尔顿图}
+
+%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{周游世界问题}
+
+\begin{columns}
+\begin{column}{0.65\textwidth}
+ \begin{figure}
+   \begin{center}
+   \includegraphics[width=0.85\textwidth]{decembre.pdf}
+   \end{center}
+ \end{figure}
+\end{column}
+\begin{column}{0.35\textwidth}
+\begin{block}{}
+十二面体的~20 个顶点用不同的城市作标记. 智力题的目标是在一个城市开始, 延十二面体的边旅行,
+访问其他~19 个城市每个恰好一次, 回到第一个城市结束.
+
+旅行经过的回路用钉子和细线来标记.
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{周游世界问题}
+周游世界问题可以算是欧拉七桥问题的延续.
+
+\onslide<2->{
+解此题时, 亦应用了图论的特性, 就是图中点与线之间的关系是最重要的,
+点的位置和线的长度并不重要.  因此我们可以将原图变形, 并``\alert{压平}''至一个平面之上来考虑, 从而得到它的解.}
+\begin{figure}
+ \begin{center}
+ \includegraphics[width=0.56\textwidth]{dodecaedredemo.pdf}\qquad
+ \pause
+ \multiinclude[graphics={width=0.37\textwidth}]{12mti}
+ \end{center}
+ \end{figure}
+%话说当年哈密顿设计了这个问题, 生产商就为此而设计了一个玩具.
+%生产商起初以为这是一道难题, 可以吸引消费者购买. 谁知当这玩具推出巿面后, 这个问题就立刻被人解决了！
+\end{frame}
+
+%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{}
+\begin{center}\onslide<1->{%
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=10pt,inner sep=0.2pt,circle,text=white]
+\draw (0,0) circle (2.4cm);
+\draw (0,0) circle (1.2cm);
+\node[vertex] (p) at (0:0cm) {$p$};
+\foreach \name/\angle/\text in {P-a/90/a, P-b/30/b, P-c/-30/c, P-d/-90/d, P-e/-150/e, P-f/150/f}
+  \node[vertex] (\name) at (\angle:2.4cm) {$\text$};
+\foreach \name/\angle/\text in {Q-g/90/g, Q-h/30/h, Q-i/-30/i,Q-j/-90/j, Q-k/-150/k, Q-l/150/l}
+  \node[vertex] (\name) at (\angle:1.2cm) {$\text$};
+\foreach \name/\angle/\text in {R-m/30/m, R-n/-90/n, R-o/150/o}
+  \node[vertex] (\name) at (\angle:0.6cm) {$\text$};
+\foreach \from/\to in {a/g,b/h,c/i,d/j,e/k,f/l}
+  {\draw (P-\from) -- (Q-\to);}
+\foreach \from/\to in {o/g,o/k,n/i,n/k,m/g,m/i}
+  {\draw (R-\from) -- (Q-\to);}
+\foreach \to in {m,n,o}
+  {\draw (p) -- (R-\to);}
+\end{tikzpicture}}\quad%
+\only<1>{%
+\begin{tikzpicture}
+\draw[white] (0,0) circle (2.4cm);
+\end{tikzpicture}
+}%
+\only<2>{%
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=10pt,inner sep=0.2pt,circle,text=white]
+\draw (0,0) circle (2.4cm);
+\draw (0,0) circle (1.2cm);
+\node[vertex] (p) at (0:0cm) {$p$};
+\foreach \name/\angle/\text in {P-a/90/a, P-b/30/b, P-c/-30/c, P-d/-90/d, P-e/-150/e, P-f/150/f}
+  \node[vertex] (\name) at (\angle:2.4cm) {$\text$};
+\foreach \name/\angle/\text in {Q-g/90/g, Q-h/30/h, Q-i/-30/i,Q-j/-90/j, Q-k/-150/k, Q-l/150/l}
+  \node[vertex] (\name) at (\angle:1.2cm) {$\text$};
+\foreach \name/\angle/\text in {R-m/30/m, R-n/-90/n, R-o/150/o}
+  \node[vertex] (\name) at (\angle:0.6cm) {$\text$};
+\foreach \from/\to in {a/g,b/h,c/i,d/j,e/k,f/l}
+  {\draw (P-\from) -- (Q-\to);}
+\foreach \from/\to in {o/g,o/k,n/i,n/k,m/g,m/i}
+  {\draw (R-\from) -- (Q-\to);}
+\foreach \to in {m,n,o}
+  {\draw (p) -- (R-\to);}
+%\draw (P-a) .. controls (60:2.4cm).. (P-b);
+%\draw (R-2) .. controls (180:0.6cm) .. (P-1);
+\end{tikzpicture}}%
+\only<3->{%
+\begin{tikzpicture}[black!15,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=10pt,inner sep=0.2pt,circle,text=white]
+\draw (0,0) circle (2.4cm);
+\draw (0,0) circle (1.2cm);
+\node[vertex,ball color=black!15] (p) at (0:0cm) {$p$};
+\foreach \name/\angle/\text in {P-b/30/b,  P-d/-90/d,  P-f/150/f}
+  \node[vertex,ball color=black!15] (\name) at (\angle:2.4cm) {$\text$};
+\foreach \name/\angle/\text in {Q-g/90/g, Q-i/-30/i,Q-k/-150/k}
+  \node[vertex,ball color=black!15] (\name) at (\angle:1.2cm) {$\text$};
+\foreach \name/\angle/\text in {P-a/90/a,   P-c/-30/c,   P-e/-150/e }
+  \node[vertex] (\name) at (\angle:2.4cm) {$\text$};
+\foreach \name/\angle/\text in { Q-h/30/h, Q-j/-90/j,  Q-l/150/l}
+  \node[vertex] (\name) at (\angle:1.2cm) {$\text$};
+\foreach \name/\angle/\text in {R-m/30/m, R-n/-90/n, R-o/150/o}
+  \node[vertex] (\name) at (\angle:0.6cm) {$\text$};
+\foreach \from/\to in {a/g,b/h,c/i,d/j,e/k,f/l}
+  {\draw (P-\from) -- (Q-\to);}
+\foreach \from/\to in {o/g,o/k,n/i,n/k,m/g,m/i}
+  {\draw (R-\from) -- (Q-\to);}
+\foreach \to in {m,n,o}
+  {\draw (p) -- (R-\to);}
+\end{tikzpicture}}
+\end{center}
+\onslide<4>{
+因为
+\begin{align*}
+& W\big(G-\{a, b, c, d, e, f, g\}\big) =9\\
+ \nleqslant & \big| \{a, b, c, d, e, f, g\} \big|=7
+\end{align*}
+所以图~$G$ 不是汉密尔顿图.}
+\end{frame}
+
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{Kuratowski 定理}
+\begin{alertblock}{}
+注意~$K_{3, 3}$ 的不同表示, 下面两个图都是~$K_{3, 3}$:
+\begin{center}
+\begin{figure}
+\setcounter{subfigure}{0} \subfigure[$K_{3, 3}$]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=10pt,circle,inner
+sep=0.1pt,text=white] \foreach \name/\angle/\text in {P-1/30/$B_2$,
+P-2/90/$A_1$, P-3/150/$B_1$, P-4/-150/$A_3$, P-5/-90/$B_3$,
+P-6/-30/$A_2$}
+  \node[vertex] (\name) at (\angle:1.5cm){\text};
+\foreach \from/\to in {1/4,2/5,3/6,1/2,2/3,3/4,4/5,5/6,6/1}
+  {\draw (P-\from) -- (P-\to);}
+\end{tikzpicture}}\qquad\qquad
+\subfigure[$K_{3,3}$]{
+\begin{tikzpicture}
+\tikzstyle{every node}=[ball color=black,minimum
+size=10pt,circle,inner sep=0.1pt,text=white] \path (0,0) node(1)
+{$B_1$}
+      (2,0) node(2)  {$B_2$}
+      (4,0) node(3)  {$B_3$}
+      (0,2) node(4)  {$A_1$}
+      (2,2) node(5)  {$A_2$}
+      (4,2) node(6)  {$A_3$};
+\foreach \source/\target in {1/4, 1/5, 1/6, 2/4, 2/5, 2/6, 3/4, 3/5,
+3/6} \draw[orange,line width=1.4pt] (\source) --(\target);
+\end{tikzpicture}
+}
+\end{figure}
+\end{center}
+\end{alertblock}
+\end{frame}
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{Kuratowski 定理}
+\begin{alertblock}{}
+注意~$K_{3, 3}$ 的不同表示, 下面两个图都是~$K_{3, 3}$:
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{every node}=[ball color=black,minimum
+size=10pt,circle,inner sep=0.1pt,text=white] \only<1>{\begin{scope}
+\path (0,0) node(1)  {$B_1$}
+      (2,0) node(2)  {$B_2$}
+      (4,0) node(3)  {$B_3$}
+      (0,2) node(4)  {$A_1$}
+      (2,2) node(5)  {$A_2$}
+      (4,2) node(6)  {$A_3$};
+\foreach \source/\target in {1/4, 1/5, 1/6, 2/4, 2/5, 2/6, 3/4, 3/5,
+3/6} \draw[orange,line width=1.4pt] (\source) --(\target); \draw
+(2,3.5);\draw (2,-1.5);
+\end{scope}}
+\only<2>{\begin{scope} \path (0,0) node(1)  {$B_1$}
+      (2,3) node(2')  {$B_2$}
+      (4,0) node(3)  {$B_3$}
+      (0,2) node(4)  {$A_1$}
+      (2,2) node(5)  {$A_2$}
+      (4,2) node(6)  {$A_3$};
+\foreach \source/\target in {1/4, 1/5, 1/6, 2'/4, 2'/5, 2'/6, 3/4,
+3/5, 3/6} \draw[orange,line width=1.4pt] (\source) --(\target);
+\draw (2,3.5);\draw (2,-1.5);
+\end{scope}}
+\only<3>{\begin{scope} \path (0,0) node(1)  {$B_1$}
+      (2,3) node(2')  {$B_2$}
+      (4,0) node(3)  {$B_3$}
+      (0,2) node(4)  {$A_1$}
+      (2,-1) node(5')  {$A_2$}
+      (4,2) node(6)  {$A_3$};
+\foreach \source/\target in {1/4, 1/5', 1/6, 2'/4, 2'/5', 2'/6, 3/4,
+3/5', 3/6} \draw[orange,line width=1.4pt] (\source) --(\target);
+\draw (2,3.5);\draw (2,-1.5);
+\end{scope}}
+\end{tikzpicture}
+\end{center}
+\end{alertblock}
+\end{frame}
+%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}[plain]%\frametitle{Kuratowski 定理应用的例子}
+\small
+\begin{exampleblock}{证明~Petersen 图不是平面图.}
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[Petersen 图]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=12pt,inner
+sep=0.4pt,circle,text=white] \foreach \name/\angle/\text in
+{Q-1/234/C, Q-2/162/B, Q-3/90/A, Q-4/18/E, Q-5/-54/D}
+  \node[vertex] (\name) at (\angle:1.4cm){\small$\text$};
+\foreach \name/\angle/\text  in {P-1/234/H, P-2/162/G, P-3/90/F,
+P-4/18/J, P-5/-54/I}
+  \node[vertex] (\name) at (\angle:0.7cm){\small$\text$};
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+\end{tikzpicture}
+}\qquad\quad \onslide<2->{\subfigure[取~Petersen 图子图]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=12pt,inner
+sep=0.4pt,circle,text=white] \foreach \name/\angle/\text in
+{Q-1/234/C, Q-2/162/B, Q-3/90/A, Q-4/18/E, Q-5/-54/D}
+  \node[vertex] (\name) at (\angle:1.4cm){\small$\text$};
+\foreach \name/\angle/\text  in {P-1/234/H, P-2/162/G, P-3/90/F,
+P-4/18/J, P-5/-54/I}
+  \node[vertex] (\name) at (\angle:0.7cm){\small$\text$};
+\foreach \from/\to in {1/3,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+\end{tikzpicture}}}\\
+\onslide<3->{\subfigure[子图的变形]{%
+\only<3>{%
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=12pt,inner
+sep=0.4pt,circle,text=white] \foreach \name/\angle/\text in
+{Q-1/234/C, Q-2/162/B, Q-3/90/A, Q-4/18/E, Q-5/-54/D}
+  \node[vertex] (\name) at (\angle:1.4cm){\small$\text$};
+\foreach \name/\angle/\text  in {P-1/234/H, P-2/162/G, P-3/90/F,
+P-4/18/J, P-5/-54/I}
+  \node[vertex] (\name) at (\angle:0.7cm){\small$\text$};
+\foreach \from/\to in {1/3,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+    \draw (-90:1.7cm);
+\end{tikzpicture}}%
+\only<4->{\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=12pt,inner
+sep=0.4pt,circle,text=white] \foreach \name/\angle/\text in
+{Q-1/234/C, Q-2/162/B, Q-3/90/A, Q-4/18/E, Q-5/-54/D}
+  \node[vertex] (\name) at (\angle:1.4cm){\small$\text$};
+\foreach \name/\angle/\text  in {P-1/234/H, P-2/162/G, P-4/18/J,
+P-5/-54/I}
+  \node[vertex] (\name) at (\angle:0.7cm){\small$\text$};
+\node[vertex] (P-3) at (-90:1.5cm) {$F$}; \foreach \from/\to in
+{1/3,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5}
+  {\draw (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw (P-\from) -- (Q-\to); }
+  \draw (-90:1.7cm);
+\onslide<5->{ \fill[ball color=black!10] (162:0.7cm) circle (6pt);
+\fill[ball color=black!10] (18:0.7cm) circle (6pt); \fill[ball
+color=black!10] (234:1.4cm) circle (6pt); \fill[ball color=black!10]
+(-54:1.4cm) circle (6pt); }
+\end{tikzpicture}}%
+}}\qquad\quad
+\onslide<6>{\subfigure[删除二度结点~$C,D,G,J$~得~$K_{3, 3}$]{
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=10pt,circle,inner
+sep=0.1pt,text=white] \foreach \name/\angle/\text in {P-1/30/$E$,
+P-2/90/$A$, P-3/150/$B$, P-4/-150/$H$, P-5/-90/$F$, P-6/-30/$I$}
+  \node[vertex] (\name) at (\angle:1.3cm){\text};
+\foreach \from/\to in {1/4,2/5,3/6,1/2,2/3,3/4,4/5,5/6,6/1}
+  {\draw (P-\from) -- (P-\to);}
+\end{tikzpicture}}}
+\end{figure}
+\end{center}
+\end{exampleblock}
+\end{frame}
+
+%%%%%--------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{exampleblock}{练习}
+ 应用欧拉公式证明~Petersen~图是非平面图.
+\begin{center}
+\begin{tikzpicture}
+\shade[top color=yellow,bottom color=black] (234:1.4cm)--(234:0.7cm)--(90:0.7cm)--(-54:0.7cm)--(-54:1.4cm)--cycle;
+\tikzstyle{vertex}=[ball color=red!50!blue,minimum size=10pt,inner sep=0.2pt,circle,text=white]
+\foreach \name/\angle/\text in {Q-1/234/c, Q-2/162/b, Q-3/90/a, Q-4/18/e, Q-5/-54/d}
+  \node[vertex] (\name) at (\angle:1.4cm){\small$\text$};
+\foreach \name/\angle/\text  in {P-1/234/h, P-2/162/g, P-3/90/f, P-4/18/j, P-5/-54/i}
+  \node[vertex] (\name) at (\angle:0.7cm){\small$\text$};
+\foreach \from/\to in {1/3,2/4,3/5,4/1,5/2}
+  {\draw[orange,line width=1.4pt] (P-\from) -- (P-\to);}
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1}
+  {\draw[orange,line width=1.4pt] (Q-\from) -- (Q-\to); }
+\foreach \from/\to in {1/1,2/2,3/3,4/4,5/5}
+  {\draw[orange,line width=1.4pt] (P-\from) -- (Q-\to); }
+\end{tikzpicture}
+\end{center}
+\end{exampleblock}\pause\small
+\zheng Petersen~图中, $v=10$, $e=15$, 从图上可以看出, 每个面由五边围成. \pause
+
+ 根据定理~7-5.1, 如果~Petersen~图是平面图, 则~$2e=5r$. \pause
+所以
+\begin{align*}
+&r=\dfrac{2}{5}e=6\\
+ {\color{red!70}\Rightarrow} &v-e+r=10-15+6=1\neq 2
+\end{align*}\pause
+这说明~Petersen~图不满足欧拉公式, 故它不是平面图.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{对偶图与着色}
+%%%-------------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{definition}
+ 图~$G$ 的对偶图~$G^{\star}$ 同构于~$G$, 则称图~$G$ 是自对偶图.
+\end{definition}\pause
+\begin{example}
+自对偶图的例子:
+
+\begin{minipage}[c]{5cm}
+\begin{itemize}
+\item ``面''演化为``点'';
+\item ``面的公共边界''演化为``点的邻接边''.
+\end{itemize}
+\end{minipage}
+\begin{minipage}[c]{6cm}
+\begin{center}
+\begin{tikzpicture}[orange,line width=1.4pt]
+\tikzstyle{vertex}=[minimum size=10pt,inner sep=0.4pt,circle,text=white]
+\node[ball color=red!50!blue,vertex](9) at (0:0cm) {};
+\foreach \name/\angle in {Q-1/90, Q-2/-150,Q-3/-30}
+  \node[ball color=red!50!blue,vertex] (\name) at (\angle:2.2cm){};
+ \foreach \from/\to in {1/2,2/3,3/1}
+  {\draw (Q-\from) -- (Q-\to);}
+\foreach \from in {1,2,3}
+  {\draw (Q-\from) -- (9); }
+\onslide<3->{\foreach \name/\angle in {R-1/150, R-2/-90, R-3/30}
+   \node[ball color=black,vertex] (\name) at (\angle:0.7cm){};
+   \node[ball color=black,vertex] (7) at (30:3cm) {};}
+\onslide<4->{\draw[red,dashed]  (R-1) .. controls (100:3.4cm) ..(7);}
+\onslide<5->{ \draw[red,dashed]  (R-2) .. controls (-40:3.4cm).. (7);}
+\onslide<6->{ \draw[red,dashed]  (R-3) .. controls (44:1.8cm) .. (7);}
+\onslide<7->{ \draw[red,dashed] (0,0) circle (0.7cm);
+   \foreach \name/\angle in {R-1/150, R-2/-90, R-3/30}
+   \node[ball color=black,vertex] (\name) at (\angle:0.7cm){};}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\end{example}
+\end{frame}
+
+%%%%%-------------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{正常着色}
+\begin{example}
+下图中,
+\begin{itemize}
+    \item 图~(a)~着色所需的最少颜色数为~$4$, 因此它是~$4$-色的.
+    \item 图~(b)~着色所需的最少颜色数为~$5$, 因此它是~$5$-色的.
+\end{itemize}
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{
+\begin{tikzpicture}
+  \tikzstyle{every node}=[inner sep=0.3pt,minimum size=11pt,circle,text=white]
+\path (0,0) node[ball color=red](c) {$c$}
+      (1.2,-0.8) node[ball color=green](b) {$d$}
+      (0,1.2) node[ball color=blue](a) {$a$}
+      (-1.2,-0.8) node[ball color=yellow](d) {$b$};
+\draw[orange,line width=1.2pt] (a) --(c) (a) --(d) (c) --(d) (b) --(c) (a)--(b) (b)--(d);
+\end{tikzpicture}}\qquad\qquad
+\subfigure[]{
+\begin{tikzpicture}[black!60,line width=1.4pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=12pt,inner sep=0.4pt,circle,text=white]
+\foreach \name/\angle/\col/\text in {P-1/234/red/1, P-2/162/orange/2, P-3/90/yellow/3, P-4/18/green/4, P-5/-54/blue/5}
+  \node[vertex,ball color=\col] (\name) at (\angle:1.6cm){$\text$};
+\foreach \from/\to in {1/2,2/3,3/4,4/5,5/1,1/3,2/4,3/5,4/1,5/2}
+  {\draw (P-\from) -- (P-\to);}
+\end{tikzpicture}
+}
+\end{figure}
+\end{center}
+\end{example}
+\end{frame}
+
+%%%-------------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}
+对下图着色.
+\begin{center}
+\begin{tikzpicture}[black!65,line width=1.2pt]
+\tikzstyle{every node}=[inner sep=0.3pt,ball color=black!45,circle,minimum size=12pt,text=white]
+\path (0,0) node(e) {$E$}
+      (1.6,1.6) node(c) {$C$}
+      (0,1.6) node(b) {$B$}
+      (1.6,0) node(f) {$F$}
+      (-1.6,1.6) node(a) {$A$}
+      (-0.6,-1) node(g) {$G$}
+      (-1.6,0) node(d) {$D$}
+      (0.6,-1) node(h) {$H$};
+\foreach \source/\target in {a/b, a/d,a/g,b/d,b/e,b/c,c/e, c/f, d/e,d/g, e/f, e/g,e/h,f/h,g/h}
+\draw(\source) --(\target);
+\draw (a) ..controls(0,2.3)..(c);
+\draw (c) ..controls(0.8,0)..(g);
+\onslide<4->{\node[ball color=red] at (e){$E$}; }
+\onslide<5->{\node[ball color=red] at (a) {$A$}; }
+\onslide<7->{\node[ball color=blue] at (c) {$C$}; }
+\onslide<8->{\node[ball color=blue] at (h) {$H$};\node[ball color=blue] at (d) {$D$} ; }
+\onslide<10->{\node[ball color=yellow] at (g) {$G$};}
+\onslide<11->{\node[ball color=yellow] at (b) {$B$};\node[ball color=yellow] at (f) {$F$};}
+\end{tikzpicture}
+\end{center}
+\onslide<2->{\jieda 结点递减排序: $E$, $C$, $G$, $A$, $B$, $D$, $F$, $H$.
+\begin{itemize}
+\hidark<3-5> \item 用红色对~$E$ 及不相邻的结点~$A$ 着色;
+\hidark<6-8>\item 用蓝色对~$C$ 及不相邻的结点~$D$, $H$ 着色;
+\hidark<9-11>\item 用黄色对~$G$ 及不相邻的结点~$B$, $F$ 着色;
+\end{itemize}}
+\end{example}
+\end{frame}
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{exampleblock}{练习}
+六人在一起, 或者三人互相认识, 或者三人彼此不认识.
+\end{exampleblock}
+
+\onslide<2->{\jieda  将~$6$ 个人分别用平面上~$a$, $b$, $c$, $d$,
+$e$, $f$ 六点表示. } \onslide<3->{从任一人出发,
+该人与其它五人或认识, 或不认识. }
+
+\onslide<4->{如两人认识, 则相应两点用\textcolor{red}{红线}相连,
+否则, 用\textcolor{blue}{蓝线}相连. }
+
+\onslide<5->{不失一般性, 考虑从~$a$ 开始,
+与其它五点可以有五条线相连. }
+\onslide<6->{那么五条线中必有~$3$ 条会着上相同的颜色. }\\[1ex]
+
+\begin{minipage}[c]{3cm}
+\onslide<2->{
+\begin{center}
+\begin{tikzpicture}
+  \tikzstyle{every node}=[inner sep=0.3pt,ball color=black,minimum size=10pt,circle,text=white]
+\path (0.5,-1.2) node (c) {$c$}
+      (1.2,-0.8) node (b) {$d$}
+      (0,1.2) node (a) {$a$}
+      (-1.2,-0.8) node (d) {$b$}
+      (-1.3,0.3) node (e) {$e$}
+      (1.3,0.2) node (f) {$f$};
+\onslide<5->{\draw[black!20,line width=1.2pt] (a) --(c) (a) --(d)
+(a)--(b) (a)--(e) (a)--(f);} \onslide<7->{\draw[blue,line
+width=1.2pt] (a) --(c) (a) --(d) (a)--(b) ;}
+\only<8>{\draw[blue,line width=1.2pt] (b)--(d);}
+\onslide<9>{\draw[red,line width=1.2pt] (c) --(d) (b) --(c)
+(b)--(d);}
+\end{tikzpicture}
+\end{center}}
+\end{minipage}
+\begin{minipage}[c]{8cm}
+\onslide<7->{假定~$a b$, $a c$, $a d$ 为蓝色,}
+\begin{enumerate}
+    \item<8-> 如果此时~$b c$, $c d$, $b d$ 中有一条边为蓝色({\kaishu 比如~$b d$ 边为蓝色}),
+          则可构成一个蓝色三角形, 因而六人中有三人不认识; \pause
+    \item<9-> 如果此时~$b c$, $c d$, $b d$ 全为红色, 则~$b$, $c$, $d$ 彼此认识, 因而六人中有三人认识.\qed
+\end{enumerate}
+\end{minipage}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{树与生成树}
+
+%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{树的概念}
+\begin{definition}
+\begin{itemize}
+    \item 一个连通且无回路的无向图称为\alert{树}(tree).
+    \item  树中度数为~$1$ 的结点叫\alert{树叶}(leave);
+    \item 度数大于~$1$ 的结点叫\alert{分枝点}(branched node)或\alert{内点}.
+    \item  如果一个无向图的每个连通分支是树, 则称为\alert{森林}(forest).
+\end{itemize}
+\end{definition}
+\begin{center}
+ \begin{tikzpicture}[level distance=10mm]
+\tikzstyle{every node}=[fill=red!60,circle,inner sep=1pt]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=red!45]}]
+\tikzstyle{level 2}=[sibling distance=10mm,
+set style={{every node}+=[fill=red!30]}]
+\tikzstyle{level 3}=[sibling distance=5mm,
+set style={{every node}+=[fill=red!15]}]
+\node {31}
+child {node {30}
+child {node {20}
+child {node {5}}
+child {node {4}}
+}
+child {node {10}
+child {node {9}}
+child {node {1}}
+}
+}
+child {node {20}
+child {node {19}
+child {node {1}}
+child[fill=none] {edge from parent[draw=none]}
+}
+child {node {18}}
+};
+\end{tikzpicture}\qquad
+%\begin{tikzpicture}
+%\node {root} [grow’=up]
+ \begin{tikzpicture}[level distance=10mm]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=1pt ]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=10mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[sibling distance=5mm,
+set style={{every node}+=[fill=blue!15]}]
+\node {31} [grow'=up]
+child {node {30}
+child {node {20}
+child {node {5}}
+child {node {4}}
+}
+child {node {10}
+child {node {9}}
+child {node {1}}
+}
+}
+child {node {20}
+child {node {19}
+child {node {1}}
+child[fill=none] {edge from parent[draw=none]}
+}
+child {node {18}}
+};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+%%%%%%==================================================================================================
+\begin{frame}%\frametitle{树的起源}
+树的概念是亚瑟~$\cdot$~凯莱
+\footnote{Arthur Cayley (1821--1895)~{\kaishu 17 岁进入剑桥三一学院学习, 1849 年获律师资格, 在其律师生涯中写下了
+超过~300 篇的数学论文. 1863 年返回剑桥任教职.}}
+提出的.
+\small
+\begin{block}{饱和碳氢化合物与树}
+%图可以用来表示分子, 其中用结点表示原子, 用边表示化学键.
+英国数学家亚瑟~$\cdot$~凯莱
+在~1857 年发明了树, 当时他试图列举饱和碳氢化合物~$\mathbf{C}_n\mathbf{H}_{2n+2}$ 的同分异构体.
+
+\begin{minipage}[c]{7cm}
+\begin{center}\footnotesize
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[丁烷]{%
+\begin{tikzpicture}[level distance=2em]
+\node {C}
+child[grow=up] {node {H}}
+child[grow=left] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {C}
+child[grow=left] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {C}
+child[grow=left] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {C}
+child[grow=left] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {H}}
+}
+}
+};
+\end{tikzpicture}
+}\quad
+\subfigure[异丁烷]{
+\begin{tikzpicture}[level distance=2em]
+\tikzstyle{level 1}=[level distance=3em]
+\tikzstyle{level 2}=[level distance=2em]
+\node {C}
+child[grow=up,level distance=2em] {node {H}}
+child[grow=left] {node {C}
+child[grow=up] {node {H}}
+child[grow=left] {node {H}}
+child[grow=down] {node {H}}
+}
+child[grow=down] {node {C}
+child[grow=left] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {H}}
+}
+child[grow=right] {node {C}
+child[grow=up] {node {H}}
+child[grow=right] {node {H}}
+child[grow=down] {node {H}}
+};
+\end{tikzpicture}
+}
+\end{figure}
+\end{center}\pause
+\end{minipage}
+\begin{minipage}[c]{4.5cm}
+左图为什么是树? \pause
+
+结点数: \[v=n+(2n+2)=3n+2\]
+结点度数之和: \[4\times n+ 1\times(2n+2)=6n+2\]
+则边数~$e=3n+1$. \pause
+因是连通图, 且~$e=v-1$, 所以是树.
+\end{minipage}
+\end{block}
+\end{frame}
+
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}[Kruskal~算法举例]
+ 在下图中求最小生成树(方法~1).
+
+ 图中有~$6$ 个结点, 所以要选取~$5$ 条边.
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{%
+\begin{tikzpicture}[orange,line width=1.4pt,inner sep=0.5pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=8pt,inner sep=0.4pt,circle]
+\foreach \name/\angle in {1/30, 2/90, 3/150, 4/-150, 5/-90, 6/-30}
+  \node[vertex] (\name) at (\angle:1.6cm){};
+\draw[orange,line width=1.2pt] (1) --node[above,text=blue,sloped]{$11$}(2) (2) --node[below,text=blue,sloped]{$1$}(3)
+                               (4) --node[below,text=blue,sloped]{$4$}(5) (5) --node[below,text=blue,sloped]{$5$}(6)
+                               (3) --node[right,text=blue]{$3$}(4) (6) --node[right,text=blue]{$8$}(1)
+                               (5) --node[above,text=blue,sloped]{$2$}(2) (1) --node[pos=0.3,below,text=blue]{$9$}(3)
+                               (4) --node[pos=0.3,above,text=blue]{$10$}(6) (5) --node[above,text=blue,sloped]{$7$}(1)
+                               (2)..controls(150:2.2cm)..node[above,text=blue,sloped]{$6$}(4) ;
+\end{tikzpicture}
+}\onslide<2->{
+\qquad\qquad%
+\subfigure[]{%
+\begin{tikzpicture}[orange,line width=1.4pt,inner sep=0.5pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=8pt,inner sep=0.4pt,circle]
+\foreach \name/\angle in {1/30, 2/90, 3/150, 4/-150, 5/-90, 6/-30}
+  \node[vertex] (\name) at (\angle:1.6cm){};
+\draw[orange,line width=1.2pt] (1) --node[above,text=blue,sloped]{$11$}(2) (2) --node[below,text=blue,sloped]{$1$}(3)
+                               (4) --node[below,text=blue,sloped]{$4$}(5) (5) --node[below,text=blue,sloped]{$5$}(6)
+                               (3) --node[right,text=blue]{$3$}(4) (6) --node[right,text=blue]{$8$}(1)
+                               (5) --node[above,text=blue,sloped]{$2$}(2) (1) --node[pos=0.3,below,text=blue]{$9$}(3)
+                               (4) --node[pos=0.3,above,text=blue]{$10$}(6) (5) --node[above,text=blue,sloped]{$7$}(1)
+                               (2)..controls(150:2.2cm)..node[above,text=blue,sloped]{$6$}(4) ;
+\onslide<3->{\draw[red,line width=1.4pt]  (2) --node[below,text=blue,sloped]{$1$}(3);}
+\onslide<4->{\draw[red,line width=1.4pt]  (5) --node[above,text=blue,sloped]{$2$}(2);}
+\onslide<5->{\draw[red,line width=1.4pt]  (3) --node[right,text=blue]{$3$}(4);}
+\onslide<6->{\draw[red,line width=1.4pt]  (5) --node[below,text=blue,sloped]{$5$}(6);}
+\onslide<7->{\draw[red,line width=1.4pt]  (5) --node[above,text=blue,sloped]{$7$}(1);}
+\end{tikzpicture}}}
+\end{figure}
+\end{center}
+\onslide<8->{({\kaishu 注意: 边权为~$1$, $2$, $3$ 的边选取了之后, 边权为~$6$, $4$ 的边就不能选了. 否则构成回路.})}
+\end{example}
+
+\end{frame}
+
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{Kruskal~算法举例}
+\begin{example}
+ 在下图中求最小生成树(方法~2).
+ \begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{%
+\begin{tikzpicture}[orange,line width=1.4pt,inner sep=0.5pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=8pt,inner sep=0.4pt,circle]
+\foreach \name/\angle in {1/30, 2/90, 3/150, 4/-150, 5/-90, 6/-30}
+  \node[vertex] (\name) at (\angle:1.6cm){};
+\draw[orange,line width=1.2pt] (1) --node[above,text=blue,sloped]{$11$}(2) (2) --node[below,text=blue,sloped]{$1$}(3)
+                               (4) --node[below,text=blue,sloped]{$4$}(5) (5) --node[below,text=blue,sloped]{$5$}(6)
+                               (3) --node[right,text=blue]{$3$}(4) (6) --node[right,text=blue]{$8$}(1)
+                               (5) --node[above,text=blue,sloped]{$2$}(2) (1) --node[pos=0.3,below,text=blue]{$9$}(3)
+                               (4) --node[pos=0.3,above,text=blue]{$10$}(6) (5) --node[above,text=blue,sloped]{$7$}(1)
+                               (2)..controls(150:2.2cm)..node[above,text=blue,sloped]{$6$}(4) ;
+\end{tikzpicture}
+}\onslide<2->{
+\qquad\qquad%
+\subfigure[]{%
+\begin{tikzpicture}[inner sep=0.5pt]
+\tikzstyle{vertex}=[ball color=black,minimum size=8pt,inner sep=0.4pt,circle]
+\foreach \name/\angle in {1/30, 2/90, 3/150, 4/-150, 5/-90, 6/-30}
+  \node[vertex] (\name) at (\angle:1.6cm){};
+\draw[orange,line width=1.2pt] (1) --node[above,text=blue,sloped]{$11$}(2) (2) --node[below,text=blue,sloped]{$1$}(3)
+                               (4) --node[below,text=blue,sloped]{$4$}(5) (5) --node[below,text=blue,sloped]{$5$}(6)
+                               (3) --node[right,text=blue]{$3$}(4) (6) --node[right,text=blue]{$8$}(1)
+                               (5) --node[above,text=blue,sloped]{$2$}(2) (1) --node[pos=0.3,below,text=blue]{$9$}(3)
+                               (4) --node[pos=0.3,above,text=blue]{$10$}(6) (5) --node[above,text=blue,sloped]{$7$}(1)
+                               (2)..controls(150:2.2cm)..node[above,text=blue,sloped]{$6$}(4) ;
+\onslide<3->{\draw[black!10,line width=1.2pt]  (1) --node[above,text=blue!15,sloped]{$11$}(2);}
+\onslide<4->{\draw[black!10,line width=1.2pt]  (1) --node[pos=0.3,below,text=blue!15]{$9$}(3);
+             \draw[orange,line width=1.0pt] (5) --(2);}
+\onslide<5->{\draw[black!10,line width=1.2pt]  (6) --node[right,text=blue!15]{$8$}(1);}
+\onslide<6->{\draw[black!10,line width=1.2pt]  (4) --node[pos=0.3,above,text=blue!15]{$10$}(6);
+             \draw[orange,line width=1.0pt] (5) --(2) (5) --(1);}
+\onslide<7->{\draw[black!10,line width=1.2pt]  (2)..controls(150:2.2cm)..node[above,text=blue!15,sloped]{$6$}(4) ;}
+\onslide<8->{\draw[black!10,line width=1.2pt]  (4) --node[below,text=blue!15,sloped]{$4$}(5);}
+\onslide<9->{\draw[red,line width=1.4pt]  (2) --node[below,text=blue,sloped]{$1$}(3)
+ (5) --node[above,text=blue,sloped]{$2$}(2)
+ (3) --node[right,text=blue]{$3$}(4)
+ (5) --node[below,text=blue,sloped]{$5$}(6)
+ (5) --node[above,text=blue,sloped]{$7$}(1);}
+\end{tikzpicture}}}
+\end{figure}
+\end{center}
+\end{example}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{根树及其应用}
+
+%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{根树的两种画法}
+根树可以有\alert{树根在上}或\alert{树根在下}两种画法, 它们是同构的. \pause
+
+\begin{example}
+ \begin{center}
+ \begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{
+\begin{tikzpicture}[level distance=10mm,->,line width=1.0pt]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt]
+\tikzstyle{level 1}=[sibling distance=17mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!15]}]
+\node {$v_1$}[grow'=up]
+child {node {$v_2$}
+child {node {$v_5$}}
+child {node {$v_6$}}
+child {node {$v_7$}}
+}
+child {node {$v_3$}
+}
+child {node {$v_4$}
+child {node {$v_8$}
+child {node {\small$v_{10}$}}
+child {node {\small$v_{11}$}}
+}
+child {node {$v_9$}
+child[fill=none] {edge from parent[draw=none]}
+child {node {\small$v_{12}$}}
+}};
+\end{tikzpicture}}
+\subfigure[]{
+\begin{tikzpicture}[level distance=10mm,->,line width=1.0pt]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt]
+\tikzstyle{level 1}=[sibling distance=17mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!15]}]
+\node {$v_1$}
+child {node {$v_2$}
+child {node {$v_5$}}
+child {node {$v_6$}}
+child {node {$v_7$}}
+}
+child {node {$v_3$}
+}
+child {node {$v_4$}
+child {node {$v_8$}
+child {node {\small$v_{10}$}}
+child {node {\small$v_{11}$}}
+}
+child {node {$v_9$}
+child[fill=none] {edge from parent[draw=none]}
+child {node {\small$v_{12}$}}
+}};
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+
+图~(a) 是根树的\alert{自然表示法}.
+\end{example}
+\end{frame}
+
+%%%%%%==================================================================================================
+\begin{frame}\frametitle{伯努利家族
+\footnote{著名的瑞士数学家家族. 见: {\kaishu~E.T. 贝尔《数学精英》P.152, 商务印书馆.}}的族谱图}
+
+\begin{center}\footnotesize
+ \begin{tikzpicture}[level distance=17mm]
+\tikzstyle{every node}=[fill=blue!65,inner sep=1pt,text width=1.8cm,text badly centered]
+\tikzstyle{level 1}=[sibling distance=40mm,
+set style={{every node}+=[fill=blue!50]}]
+\tikzstyle{level 2}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!35]}]
+\tikzstyle{level 3}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!20]}]
+\node {Nikolaus (1623--1708)}
+child {node {Jacob \Rmnum{1} (1654--1705)}}
+child {node {Nikolaus \Rmnum{1} (1662--1716)}
+child {node {Nikolaus \Rmnum{2} (1687--1759)}}}
+child {node {Johann \Rmnum{1} (1667--1748)}
+child {node {Nikolaus \Rmnum{3} (1695--1726)}}
+child {node {Johann \Rmnum{2} (1710--1790)}
+child {node {Johann \Rmnum{3} (1746--1807)}}
+child {node {Jacob \Rmnum{2} (1759--1789)}}
+}
+child {node {Daniel (1700--1782)}}
+}
+;
+\end{tikzpicture}
+\end{center}
+\end{frame}
+%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{example}
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[三叉树]{
+\begin{tikzpicture}[black!60,->,line width=1.0pt,level distance=9mm]
+\tikzstyle{every node}=[fill=red!70,circle,inner sep=0.2pt,minimum size=7pt]
+\tikzstyle{level 1}=[sibling distance=15mm,
+set style={{every node}+=[fill=red!55]}]
+\tikzstyle{level 2}=[sibling distance=12mm,
+set style={{every node}+=[fill=red!40]}]
+\tikzstyle{level 3}=[sibling distance=5mm,
+set style={{every node}+=[fill=red!25]}]
+\node {}
+child {node {}
+child {node {}
+child {node {}}
+child {node {}}
+}
+child {node {}
+child {node {}}
+child {node {}}
+child {node {}}
+}
+}
+child {node {}}
+child {node {}
+child {node {}
+child {node {}}
+child[fill=none] {edge from parent[draw=none]}
+}
+child {node {}}
+child {node {}}
+};
+\end{tikzpicture}}\qquad
+\subfigure[完全二叉树]{
+\begin{tikzpicture}[black!60,->,line width=1.0pt,level distance=9mm]
+\tikzstyle{every node}=[fill=blue!70,circle,inner sep=0.2pt,minimum size=7pt]
+\tikzstyle{level 1}=[sibling distance=18mm,
+set style={{every node}+=[fill=blue!55]}]
+\tikzstyle{level 2}=[sibling distance=10mm,
+set style={{every node}+=[fill=blue!40]}]
+\tikzstyle{level 3}=[sibling distance=5mm,
+set style={{every node}+=[fill=blue!25]}]
+\node {}
+child {node {} %1
+child {node {}
+child {node {}}
+child {node {}}
+}
+child {node {}
+child {node {}}
+child {node {}}
+}
+}
+child {node {}
+child {node {}
+child {node {}}
+child {node {}}
+}
+child {node {}}
+};
+\end{tikzpicture}}
+\subfigure[正则二叉树]{
+\begin{tikzpicture}[black!60,->,line width=1.0pt,level distance=9mm]
+\tikzstyle{every node}=[fill=black!80,circle,inner sep=0.2pt,minimum size=7pt]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=black!65]}]
+\tikzstyle{level 2}=[sibling distance=10mm,
+set style={{every node}+=[fill=black!50]}]
+\tikzstyle{level 3}=[sibling distance=5mm,
+set style={{every node}+=[fill=black!35]}]
+\node {}
+child {node {} %%1
+child {node {}
+child {node {}}
+child {node {}}
+}
+child {node {}
+child {node {}}
+child {node {}}
+}
+}
+child {node {} %%1
+child {node {} %%2
+child {node {}}
+child {node {}}
+}
+child {node {}
+child {node {}}
+child {node {}}
+}
+};
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+\end{example}
+
+\end{frame}
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{有序树写为对应的二叉树}\small
+任何一颗有序树都可以改写为一颗对应的二叉树, 方法如下:
+\begin{enumerate}
+    \item 删除始于每个结点除最左边的一个分枝外的其余分枝; 在同一层次中的兄弟结点之间用自左到右的有向边连接.
+    \item 对某个结点, 直接位于该结点下面的结点作为\alert{左儿子}. 位于同一水平线上与该结点右邻的结点作为\alert{右儿子}.
+    \item 改写之后的树根仅有一个儿子, 规定是左儿子.
+\end{enumerate}
+\begin{center}
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{%
+\begin{tikzpicture}[level distance=9mm,->,line width=1.0pt]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\node {$1$}
+child {node {$2$}
+child {node {$4$}}
+child {node {$5$}}
+}
+child {node {$3$}
+child[fill=none] {edge from parent[draw=none]}
+child {node {$6$}}
+};
+\end{tikzpicture}}\qquad\quad
+\subfigure[]{%
+\begin{tikzpicture}[level distance=9mm,->,line width=1.0pt]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt,text=black]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\node {$1$}
+child {node(l1) {$2$}
+child {node(l2) {$4$}}
+child[black!15] {node(r2) {$5$}}
+}
+child[black!15] {node(r1) {$3$}
+child[fill=none] {edge from parent[draw=none]}
+child[black] {node {$6$}}
+};
+\foreach \from/\to in {l1/r1, l2/r2}
+  {\draw[->, red!65] (\from) -- (\to);}
+\end{tikzpicture}}
+\end{figure}
+\end{center}
+\pause
+下页是一个例子...
+\end{frame}
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{center}\footnotesize
+\begin{figure}\setcounter{subfigure}{0}
+\subfigure[]{%
+\begin{tikzpicture}[level distance=9mm,->,line width=1.0pt,scale=0.9]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[
+set style={{every node}+=[fill=blue!15]}]
+\node {$O$}
+child {node {$A$}
+child {node {$B$}}
+child {node {$C$}
+child {node {$K$}}}
+}
+child {node {$D$}
+child {node {$E$}child {node {$H$}}}
+child {node {$F$}child {node {$J$}}}
+child {node {$G$}}
+};
+\end{tikzpicture}
+}\qquad\pause%
+\subfigure[ ]{%
+\begin{tikzpicture}[level distance=9mm,->,line width=1.0pt,scale=0.9]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt,text=black]
+\tikzstyle{level 1}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=8mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[
+set style={{every node}+=[fill=blue!15]}]
+\node {$O$}
+child {node(l1) {$A$}
+child {node(l2) {$B$}}
+child[black!15] {node(r2) {$C$}
+child[black] {node {$K$}}}
+}
+child[black!15] {node(r1) {$D$}
+child[black]{node(l3) {$E$} child{node {$H$}}}
+child[black!15] {node(m3) {$F$}child[black] {node {$J$}}}
+child[black!15] {node(r3) {$G$}}
+};
+\foreach \from/\to in {l1/r1, l2/r2, l3/m3, m3/r3}
+  {\draw[->, red!65] (\from) -- (\to);}
+\end{tikzpicture}
+}\\ \pause%
+\subfigure[]{%
+\begin{tikzpicture}[level distance=8mm,->,line width=1.0pt,scale=0.9]
+\tikzstyle{every node}=[fill=blue!60,circle,inner sep=0.5pt,text=black]
+\tikzstyle{level 1}=[sibling distance=28mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=20mm,
+set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 3}=[sibling distance=10mm,
+set style={{every node}+=[fill=blue!15]}]
+\node {$O$}
+[grow=south west]child {node {$A$}
+[grow=south]child {node {$B$}
+[grow=south east]child {node {$C$}
+[grow=south west]child {node {$K$}}}
+}
+child {node {$D$}
+child[grow=south west] {node {$E$}[grow=south] child {node {$H$}}
+child {node {$F$}child {node {$J$}}
+child {node {$G$}}}}
+}};
+\end{tikzpicture}
+}
+\end{figure}
+\end{center}
+\end{frame}
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}%\frametitle{带权二叉树}
+\begin{example}
+\begin{center}
+\begin{figure}
+\begin{tikzpicture}[level distance=10mm,->,line width=1.2pt,black!65]
+\tikzstyle{every circle node}=[fill=blue!60,minimum size=12pt,inner
+sep=0.5pt,text=black] \tikzstyle{level 1}=[sibling distance=24mm,
+set style={{every circle node}+=[fill=blue!45]}] \tikzstyle{level
+2}=[sibling distance=12mm, set style={{every circle
+node}+=[fill=blue!30]}] \tikzstyle{level 3}=[sibling distance=10mm,
+set style={{every circle node}+=[fill=blue!15]}] \node[circle] {$a$}
+child {node[circle] {$b$ } child {node[circle] {$d$} edge from
+parent node[left] {2}} child {node[circle] {$e$} edge from parent
+node[right] {1} } } child {node[circle] {$c$ } child {node[circle]
+{$f$} edge from parent node[left] {1}} child {node[circle] {$g$ }
+child {node[circle] {$h$} edge from parent node[left] {5}} child
+{node[circle] {$i$} edge from parent node[right] {3}} } };
+\end{tikzpicture}
+\caption{带权二叉树~$T$}
+\end{figure}
+\end{center}
+\vspace{-1em}
+\begin{align*}
+w(T)&= \sum\limits_{i = 1}^t {w_i L(w_i )} \\
+&= 2\times 2 + 1\times 2 +1\times 2 + 5\times 3 + 3\times 3\\
+&= 32
+\end{align*}
+\end{example}
+\end{frame}
+%%%%%%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{}
+\begin{theorem}
+任意一棵二叉树对应一个前缀码.
+\end{theorem}\pause\small
+\zheng 给定一棵二叉树,
+从每个分枝点出发, 将左枝标为~$0$, 右枝标为~$1$,
+则每片树叶对应一个~$0$ 和~$ 1$ 组成的序列,
+该序列是从树根到该树叶的通路上各边标号组成的.
+
+显然, \CCTunderwave{没有一片树叶对应的序列是另一片树叶对应序列的前缀}.
+所以任意一棵二叉树对应一个前缀码.
+
+\begin{center}
+\begin{figure}
+\begin{tikzpicture}[level distance=10mm,->,line width=1.2pt,black!75]
+\tikzstyle{every circle node}=[ball color=blue!60,minimum size=10pt,inner sep=0.5pt,text=black]
+\tikzstyle{level 1}=[sibling distance=24mm,
+set style={{every circle node}+=[ball color=blue!45]}]
+\tikzstyle{level 2}=[sibling distance=12mm,
+set style={{every circle node}+=[ball color=blue!30]}]
+\tikzstyle{level 3}=[sibling distance=10mm,
+set style={{every circle node}+=[ball color=blue!15]}]
+\node[circle] { }
+child {node[circle] {  }
+child {node[circle] { }
+child {node[circle] { } edge from parent node[left] {0}}
+child {node[circle] { } edge from parent node[right] {1}}
+edge from parent node[left] {0}}
+child {node[circle] { } edge from parent node[right] {1}
+}
+edge from parent node[left] {0}}
+child {node[circle] { }
+child {node[circle] { } edge from parent node[left] {0}}
+child {node[circle] { }
+child {node[circle] { } edge from parent node[left] {0}}
+child {node[circle] { } edge from parent node[right] {1}}
+edge from parent node[right] {1}}
+edge from parent node[right] {1}};
+\end{tikzpicture}
+\caption{带权二叉树~$T$}
+\end{figure}
+\end{center}
+\end{frame}
+%%%%%%%==================================================================================================
+\begin{frame}\frametitle{ }
+\begin{example}
+试用有向图描述下列问题的解:
+\begin{colorboxed}
+    某人~m 带一条狗~d, 一只猫~c 和一只兔子~r 过河. m 每次游过河时只能带一只动物,
+    而没人管理时, 狗与兔子不能共处, 猫和兔子也不能共处. 问~m 怎样把三个动物带过河去?
+\end{colorboxed}\pause
+
+{\kaishu 提示: 用结点代表状态, 状态用序偶~$\langle S_1,\, S_2\rangle$ 来表示,
+这里~$S_1$, $S_2$ 分别是左岸、右岸的\CCTunderdot{人和动物的集合}, 例如初始状态为~$\langle\{m,d,c,r\},\,\varnothing\rangle$.}
+\end{example}
+\end{frame}
+%%%%%%%==================================================================================================
+\begin{frame}\frametitle{ }\small
+\jieda 注意到不能出现集合~$\{d,\,r\}$, $\{c,\,r\}$, 描述上述问题的有向图如下
+\begin{center}\footnotesize
+\begin{tikzpicture}[level distance=9mm,->,line width=1.0pt,black!55,text=black]
+\tikzstyle{every node}=[fill=blue!55,inner sep=1.5pt]
+\tikzstyle{level 1}=[sibling distance=25mm,
+set style={{every node}+=[fill=blue!50]}]
+\tikzstyle{level 2}=[sibling distance=25mm,
+set style={{every node}+=[fill=blue!45]}]
+\tikzstyle{level 3}=[sibling distance=50mm,
+set style={{every node}+=[fill=blue!40]}]
+\tikzstyle{level 4}=[sibling distance=25mm,
+set style={{every node}+=[fill=blue!35]}]
+\tikzstyle{level 5}=[set style={{every node}+=[fill=blue!30]}]
+\tikzstyle{level 6}=[set style={{every node}+=[fill=blue!25]}]
+\tikzstyle{level 7}=[set style={{every node}+=[fill=blue!20]}]
+\node {$\langle\{m,d,c,r\},\,\varnothing\rangle$}
+child {node {$\langle\{c,r\},\,\{m,d\}\rangle$}}
+child {node {$\langle\{d,c\},\,\{m,r\}\rangle$}
+child {node {$\langle\{m,d,c\},\,\{r\}\rangle$}
+child {node {$\langle\{d\},\,\{m,r,c\}\rangle$}
+child {node {$\langle\{d,m\},\,\{r,c\}\rangle$}}
+child {node {$\langle\{d,m,r\},\,\{c\}\rangle$}
+child {node {$\langle\{r\},\,\{c,d,m\}\rangle$}
+child {node {$\langle\{r,m\},\,\{c,d\}\rangle$}
+child {node {$\langle\varnothing,\,\{m,d,c,r\}\rangle$}}
+}
+}
+}
+child {node {$\langle\{d,m,c\},\,\{r\}\rangle$}}
+}
+child {node {$\langle\{c\},\,\{m,r,d\}\rangle$}
+child {node {$\langle\{c,m,r\},\,\{d\}\rangle$}
+child {node {$\langle\{r\},\,\{c,d,m\}\rangle$}
+child {node {$\langle\{r,m\},\,\{c,d\}\rangle$}
+child {node {$\langle\varnothing,\,\{m,d,c,r\}\rangle$}}
+}
+}
+}
+}
+}}
+child {node {$\langle\{d,r\},\,\{m,c\}\rangle$}}
+;
+\end{tikzpicture}
+\end{center}
+(\alert{注}: 第~3 层中, 右侧的讨论应与左侧同, 为方便计略去.)
+\end{frame}
+
+%-------------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{Leonhard Euler}\small
+\parpic{%
+\includegraphics[width=2.5cm]%
+{Euler2.jpg}}
+\hidark<1>{\hypertarget{target1}{Euler}~(1707$\sim$1783) 生于~Basel, 卒于圣彼得堡.
+瑞士数学家, 贡献遍及数学各领域, 是数学史上最伟大的数学家之一,
+也是最多产的数学家. \newline
+\vskip2em}
+\hidark<2>{\indent 据统计他一生共写下了~886 本书籍和论文,
+其中分析、代数、数论占~$40\%$, 几何占~$18\%$, 物理和力学占~$28\%$,
+天文学占~$11\%$, 弹道学、航海学、建筑学等占~$3\%$, 彼得堡科学院为了整理他的著作, 足足忙碌了四十七年． \newline
+}
+
+\end{frame}
+%-------------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{Leonhard Euler}\small
+\parpic{%
+\includegraphics[width=3cm]%
+{euler.jpg}}
+\hidark<1>{欧拉可以在任何不良的环境中工作．
+他顽强的毅力和孜孜不倦的治学精神, 使他在双目失明以后, 也没有停止对数学的研究, 在失明后的~17 年间,
+他还口述了几本书和~400 篇左右的论文． \newline
+\vskip2em}
+\hidark<2>{\indent Euler 一生都是在科学院度过. 首先是在俄国的圣彼得堡科学院, 1733 年, 26 岁的欧拉担任了彼得堡科学院数学教授．
+ 1740 年后则在柏林科学院待到~59 岁.
+ 1766 年接受凯瑟琳女皇二世邀请, 离开柏林, 再次前往圣彼得堡, 一直到他过世(1783年). \newline
+}
+\end{frame}
+%-------------------------------------------------------------------------------------------------------
+\begin{frame}[t]\frametitle{Leonhard Euler}\small
+\parpic{%
+\includegraphics[width=5cm]%
+{euler-stamp.jpg}}
+\hidark<1>{\indent Euler 公式:
+  \[e^{i\theta}=\cos \theta + i\sin \theta\]
+这是关于三角函数最漂亮的公式之一, 同时也是三角函数与复数间的桥梁.
+}
+\hidark<2>{若令~$\theta=\pi$, 则有
+\[e^{i\pi}+1=0\]
+}
+\hidark<3>{ 欧拉还创设了许多数学符号, 例如~$\pi$ (1736年), $i$ (1777年), $e$ (1748年), $\sin$ 和~$\cos$ (1748年),
+$\tan$ (1753年), $\Delta x$ (1755年), $\Sigma$ (1755年), $f(x)$ (1734年) 等．
+}
+
+\hyperlink{target2}{\beamergotobutton{返回}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!25] %%%背景颜色调节
+\begin{frame}
+ \begin{center}
+{\huge \emph{\textcolor[rgb]{0.50,0.00,1.00}{Thank  ~you!}}}\\
+\vspace{5mm}\large
+\begin{tabular}{ll}
+   {\sc Author}: & \textsf{\textcolor{red}{H}UANG\ Z\textcolor{red}{h}eng-\textcolor{red}{h}ua}\\
+  {\sc Address}: & School of Mathematics \& Statistics\\
+                 & Wuhan University  \\
+                 & Wuhan, 430072, China\\
+    {\sc Email}: & \href{mailto:huangzh@whu.edu.cn}{\color{blue!70}huangzh@whu.edu.cn}\\
+\end{tabular}
+ \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
